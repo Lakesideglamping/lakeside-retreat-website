@@ -4214,18 +4214,107 @@ document.addEventListener('DOMContentLoaded', () => {
         // Page navigation data
         const pages = ['home', 'stay', 'gallery', 'blog', 'reviews', 'story', 'explore', 'contact'];
 
-        // Gallery images from stay page click
+        // Gallery images from stay page click - ALL 86 IMAGES NOW INCLUDED
         const galleryImages = [
+            // Professional Drone Aerial Views
+            'images/Photo_1074003984_DJI_20250515174023_0001_D_JPG_6512640_0_2025515174024_photo_preview.jpg',
+            'images/Photo_1074004000_DJI_20250515174356_0002_D_JPG_8282112_0_2025515174356_photo_preview.jpg',
+            'images/Photo_1074004016_DJI_20250607093621_0003_D_JPG_10493952_0_20256793624_photo_preview.jpg',
+            'images/Photo_1074004032_DJI_20250607093634_0004_D_JPG_10891264_0_20256793636_photo_preview.jpg',
+            'images/Photo_1074004048_DJI_20250607093727_0005_D_JPG_6905856_0_20256793730_photo_preview.jpg',
+            'images/Photo_1074004080_DJI_20250607093752_0007_D_JPG_10858496_0_20256793756_photo_preview.jpg',
+            'images/Photo_1074004096_DJI_20250607093805_0008_D_JPG_11845632_0_20256793810_photo_preview.jpg',
+            'images/Photo_1074004128_DJI_20250607093936_0010_D_JPG_9879552_0_20256793940_photo_preview.jpg',
+            'images/Photo_1074004224_DJI_20250702132326_0016_D_JPG_10911744_0_202572132328_photo_preview.jpg',
+            'images/Photo_1074004272_DJI_20250702132638_0019_D_JPG_10104832_0_202572132642_photo_preview.jpg',
+            
+            // Dome Pinot - Luxury Lake Views
+            'images/dome-pinot-exterior.jpeg',
+            'images/dome-pinot-hero.jpeg',
+            'images/dome-pinot-interior.jpeg',
+            'images/PinotExternal.jpeg',
+            'images/Pinotfront.jpeg',
+            'images/PinotLakeView.jpeg',
+            'images/pinotinternal.jpeg',
+            'images/pinot-internal.jpeg',
+            'images/pinotexternal2.jpeg',
+            'images/pinotsittingroom.jpeg',
+            'images/pinotspa.jpeg',
+            'images/pinotspa1.jpeg',
+            
+            // Dome Rose - Wine Country Romance
+            'images/dome-rose-exterior.jpeg',
+            'images/dome-rose-interior.jpeg',
+            'images/dome-rose-spa.jpeg',
+            'images/dome-rose-spa1.jpeg',
+            'images/rosefront.jpeg',
+            'images/rose-font.jpeg',
+            'images/Roseinternal.jpeg',
+            'images/rosespa.jpeg',
             'images/galerryrose.jpeg',
+            
+            // Lakeside Cottage - Family Haven
+            'images/cottage.jpg',
+            'images/lakeside-cottage-exterior.jpeg',
+            'images/lakeside-cottage-lakeview.jpeg',
+            'images/lakeside-cottage-lake-view.jpeg',
+            'images/lakesidecottageexterior.jpeg',
+            'images/lakesidecottageinterior.jpeg',
+            'images/lakesidecottagelakeview.jpeg',
+            'images/cottagebedroom.jpeg',
+            'images/cottagebathroom.jpeg',
+            
+            // Lake Dunstan Views & Activities
+            'images/LakeView.jpg',
+            'images/lakeview.jpeg',
+            'images/lakeviewautumn.jpeg',
+            'images/Gallerydomelake.jpeg',
+            'images/galleryrainbow.jpeg',
+            'images/vineyardlakeview.jpeg',
+            'images/windowview.jpeg',
+            
+            // Outdoor Living Spaces
+            'images/gallerydeck.jpeg',
             'images/gallerydecksideview.jpeg',
             'images/gallerydecksitting.jpeg',
             'images/gallerypinotbed.jpeg',
-            'images/dome-pinot-hero.jpeg',
-            'images/dome-pinot-interior.jpeg',
-            'images/dome-rose-interior.jpeg',
-            'images/gallerydeck.jpeg',
-            'images/gallerypinotbed.jpeg',
-	    'images/GallerySwingChair.jpeg',
+            'images/GallerySwingChair.jpeg',
+            
+            // Wine Country Setting
+            'images/vineyard.jpeg',
+            'images/vineyard.jpg',
+            'images/vineyard600.jpeg',
+            'images/vineyard800.jpeg',
+            'images/vineyarddomes.jpeg',
+            'images/vineyardhero.jpeg',
+            'images/vineyardhero1.jpeg',
+            'images/ViewfromVineyard.jpeg',
+            
+            // Seasonal Beauty & Atmosphere
+            'images/20211122_185234.jpg',
+            'images/20211207_165558.jpg',
+            'images/20211222_162524.jpg',
+            'images/20220110_081038.jpg',
+            'images/20220125_091449.jpg',
+            'images/20220125_091457.jpg',
+            'images/20220125_092252.jpg',
+            'images/20220125_212631.jpg',
+            'images/sunset.jpeg',
+            'images/HeadingWarm.jpeg',
+            
+            // Mountain Views & Landscape
+            'images/Frontmountainview.jpeg',
+            'images/fromt-mountain-view.jpeg',
+            'images/mountainview.jpeg',
+            'images/domesmountainview.jpeg',
+            'images/domesmountainview1.jpeg',
+            'images/domesmountainview3.jpeg',
+            'images/FontView1200.jpeg',
+            
+            // Facilities & Details
+            'images/domebathroom.jpeg',
+            'images/solarpanel.jpeg',
+            'images/thumbnail.jpeg'
         ];
 
         // Search data
