@@ -3238,30 +3238,55 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                 </div>
             </section>
-            <section class="section"> //this is gallery page
+            <section class="section"> 
                 <div class="container">
-                    <div class="grid grid-3">
-                        <div class="card">
-                            <img src="images/pinotexternal2.jpeg" alt="Luxury glamping dome accommodation with Lake Dunstan views Central Otago New Zealand" class="card-image" onclick="openLightbox(this.src)">
-                        </div>
-                        <div class="card">
-                            <img src="images/rosefront.jpeg" alt="Romantic dome accommodation Central Otago wine country with vineyard views" class="card-image" onclick="openLightbox(this.src)">
-                        </div>
-                        <div class="card">
-                            <img src="images/lakeside-cottage-lake-view.jpeg" alt="Family cottage accommodation Lake Dunstan Central Otago with lake access" class="card-image" onclick="openLightbox(this.src)">
-                        </div>
-                        <div class="card">
-                            <img src="images/galleryrainbow.jpeg" alt="Lake Dunstan panoramic views from luxury accommodation Central Otago" class="card-image" onclick="openLightbox(this.src)">
-                        </div>
-                        <div class="card">
-                            <img src="images/FontView1200.jpeg" alt="Central Otago vineyard setting luxury glamping accommodation near Cromwell" class="card-image" onclick="openLightbox(this.src)">
-                        </div>
-                        <div class="card">
-                            <img src="images/Frontmountainview.jpeg" alt="Private spa luxury accommodation Central Otago with mountain views" class="card-image" onclick="openLightbox(this.src)">
-                        </div>
+                    <div class="grid grid-3" id="dynamicGalleryGrid">
+                        <!-- Gallery images will be loaded dynamically here -->
                     </div>
                 </div>
             </section>
+            
+            <script>
+                // Load all gallery images dynamically when gallery page is shown
+                function loadGalleryImages() {
+                    const galleryGrid = document.getElementById('dynamicGalleryGrid');
+                    if (galleryGrid && galleryImages) {
+                        galleryGrid.innerHTML = ''; // Clear existing content
+                        
+                        // Add ALL images from the galleryImages array
+                        galleryImages.forEach((imageSrc, index) => {
+                            const card = document.createElement('div');
+                            card.className = 'card';
+                            
+                            const img = document.createElement('img');
+                            img.src = imageSrc;
+                            img.alt = `Lakeside Retreat Gallery Image ${index + 1}`;
+                            img.className = 'card-image';
+                            img.onclick = function() { openLightbox(this.src); };
+                            img.loading = 'lazy'; // Optimize loading
+                            
+                            card.appendChild(img);
+                            galleryGrid.appendChild(card);
+                        });
+                        
+                        console.log(`Loaded ${galleryImages.length} images in gallery`);
+                    }
+                }
+                
+                // Call this when gallery page is shown
+                const originalShowPage = window.showPage;
+                window.showPage = function(pageName) {
+                    originalShowPage(pageName);
+                    if (pageName === 'gallery') {
+                        setTimeout(loadGalleryImages, 100); // Small delay to ensure page is visible
+                    }
+                };
+                
+                // Also load if already on gallery page
+                if (window.location.hash === '#gallery' || document.getElementById('galleryPage').style.display === 'block') {
+                    loadGalleryImages();
+                }
+            </script>
         </div>
 
         <!-- Blog Page -->
