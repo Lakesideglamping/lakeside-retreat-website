@@ -17,8 +17,13 @@ app.use('/css', express.static(path.join(__dirname, 'css')));
 app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
-// Serve index.html for root
+// Serve test page for root temporarily
 app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'test.html'));
+});
+
+// Serve full site at /site
+app.get('/site', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
