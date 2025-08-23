@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <!-- Homepage - Highest Priority -->
+  <url>
+    <loc>https://lakesideretreat.co.nz/</loc>
+    <lastmod>2025-01-26T00:00:00+12:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en-nz" href="https://lakesideretreat.co.nz/"/>
+    <xhtml:link rel="alternate" hreflang="en-au" href="https://lakesideretreat.co.nz/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://lakesideretreat.co.nz/"/>
+    <image:image>
+      <image:loc>https://lakesideretreat.co.nz/images/dome-pinot-hero.jpeg</image:loc>
+      <image:title>Luxury Glamping Dome Lake Dunstan Central Otago</image:title>
+      <image:caption>Lakeside Retreat luxury glamping dome with panoramic views of Lake Dunstan</image:caption>
+      <image:geo_location>Cromwell, Central Otago, New Zealand</image:geo_location>
+    </image:image>
+  </url>
+
+  <!-- Accommodation Pages -->
+  <url>
+    <loc>https://lakesideretreat.co.nz/accommodation/dome-pinot</loc>
+    <lastmod>2025-01-26T00:00:00+12:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://lakesideretreat.co.nz/images/dome-pinot-interior.jpeg</image:loc>
+      <image:title>Dome Pinot Luxury Interior</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://lakesideretreat.co.nz/accommodation/dome-rose</loc>
+    <lastmod>2025-01-26T00:00:00+12:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://lakesideretreat.co.nz/images/dome-rose-interior.jpeg</image:loc>
+      <image:title>Dome Rose with Spa Bath</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://lakesideretreat.co.nz/accommodation/lakeside-cottage</loc>
+    <lastmod>2025-01-26T00:00:00+12:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://lakesideretreat.co.nz/images/lakeside-cottage-exterior.jpeg</image:loc>
+      <image:title>Lakeside Cottage Central Otago</image:title>
+    </image:image>
+  </url>
+
+  <!-- Location/Area Pages - Important for Local SEO -->
+  <url>
+    <loc>https://lakesideretreat.co.nz/central-otago</loc>
+    <lastmod>2025-01-26T00:00:00+12:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://lakesideretreat.co.nz/cromwell-accommodation</loc>
+    <lastmod>2025-01-26T00:00:00+12:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://lakesideretreat.co.nz/lake-dunstan</loc>
+    <lastmod>2025-01-26T00:00:00+12:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://lakesideretreat.co.nz/queenstown-alternative</loc>
+    <lastmod>2025-01-26T00:00:00+12:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Activity Pages -->
+  <url>
+    <loc>https://lakesideretreat.co.nz/wine-tours</loc>
+    <lastmod>2025-01-26T00:00:00+12:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://lakesideretreat.co.nz/otago-rail-trail</loc>
+    <lastmod>2025-01-26T00:00:00+12:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://lakesideretreat.co.nz/lake-dunstan-cycle-trail</loc>
+    <lastmod>2025-01-26T00:00:00+12:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Utility Pages -->
+  <url>
+    <loc>https://lakesideretreat.co.nz/contact</loc>
+    <lastmod>2025-01-26T00:00:00+12:00</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://lakesideretreat.co.nz/booking</loc>
+    <lastmod>2025-01-26T00:00:00+12:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://lakesideretreat.co.nz/gallery</loc>
+    <lastmod>2025-01-26T00:00:00+12:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://lakesideretreat.co.nz/reviews</loc>
+    <lastmod>2025-01-26T00:00:00+12:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://lakesideretreat.co.nz/sustainability</loc>
+    <lastmod>2025-01-26T00:00:00+12:00</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <!-- Blog/News Section for Fresh Content -->
+  <url>
+    <loc>https://lakesideretreat.co.nz/blog</loc>
+    <lastmod>2025-01-26T00:00:00+12:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://lakesideretreat.co.nz/seasonal-offers</loc>
+    <lastmod>2025-01-26T00:00:00+12:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+</urlset>

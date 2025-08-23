@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: lakeside-retreat
+    runtime: node
+    buildCommand: npm install
+    startCommand: node server-secure.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+    healthCheckPath: /api/health
+    plan: free # Start with free, upgrade if needed
+    autoDeploy: true # Auto-deploy from GitHub
