@@ -3240,8 +3240,80 @@ document.addEventListener('DOMContentLoaded', () => {
             </section>
             <section class="section"> 
                 <div class="container">
-                    <div class="grid grid-3" id="dynamicGalleryGrid">
-                        <!-- Gallery images will be loaded dynamically by JavaScript -->
+                    <div class="grid grid-3">
+                        <!-- HERO SHOTS - Best of Property -->
+                        <div class="card">
+                            <img src="images/dome-pinot-hero.jpeg" alt="Luxury Dome Pinot with Lake Views" class="card-image" onclick="openLightbox(this.src)">
+                        </div>
+                        <div class="card">
+                            <img src="images/PinotLakeView.jpeg" alt="Stunning Lake Dunstan Views from Dome" class="card-image" onclick="openLightbox(this.src)">
+                        </div>
+                        <div class="card">
+                            <img src="images/vineyard.jpeg" alt="Central Otago Vineyard Setting" class="card-image" onclick="openLightbox(this.src)">
+                        </div>
+                        
+                        <!-- ACCOMMODATION HIGHLIGHTS -->
+                        <div class="card">
+                            <img src="images/dome-rose-spa.jpeg" alt="Romantic Spa in Dome Rose" class="card-image" onclick="openLightbox(this.src)">
+                        </div>
+                        <div class="card">
+                            <img src="images/pinotinternal.jpeg" alt="Luxury Interior Dome Pinot" class="card-image" onclick="openLightbox(this.src)">
+                        </div>
+                        <div class="card">
+                            <img src="images/lakeside-cottage-exterior.jpeg" alt="Charming Lakeside Cottage" class="card-image" onclick="openLightbox(this.src)">
+                        </div>
+                        
+                        <!-- EXPERIENCES -->
+                        <div class="card">
+                            <img src="images/galleryrainbow.jpeg" alt="Rainbow over Lake Dunstan" class="card-image" onclick="openLightbox(this.src)">
+                        </div>
+                        <div class="card">
+                            <img src="images/sunset.jpeg" alt="Spectacular Central Otago Sunset" class="card-image" onclick="openLightbox(this.src)">
+                        </div>
+                        <div class="card">
+                            <img src="images/20220125_091449.jpg" alt="Morning Glory Over Mountains" class="card-image" onclick="openLightbox(this.src)">
+                        </div>
+                        
+                        <!-- OUTDOOR LIVING -->
+                        <div class="card">
+                            <img src="images/gallerydeck.jpeg" alt="Outdoor Deck with Views" class="card-image" onclick="openLightbox(this.src)">
+                        </div>
+                        <div class="card">
+                            <img src="images/GallerySwingChair.jpeg" alt="Relaxing Swing Chair" class="card-image" onclick="openLightbox(this.src)">
+                        </div>
+                        <div class="card">
+                            <img src="images/pinotspa.jpeg" alt="Private Spa Experience" class="card-image" onclick="openLightbox(this.src)">
+                        </div>
+                        
+                        <!-- WINE COUNTRY & MOUNTAINS -->
+                        <div class="card">
+                            <img src="images/vineyarddomes.jpeg" alt="Domes in Vineyard Setting" class="card-image" onclick="openLightbox(this.src)">
+                        </div>
+                        <div class="card">
+                            <img src="images/Frontmountainview.jpeg" alt="Mountain Views Central Otago" class="card-image" onclick="openLightbox(this.src)">
+                        </div>
+                        <div class="card">
+                            <img src="images/LakeView.jpg" alt="Panoramic Lake Dunstan" class="card-image" onclick="openLightbox(this.src)">
+                        </div>
+                        
+                        <!-- SEASONAL BEAUTY -->
+                        <div class="card">
+                            <img src="images/lakeviewautumn.jpeg" alt="Autumn Colors Lake Dunstan" class="card-image" onclick="openLightbox(this.src)">
+                        </div>
+                        <div class="card">
+                            <img src="images/20211122_185234.jpg" alt="Winter Wonderland" class="card-image" onclick="openLightbox(this.src)">
+                        </div>
+                        <div class="card">
+                            <img src="images/HeadingWarm.jpeg" alt="Warm Evening Glow" class="card-image" onclick="openLightbox(this.src)">
+                        </div>
+                        
+                        <!-- SUSTAINABILITY -->
+                        <div class="card">
+                            <img src="images/solarpanel.jpeg" alt="38 Solar Panels Powering Luxury" class="card-image" onclick="openLightbox(this.src)">
+                        </div>
+                        <div class="card">
+                            <img src="images/windowview.jpeg" alt="Views from Every Window" class="card-image" onclick="openLightbox(this.src)">
+                        </div>
                     </div>
                 </div>
             </section>
@@ -5336,31 +5408,6 @@ Thank you for choosing Lakeside Retreat!`);
 
         // === ORIGINAL WEBSITE FUNCTIONS ===
 
-        // Load gallery images dynamically
-        function loadGalleryImages() {
-            const galleryGrid = document.getElementById('dynamicGalleryGrid');
-            if (galleryGrid && typeof galleryImages !== 'undefined') {
-                galleryGrid.innerHTML = ''; // Clear existing content
-                
-                // Add ALL images from the galleryImages array
-                galleryImages.forEach((imageSrc, index) => {
-                    const card = document.createElement('div');
-                    card.className = 'card';
-                    
-                    const img = document.createElement('img');
-                    img.src = imageSrc;
-                    img.alt = `Lakeside Retreat Gallery Image ${index + 1}`;
-                    img.className = 'card-image';
-                    img.onclick = function() { openLightbox(this.src); };
-                    img.loading = 'lazy'; // Optimize loading
-                    
-                    card.appendChild(img);
-                    galleryGrid.appendChild(card);
-                });
-                
-                console.log(`Loaded ${galleryImages.length} images in gallery`);
-            }
-        }
 
         function showPage(pageName) {
             document.querySelectorAll('.page').forEach(page => {
@@ -5383,12 +5430,6 @@ Thank you for choosing Lakeside Retreat!`);
 
             updateBreadcrumbs(pageName);
             currentPage = pageName;
-            
-            // Load gallery images when gallery page is shown
-            if (pageName === 'gallery') {
-                setTimeout(loadGalleryImages, 100); // Small delay to ensure DOM is ready
-            }
-            
             window.scrollTo({ top: 0, behavior: 'smooth' });
             trackPageView(pageName);
         }
