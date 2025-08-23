@@ -60,10 +60,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/lakesideretreat/backend.git"
+    "url": "https://github.com/Lakesideglamping/lakeside-retreat-website.git"
   },
   "bugs": {
-    "url": "https://github.com/lakesideretreat/backend/issues"
+    "url": "https://github.com/Lakesideglamping/lakeside-retreat-website/issues"
   },
   "homepage": "https://lakesideretreat.co.nz",
   "security": {
