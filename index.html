@@ -3241,52 +3241,10 @@ document.addEventListener('DOMContentLoaded', () => {
             <section class="section"> 
                 <div class="container">
                     <div class="grid grid-3" id="dynamicGalleryGrid">
-                        <!-- Gallery images will be loaded dynamically here -->
+                        <!-- Gallery images will be loaded dynamically by JavaScript -->
                     </div>
                 </div>
             </section>
-            
-            <script>
-                // Load all gallery images dynamically when gallery page is shown
-                function loadGalleryImages() {
-                    const galleryGrid = document.getElementById('dynamicGalleryGrid');
-                    if (galleryGrid && galleryImages) {
-                        galleryGrid.innerHTML = ''; // Clear existing content
-                        
-                        // Add ALL images from the galleryImages array
-                        galleryImages.forEach((imageSrc, index) => {
-                            const card = document.createElement('div');
-                            card.className = 'card';
-                            
-                            const img = document.createElement('img');
-                            img.src = imageSrc;
-                            img.alt = `Lakeside Retreat Gallery Image ${index + 1}`;
-                            img.className = 'card-image';
-                            img.onclick = function() { openLightbox(this.src); };
-                            img.loading = 'lazy'; // Optimize loading
-                            
-                            card.appendChild(img);
-                            galleryGrid.appendChild(card);
-                        });
-                        
-                        console.log(`Loaded ${galleryImages.length} images in gallery`);
-                    }
-                }
-                
-                // Call this when gallery page is shown
-                const originalShowPage = window.showPage;
-                window.showPage = function(pageName) {
-                    originalShowPage(pageName);
-                    if (pageName === 'gallery') {
-                        setTimeout(loadGalleryImages, 100); // Small delay to ensure page is visible
-                    }
-                };
-                
-                // Also load if already on gallery page
-                if (window.location.hash === '#gallery' || document.getElementById('galleryPage').style.display === 'block') {
-                    loadGalleryImages();
-                }
-            </script>
         </div>
 
         <!-- Blog Page -->
@@ -5378,6 +5336,32 @@ Thank you for choosing Lakeside Retreat!`);
 
         // === ORIGINAL WEBSITE FUNCTIONS ===
 
+        // Load gallery images dynamically
+        function loadGalleryImages() {
+            const galleryGrid = document.getElementById('dynamicGalleryGrid');
+            if (galleryGrid && typeof galleryImages !== 'undefined') {
+                galleryGrid.innerHTML = ''; // Clear existing content
+                
+                // Add ALL images from the galleryImages array
+                galleryImages.forEach((imageSrc, index) => {
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    
+                    const img = document.createElement('img');
+                    img.src = imageSrc;
+                    img.alt = `Lakeside Retreat Gallery Image ${index + 1}`;
+                    img.className = 'card-image';
+                    img.onclick = function() { openLightbox(this.src); };
+                    img.loading = 'lazy'; // Optimize loading
+                    
+                    card.appendChild(img);
+                    galleryGrid.appendChild(card);
+                });
+                
+                console.log(`Loaded ${galleryImages.length} images in gallery`);
+            }
+        }
+
         function showPage(pageName) {
             document.querySelectorAll('.page').forEach(page => {
                 page.classList.remove('active');
@@ -5399,6 +5383,12 @@ Thank you for choosing Lakeside Retreat!`);
 
             updateBreadcrumbs(pageName);
             currentPage = pageName;
+            
+            // Load gallery images when gallery page is shown
+            if (pageName === 'gallery') {
+                setTimeout(loadGalleryImages, 100); // Small delay to ensure DOM is ready
+            }
+            
             window.scrollTo({ top: 0, behavior: 'smooth' });
             trackPageView(pageName);
         }
