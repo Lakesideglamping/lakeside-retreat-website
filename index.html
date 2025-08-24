@@ -7116,9 +7116,18 @@ Thank you for choosing Lakeside Retreat!`);
             }
         }
 
-        // Initialize floating button and FORCE V2 VOUCHER SYSTEM
+        // Initialize floating button, FAQ system, and FORCE V2 VOUCHER SYSTEM  
         document.addEventListener('DOMContentLoaded', function() {
             console.log('🎁 FORCING V2 VOUCHER SYSTEM ON PAGE LOAD');
+            
+            // Initialize FAQ dropdowns
+            console.log('📋 Initializing FAQ dropdowns');
+            document.querySelectorAll('.faq-answer').forEach(answer => {
+                if (!answer.style.maxHeight) {
+                    answer.style.maxHeight = '0px';
+                    console.log('✅ Set initial maxHeight to 0px for FAQ item');
+                }
+            });
             
             // Force replace old voucher HTML with new V2 system
             setTimeout(() => {
@@ -7162,30 +7171,53 @@ Thank you for choosing Lakeside Retreat!`);
         // FAQ ACCORDION FUNCTIONALITY
         // ========================================
         function toggleFAQ(questionElement) {
-            console.log('toggleFAQ called on:', questionElement);
+            console.log('🔽 FAQ TOGGLE: Called on element:', questionElement);
+            
+            if (!questionElement) {
+                console.error('❌ FAQ TOGGLE: No question element provided');
+                return;
+            }
+            
             const faqItem = questionElement.parentElement;
             const answer = faqItem.querySelector('.faq-answer');
             const arrow = questionElement.querySelector('.faq-arrow');
-            const isOpen = answer.style.maxHeight && answer.style.maxHeight !== '0px';
-            console.log('FAQ elements found:', {answer, arrow, isOpen});
             
-            // Close all other FAQ items
+            if (!answer || !arrow) {
+                console.error('❌ FAQ TOGGLE: Missing answer or arrow elements', {answer, arrow});
+                return;
+            }
+            
+            const isOpen = answer.style.maxHeight && answer.style.maxHeight !== '0px';
+            console.log('📊 FAQ STATE:', {
+                isCurrentlyOpen: isOpen,
+                currentMaxHeight: answer.style.maxHeight,
+                scrollHeight: answer.scrollHeight
+            });
+            
+            // Close all other FAQ items first
             document.querySelectorAll('.faq-item').forEach(item => {
-                const otherAnswer = item.querySelector('.faq-answer');
-                const otherArrow = item.querySelector('.faq-arrow');
                 if (item !== faqItem) {
-                    otherAnswer.style.maxHeight = '0px';
-                    otherArrow.style.transform = 'rotate(0deg)';
+                    const otherAnswer = item.querySelector('.faq-answer');
+                    const otherArrow = item.querySelector('.faq-arrow');
+                    if (otherAnswer && otherArrow) {
+                        otherAnswer.style.maxHeight = '0px';
+                        otherArrow.style.transform = 'rotate(0deg)';
+                    }
                 }
             });
             
             // Toggle current FAQ item
             if (isOpen) {
+                console.log('🔼 CLOSING FAQ');
                 answer.style.maxHeight = '0px';
                 arrow.style.transform = 'rotate(0deg)';
             } else {
-                answer.style.maxHeight = answer.scrollHeight + 'px';
+                console.log('🔽 OPENING FAQ');
+                // Force recalculation of scroll height
+                const scrollHeight = answer.scrollHeight;
+                answer.style.maxHeight = scrollHeight + 'px';
                 arrow.style.transform = 'rotate(180deg)';
+                console.log('✅ Set maxHeight to:', scrollHeight + 'px');
             }
         }
 
