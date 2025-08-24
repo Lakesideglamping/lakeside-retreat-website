@@ -1,0 +1,1 @@
+window.voucherSystemDebug = function() { console.log('Selected voucher:', selectedVoucherAmountV2New); console.log('Available voucher options:', document.querySelectorAll('.voucher-option-v2-new')); console.log('V2 NEW functions loaded:', typeof selectVoucherAmountV2New, typeof updateVoucherSummaryV2New); }; voucherSystemDebug();

@@ -6,7 +6,17 @@
     <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="pragma" content="no-cache">
     <meta http-equiv="expires" content="0">
-    <meta name="cache-buster-v2-new" content="v2-new-system-20250824-1141">
+    <meta name="cache-buster-v2-new" content="v2-force-override-20250824-1145">
+    <meta name="force-reload" content="true">
+    <script>
+        // AGGRESSIVE CACHE BUSTING
+        console.log('🔄 FORCE CACHE CLEAR - V2 SYSTEM OVERRIDE');
+        if ('serviceWorker' in navigator) {
+            caches.keys().then(names => names.forEach(name => caches.delete(name)));
+        }
+        localStorage.clear();
+        sessionStorage.clear();
+    </script>
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
 <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
 <!-- Advanced Content Security Policy -->
@@ -7090,8 +7100,44 @@ Thank you for choosing Lakeside Retreat!`);
             }
         }
 
-        // Initialize floating button
+        // Initialize floating button and FORCE V2 VOUCHER SYSTEM
         document.addEventListener('DOMContentLoaded', function() {
+            console.log('🎁 FORCING V2 VOUCHER SYSTEM ON PAGE LOAD');
+            
+            // Force replace old voucher HTML with new V2 system
+            setTimeout(() => {
+                const oldVoucherOptions = document.querySelectorAll('.voucher-option:not(.voucher-option-v2-new)');
+                console.log('Found old voucher elements to replace:', oldVoucherOptions.length);
+                
+                oldVoucherOptions.forEach(oldOption => {
+                    const amount = oldOption.getAttribute('data-amount');
+                    if (amount && !amount.includes('-v2')) {
+                        oldOption.setAttribute('data-amount', amount + '-v2');
+                        oldOption.className = oldOption.className.replace('voucher-option', 'voucher-option-v2-new');
+                        
+                        // Update all child elements
+                        const header = oldOption.querySelector('.voucher-option-header');
+                        if (header) header.className = 'voucher-option-header-v2-new';
+                        
+                        const price = oldOption.querySelector('.voucher-price');
+                        if (price) price.className = 'voucher-price-v2-new';
+                        
+                        // Update onclick handler
+                        const newAmount = amount + '-v2';
+                        oldOption.setAttribute('onclick', `selectVoucherAmountV2New('${newAmount}')`);
+                        console.log('✅ Converted voucher option:', amount, '→', newAmount);
+                    }
+                });
+                
+                // Force initialize new system
+                if (typeof selectVoucherAmountV2New === 'function') {
+                    selectVoucherAmountV2New('dome-rose-v2');
+                    console.log('✅ V2 voucher system forcefully initialized');
+                } else {
+                    console.error('❌ V2 voucher functions not loaded');
+                }
+            }, 100);
+            
             createFloatingBookButton();
             window.addEventListener('scroll', handleFloatingButton);
         });
@@ -7127,7 +7173,8 @@ Thank you for choosing Lakeside Retreat!`);
             }
         }
 
-        // VOUCHER SYSTEM V2 - NEW FUNCTIONS
+        // VOUCHER SYSTEM V2 - NEW FUNCTIONS - FORCE OVERRIDE
+        console.log('🎁 NEW VOUCHER SYSTEM V2 LOADING...', new Date());
         let selectedVoucherAmountV2New = 'dome-rose-v2'; // Default selection
         let voucherDataV2New = {
             amount: 'dome-rose-v2',
@@ -7141,6 +7188,16 @@ Thank you for choosing Lakeside Retreat!`);
             voucherCode: '',
             customAmount: null
         };
+        
+        // FORCE OVERRIDE OLD FUNCTIONS
+        if (typeof selectVoucherAmount !== 'undefined') {
+            console.log('⚠️ Overriding old selectVoucherAmount function');
+            window.selectVoucherAmount = selectVoucherAmountV2New;
+        }
+        if (typeof updateVoucherSummary !== 'undefined') {
+            console.log('⚠️ Overriding old updateVoucherSummary function');
+            window.updateVoucherSummary = updateVoucherSummaryV2New;
+        }
 
         // Generate unique voucher code
         function generateVoucherCode() {
