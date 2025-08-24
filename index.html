@@ -3569,41 +3569,46 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div class="tagline">Five Years Living Here • 500+ Guests Guided • Commercial-Grade Energy Experts</div>
                         <p>From I.T. professionals to Central Otago hosts and renewable energy innovators—we've learned every cellar door worth visiting, every cycle route that takes your breath away, every season's hidden gems, plus how to design and maintain commercial-grade solar systems. Our comprehensive guides come from hosting guests from 20+ countries and calling this magical region home.</p>
                         
-                        <!-- INSTANT LOCAL KNOWLEDGE BOX -->
-                        <div style="background: rgba(45, 90, 90, 0.05); padding: 2rem; border-radius: 15px; margin: 2rem 0; max-width: 800px; margin-left: auto; margin-right: auto;">
-                            <div style="font-weight: 600; color: var(--brand-teal); margin-bottom: 1.5rem; font-size: 1.1rem;">🎯 Instant Local Knowledge (Available Now)</div>
+                        <!-- GUIDE NAVIGATION -->
+                        <div style="background: white; border-radius: 20px; padding: 2rem; margin: 2rem 0; box-shadow: 0 8px 25px rgba(0,0,0,0.1); max-width: 900px; margin-left: auto; margin-right: auto;">
+                            <h3 style="color: var(--brand-teal); margin-bottom: 2rem; text-align: center; font-family: 'Playfair Display', serif; font-size: 1.8rem;">📚 Your Complete Central Otago Guide Collection</h3>
                             
-                            <!-- Quick Wins Grid -->
-                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 1.5rem;">
-                                <div style="background: white; padding: 1.2rem; border-radius: 10px; border-left: 4px solid var(--brand-teal);">
-                                    <div style="font-weight: 600; color: var(--brand-teal); margin-bottom: 0.5rem;">🍷 Walking Distance Wineries</div>
-                                    <div style="font-size: 0.9rem; line-height: 1.4;">Rippon Vineyard (5min walk), Mt Difficulty (8min walk), Gibbston Valley nearby. Ask us for opening hours & tasting notes!</div>
-                                </div>
-                                <div style="background: white; padding: 1.2rem; border-radius: 10px; border-left: 4px solid #10b981;">
-                                    <div style="font-weight: 600; color: #10b981; margin-bottom: 0.5rem;">🚴 Cycle Trail Access</div>
-                                    <div style="font-size: 0.9rem; line-height: 1.4;">Central Otago Rail Trail connection just 300m. We provide trail maps, bike storage, and insider tips on best sections.</div>
-                                </div>
-                                <div style="background: white; padding: 1.2rem; border-radius: 10px; border-left: 4px solid #f59e0b;">
-                                    <div style="font-weight: 600; color: #f59e0b; margin-bottom: 0.5rem;">🍽️ Local Dining Gems</div>
-                                    <div style="font-size: 0.9rem; line-height: 1.4;">Cromwell (10min): Grain & Seed, Armchair Theatre. Wanaka (30min): Bistro on the Lake. We'll share current favorites!</div>
-                                </div>
-                                <div style="background: white; padding: 1.2rem; border-radius: 10px; border-left: 4px solid #8b5cf6;">
-                                    <div style="font-weight: 600; color: #8b5cf6; margin-bottom: 0.5rem;">🏔️ Seasonal Activities</div>
-                                    <div style="font-size: 0.9rem; line-height: 1.4;">Spring: Cherry blossoms. Summer: Lake activities. Autumn: Wine harvest. Winter: Cardrona skiing (45min drive).</div>
-                                </div>
-                            </div>
-                            
-                            <!-- Comprehensive Guides Coming -->
-                            <div style="border-top: 2px solid rgba(45, 90, 90, 0.1); padding-top: 1.5rem;">
-                                <div style="font-weight: 600; color: var(--brand-teal); margin-bottom: 1rem;">📚 Comprehensive Guides Coming Soon:</div>
-                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.5rem; text-align: left; font-size: 0.9rem;">
-                                    <div>📍 Complete winery circuit with ratings</div>
-                                    <div>🔋 Behind-the-scenes: Our 16.72kW system design</div>
-                                    <div>🚴 Cycle trail difficulty levels & connections</div>
-                                    <div>🏔️ Month-by-month activity calendar</div>
-                                    <div>🍽️ Restaurant recommendations by budget</div>
-                                    <div>📊 Energy monitoring for tech enthusiasts</div>
-                                </div>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+                                <a href="#winery-guide" style="background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%); color: white; padding: 1.5rem; border-radius: 15px; text-decoration: none; transition: all 0.3s ease; display: block;" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 12px 30px rgba(139, 92, 246, 0.3)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">🍷</div>
+                                    <h4 style="margin-bottom: 0.5rem; font-size: 1.1rem;">10 Best Wineries Within 15 Minutes</h4>
+                                    <p style="font-size: 0.9rem; opacity: 0.9; margin: 0;">Walking distance gems + world-class Pinot Noir</p>
+                                </a>
+                                
+                                <a href="#restaurant-guide" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; padding: 1.5rem; border-radius: 15px; text-decoration: none; transition: all 0.3s ease; display: block;" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 12px 30px rgba(245, 158, 11, 0.3)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">🍽️</div>
+                                    <h4 style="margin-bottom: 0.5rem; font-size: 1.1rem;">Restaurant Guide by Budget</h4>
+                                    <p style="font-size: 0.9rem; opacity: 0.9; margin: 0;">Budget eats to fine dining experiences</p>
+                                </a>
+                                
+                                <a href="#queenstown-guide" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 1.5rem; border-radius: 15px; text-decoration: none; transition: all 0.3s ease; display: block;" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 12px 30px rgba(16, 185, 129, 0.3)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">🏔️</div>
+                                    <h4 style="margin-bottom: 0.5rem; font-size: 1.1rem;">Queenstown Day Trip Planner</h4>
+                                    <p style="font-size: 0.9rem; opacity: 0.9; margin: 0;">Perfect 55-minute adventure to NZ's playground</p>
+                                </a>
+                                
+                                <a href="#cycle-guide" style="background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%); color: white; padding: 1.5rem; border-radius: 15px; text-decoration: none; transition: all 0.3s ease; display: block;" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 12px 30px rgba(6, 182, 212, 0.3)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">🚴</div>
+                                    <h4 style="margin-bottom: 0.5rem; font-size: 1.1rem;">Central Otago Rail Trail Guide</h4>
+                                    <p style="font-size: 0.9rem; opacity: 0.9; margin: 0;">Historic 150km trail with vineyard stops</p>
+                                </a>
+                                
+                                <a href="#seasonal-guide" style="background: linear-gradient(135deg, #ec4899 0%, #be185d 100%); color: white; padding: 1.5rem; border-radius: 15px; text-decoration: none; transition: all 0.3s ease; display: block;" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 12px 30px rgba(236, 72, 153, 0.3)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">🌸</div>
+                                    <h4 style="margin-bottom: 0.5rem; font-size: 1.1rem;">Seasonal Activities Calendar</h4>
+                                    <p style="font-size: 0.9rem; opacity: 0.9; margin: 0;">Best activities for each season & weather</p>
+                                </a>
+                                
+                                <a href="#photography-guide" style="background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%); color: white; padding: 1.5rem; border-radius: 15px; text-decoration: none; transition: all 0.3s ease; display: block;" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 12px 30px rgba(109, 40, 217, 0.3)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">📸</div>
+                                    <h4 style="margin-bottom: 0.5rem; font-size: 1.1rem;">Photography Spots Guide</h4>
+                                    <p style="font-size: 0.9rem; opacity: 0.9; margin: 0;">Instagram-worthy locations around Lake Dunstan</p>
+                                </a>
                             </div>
                         </div>
                     </div>
