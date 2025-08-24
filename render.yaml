@@ -3,7 +3,7 @@ services:
     name: lakeside-retreat
     runtime: node
     buildCommand: npm install
-    startCommand: node server-secure.js
+    startCommand: node server-render.js
     envVars:
       - key: NODE_ENV
         value: production
