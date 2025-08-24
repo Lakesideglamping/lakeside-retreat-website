@@ -2260,32 +2260,32 @@ document.addEventListener('DOMContentLoaded', () => {
                     <h3 style="color: var(--brand-teal); margin-bottom: 1.5rem;">Choose Your Voucher Amount</h3>
                     
                     <div class="voucher-options-grid">
-                        <div class="voucher-option" data-amount="200" onclick="selectVoucherAmount(200)">
+                        <div class="voucher-option" data-amount="credit-500" data-type="credit" onclick="selectVoucherAmount('credit-500')">
                             <div class="voucher-option-header">
-                                <div style="font-size: 2rem; margin-bottom: 0.5rem;">💝</div>
-                                <h4>Partial Payment</h4>
-                                <div class="voucher-price">$200</div>
+                                <div style="font-size: 2rem; margin-bottom: 0.5rem;">💎</div>
+                                <h4>Flexible Credit</h4>
+                                <div class="voucher-price">$500</div>
                             </div>
-                            <p>Perfect for contributing towards any stay</p>
+                            <p>Credit towards any accommodation, any time</p>
                         </div>
                         
-                        <div class="voucher-option selected" data-amount="450" onclick="selectVoucherAmount(450)">
+                        <div class="voucher-option selected" data-amount="dome-rose" data-type="experience" onclick="selectVoucherAmount('dome-rose')">
                             <div class="voucher-option-header">
-                                <div style="font-size: 2rem; margin-bottom: 0.5rem;">🏕️</div>
-                                <h4>One Night Dome</h4>
-                                <div class="voucher-price">$450</div>
+                                <div style="font-size: 2rem; margin-bottom: 0.5rem;">🌹</div>
+                                <h4>Dome Rosé Experience</h4>
+                                <div class="voucher-price">One Night</div>
                                 <div style="background: var(--primary); color: white; padding: 0.25rem 0.5rem; border-radius: 10px; font-size: 0.7rem; margin-top: 0.5rem;">MOST POPULAR</div>
                             </div>
-                            <p>Complete one-night stay in any dome</p>
+                            <p>Complete one night stay, any season</p>
                         </div>
                         
-                        <div class="voucher-option" data-amount="900" onclick="selectVoucherAmount(900)">
+                        <div class="voucher-option" data-amount="cottage-experience" data-type="experience" onclick="selectVoucherAmount('cottage-experience')">
                             <div class="voucher-option-header">
                                 <div style="font-size: 2rem; margin-bottom: 0.5rem;">🏡</div>
-                                <h4>Two Night Stay</h4>
-                                <div class="voucher-price">$900</div>
+                                <h4>Cottage Experience</h4>
+                                <div class="voucher-price">One Night</div>
                             </div>
-                            <p>Complete two-night stay package</p>
+                            <p>Complete lakeside cottage stay, any season</p>
                         </div>
                         
                         <div class="voucher-option custom" data-amount="custom" onclick="selectVoucherAmount('custom')">
@@ -5060,10 +5060,11 @@ document.addEventListener('DOMContentLoaded', () => {
                             </div>
                             <div class="faq-answer" style="padding: 0; max-height: 0; overflow: hidden; transition: all 0.3s ease;">
                                 <div style="padding: 1.5rem; border-top: 1px solid #f0f0f0; color: var(--text); line-height: 1.6; font-size: 0.9rem;">
-                                    • <strong>Partial vouchers ($200):</strong> Credit applied to any booking, balance payable by guest<br>
-                                    • <strong>Full vouchers ($450/$900):</strong> Cover specified accommodation for stated period<br>
+                                    • <strong>Experience vouchers:</strong> Cover complete accommodation experience regardless of peak/off-peak pricing<br>
+                                    • <strong>Credit vouchers ($500):</strong> Flexible credit applied to any booking, balance payable by guest<br>
                                     • <strong>Custom amounts:</strong> Applied as credit to total booking cost<br>
-                                    • Any amount exceeding voucher value must be paid by standard payment methods<br>
+                                    • <strong>Seasonal pricing:</strong> Experience vouchers include all seasonal rates - no additional charges<br>
+                                    • Any credit amount exceeding voucher value must be paid by standard payment methods<br>
                                     • <strong>No cash refunds</strong> for unused voucher amounts under $50
                                 </div>
                             </div>
@@ -5607,7 +5608,7 @@ We'll create a personalized voucher with your message and deliver it instantly v
             document.querySelectorAll('.voucher-option').forEach(option => {
                 option.classList.remove('selected');
             });
-            document.querySelector('[data-amount="450"]').classList.add('selected');
+            document.querySelector('[data-amount="dome-rose"]').classList.add('selected');
             
             // Reset form fields
             document.getElementById('voucherRecipientName').value = '';
@@ -7120,9 +7121,9 @@ Thank you for choosing Lakeside Retreat!`);
         }
 
         // VOUCHER SYSTEM FUNCTIONS
-        let selectedVoucherAmount = 450; // Default selection
+        let selectedVoucherAmount = 'dome-rose'; // Default selection
         let voucherData = {
-            amount: 450,
+            amount: 'dome-rose',
             recipientName: '',
             recipientEmail: '',
             message: '',
@@ -7167,14 +7168,26 @@ Thank you for choosing Lakeside Retreat!`);
 
         // Update voucher summary
         function updateVoucherSummary() {
-            let amount = selectedVoucherAmount;
+            let displayAmount = '';
+            let displayType = '';
+            
             if (selectedVoucherAmount === 'custom') {
-                amount = document.getElementById('customVoucherAmount').value || 0;
-                voucherData.customAmount = amount;
+                displayAmount = `$${document.getElementById('customVoucherAmount').value || 0}`;
+                displayType = 'Custom Credit';
+                voucherData.customAmount = document.getElementById('customVoucherAmount').value;
+            } else if (selectedVoucherAmount === 'credit-500') {
+                displayAmount = '$500';
+                displayType = 'Flexible Credit';
+            } else if (selectedVoucherAmount === 'dome-rose') {
+                displayAmount = 'One Night';
+                displayType = 'Dome Rosé Experience';
+            } else if (selectedVoucherAmount === 'cottage-experience') {
+                displayAmount = 'One Night';
+                displayType = 'Cottage Experience';
             }
             
-            document.getElementById('summaryAmount').textContent = `$${amount}`;
-            document.getElementById('summaryTotal').textContent = `$${amount}`;
+            document.getElementById('summaryAmount').textContent = displayAmount;
+            document.getElementById('summaryTotal').textContent = displayType;
             
             const recipient = document.getElementById('voucherRecipientName').value || '-';
             document.getElementById('summaryRecipient').textContent = recipient;
@@ -7279,7 +7292,7 @@ Thank you for choosing Lakeside Retreat!`);
                     </div>
                     
                     <div style="background: rgba(255,255,255,0.15); padding: 1rem; border-radius: 8px; margin: 1rem 0;">
-                        <div style="font-size: 2.2rem; font-weight: 800; margin-bottom: 0.25rem;">$${amount}</div>
+                        <div style="font-size: 2.2rem; font-weight: 800; margin-bottom: 0.25rem;">{displayValue}</div>
                         <div style="font-size: 1rem; font-weight: 600; opacity: 0.95;">{description}</div>
                     </div>
                 </div>
@@ -7330,27 +7343,37 @@ Thank you for choosing Lakeside Retreat!`);
                 </div>
             `;
             
-            // Return template with specific styling based on amount
-            if (amount == 200) {
-                return baseTemplate
-                    .replace('{gradientColors}', '#10b981 0%, #059669 100%')
-                    .replace('{icon}', '💝')
-                    .replace('{description}', 'Partial Payment Towards Your Escape');
-            } else if (amount == 450) {
-                return baseTemplate
-                    .replace('{gradientColors}', '#8b5cf6 0%, #7c3aed 100%')
-                    .replace('{icon}', '🏕️')
-                    .replace('{description}', 'One Night Luxury Dome Experience');
-            } else if (amount == 900) {
-                return baseTemplate
-                    .replace('{gradientColors}', '#3b82f6 0%, #2563eb 100%')
-                    .replace('{icon}', '🌟')
-                    .replace('{description}', 'Two Night Luxury Retreat Package');
-            } else {
+            // Return template with specific styling based on voucher type
+            if (amount === 'credit-500') {
                 return baseTemplate
                     .replace('{gradientColors}', '#1f2937 0%, #374151 100%')
                     .replace('{icon}', '💎')
-                    .replace('{description}', 'Custom Amount Credit');
+                    .replace('{displayValue}', '$500')
+                    .replace('{description}', 'Flexible Credit - Any Accommodation, Any Time');
+            } else if (amount === 'dome-rose') {
+                return baseTemplate
+                    .replace('{gradientColors}', '#be185d 0%, #ec4899 100%')
+                    .replace('{icon}', '🌹')
+                    .replace('{displayValue}', 'ONE NIGHT')
+                    .replace('{description}', 'Dome Rosé Experience - Valid Any Season');
+            } else if (amount === 'cottage-experience') {
+                return baseTemplate
+                    .replace('{gradientColors}', '#0284c7 0%, #0ea5e9 100%')
+                    .replace('{icon}', '🏡')
+                    .replace('{displayValue}', 'ONE NIGHT')
+                    .replace('{description}', 'Lakeside Cottage Experience - Valid Any Season');
+            } else if (typeof amount === 'number' || !isNaN(amount)) {
+                return baseTemplate
+                    .replace('{gradientColors}', '#10b981 0%, #059669 100%')
+                    .replace('{icon}', '🎁')
+                    .replace('{displayValue}', `$${amount}`)
+                    .replace('{description}', 'Custom Credit Amount');
+            } else {
+                return baseTemplate
+                    .replace('{gradientColors}', '#6b7280 0%, #9ca3af 100%')
+                    .replace('{icon}', '🎁')
+                    .replace('{displayValue}', 'VOUCHER')
+                    .replace('{description}', 'Gift Voucher');
             }
         }
 
