@@ -5,7 +5,6 @@
   "main": "server-secure.js",
   "scripts": {
     "start": "node server-render.js",
-    "start:railway": "node server-railway-debug.js",
     "start:secure": "node server-secure.js",
     "dev": "nodemon server-secure.js",
     "audit": "npm audit",
