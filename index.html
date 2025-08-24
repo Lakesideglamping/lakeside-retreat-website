@@ -7139,6 +7139,13 @@ Thank you for choosing Lakeside Retreat!`);
                 answer.style.maxHeight = '0px';
             });
             
+            // Add click listeners to all FAQ questions
+            document.querySelectorAll('.faq-question').forEach(question => {
+                question.addEventListener('click', function() {
+                    toggleFAQ(this);
+                });
+            });
+            
             // Force replace old voucher HTML with new V2 system
             setTimeout(() => {
                 const oldVoucherOptions = document.querySelectorAll('.voucher-option:not(.voucher-option-v2-new)');
