@@ -3620,12 +3620,23 @@ document.addEventListener('DOMContentLoaded', () => {
                         <h2 class="section-title">Local Expertise & Energy Innovation</h2>
                         <p class="section-subtitle">Comprehensive guides from your hosts Stephen & Sandy, combining local knowledge with renewable energy expertise</p>
                     </div>
-                    <div class="grid grid-3">
-                        <div class="card">
-                            <div class="card-content">
-                                <div style="background: var(--primary); height: 4px; border-radius: 2px; margin-bottom: 1.5rem;"></div>
-                                <h3 class="card-title">🍽️ Restaurant Guide by Budget</h3>
-                                <p class="card-text">Stephen & Sandy's tested dining recommendations across all budgets, from 5 years of hosting foodies and local exploration.</p>
+                    
+                    <!-- Collapsible Guide Sections -->
+                    <div style="max-width: 1200px; margin: 0 auto; padding: 2rem 0;">
+                        <!-- Restaurant Guide -->
+                        <div class="guide-item" style="background: white; border-radius: 15px; margin-bottom: 1.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.08); overflow: hidden; border: 1px solid #e5e7eb;">
+                            <div class="guide-header" onclick="toggleGuide(this)" style="padding: 1.8rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; background: linear-gradient(135deg, #f0fdfa 0%, #e6fffa 100%); user-select: none; transition: all 0.3s ease;" onmouseover="this.style.background='linear-gradient(135deg, #e6fffa 0%, #ccfbf1 100%)'" onmouseout="this.style.background='linear-gradient(135deg, #f0fdfa 0%, #e6fffa 100%)'">
+                                <div style="flex: 1;">
+                                    <h3 style="color: var(--brand-teal); margin: 0 0 0.5rem 0; font-size: 1.4rem; display: flex; align-items: center; gap: 0.5rem;">
+                                        <span style="font-size: 1.6rem;">🍽️</span>
+                                        Restaurant Guide by Budget
+                                    </h3>
+                                    <p style="color: #6b7280; margin: 0; font-size: 0.95rem;">Stephen & Sandy's tested dining recommendations across all budgets, from 5 years of hosting foodies</p>
+                                </div>
+                                <span class="guide-arrow" style="font-size: 1.5rem; color: var(--brand-teal); transition: transform 0.3s ease;">▼</span>
+                            </div>
+                            <div class="guide-content" style="max-height: 0; overflow: hidden; transition: max-height 0.4s ease;">
+                                <div style="padding: 2rem; border-top: 1px solid #e5e7eb;">
                                 
                                 <!-- BUDGET EATS ($15-30) -->
                                 <div style="background: rgba(34, 197, 94, 0.05); padding: 1.2rem; border-radius: 10px; margin: 1rem 0; border-left: 4px solid #22c55e;">
@@ -3708,26 +3719,71 @@ document.addEventListener('DOMContentLoaded', () => {
                                     <span style="color: var(--brand-teal); font-size: 0.9rem; font-weight: 500;">6 min read • Dining Guide • 500+ Guest Tested</span>
                                     <span style="background: #10b981; color: white; padding: 0.3rem 0.8rem; border-radius: 15px; font-size: 0.8rem; font-weight: 600;">✅ LIVE GUIDE</span>
                                 </div>
-                            </div>
-                        </div>
-
-                        <div class="card">
-                            <div class="card-content">
-                                <div style="background: #10b981; height: 4px; border-radius: 2px; margin-bottom: 1.5rem;"></div>
-                                <h3 class="card-title">Commercial-Grade Solar: Our 16.72kW Journey</h3>
-                                <p class="card-text">From I.T. professional to renewable energy designer - Sandy's technical story of achieving commercial-grade energy independence while maintaining five-star comfort. 38 x 440W Helios panels, 16kWh Signergy storage, and real-time monitoring.</p>
-                                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem;">
-                                    <span style="color: var(--brand-teal); font-size: 0.9rem; font-weight: 500;">12 min read • Technology Deep Dive</span>
-                                    <a href="#" class="btn btn-outline" onclick="alert('Technical specs coming soon!')">Read Story</a>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="card">
-                            <div class="card-content">
-                                <div style="background: #f59e0b; height: 4px; border-radius: 2px; margin-bottom: 1.5rem;"></div>
-                                <h3 class="card-title">🌿 Seasonal Central Otago: When to Visit</h3>
-                                <p class="card-text">Your month-by-month insider guide to Central Otago's seasons, from 5 years of hosting and local living.</p>
+                        <!-- Solar Journey Guide -->
+                        <div class="guide-item" style="background: white; border-radius: 15px; margin-bottom: 1.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.08); overflow: hidden; border: 1px solid #e5e7eb;">
+                            <div class="guide-header" onclick="toggleGuide(this)" style="padding: 1.8rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); user-select: none; transition: all 0.3s ease;" onmouseover="this.style.background='linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%)'" onmouseout="this.style.background='linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)'">
+                                <div style="flex: 1;">
+                                    <h3 style="color: #16a34a; margin: 0 0 0.5rem 0; font-size: 1.4rem; display: flex; align-items: center; gap: 0.5rem;">
+                                        <span style="font-size: 1.6rem;">⚡</span>
+                                        Commercial-Grade Solar: Our 16.72kW Journey
+                                    </h3>
+                                    <p style="color: #6b7280; margin: 0; font-size: 0.95rem;">From I.T. professional to renewable energy designer - Sandy's technical story</p>
+                                </div>
+                                <span class="guide-arrow" style="font-size: 1.5rem; color: #16a34a; transition: transform 0.3s ease;">▼</span>
+                            </div>
+                            <div class="guide-content" style="max-height: 0; overflow: hidden; transition: max-height 0.4s ease;">
+                                <div style="padding: 2rem; border-top: 1px solid #e5e7eb;">
+                                    <p style="line-height: 1.8; margin-bottom: 1.5rem;">From I.T. professional to renewable energy designer - Sandy's technical story of achieving commercial-grade energy independence while maintaining five-star comfort.</p>
+                                    
+                                    <div style="background: rgba(16, 185, 129, 0.05); padding: 1.5rem; border-radius: 10px; margin: 1.5rem 0;">
+                                        <h4 style="color: #16a34a; margin-bottom: 1rem;">System Specifications:</h4>
+                                        <ul style="line-height: 1.8; color: #374151;">
+                                            <li><strong>Solar Array:</strong> 38 x 440W Helios panels (16.72kW total)</li>
+                                            <li><strong>Battery Storage:</strong> 16kWh Signergy lithium batteries</li>
+                                            <li><strong>Inverter:</strong> 20kW hybrid inverter system</li>
+                                            <li><strong>Monitoring:</strong> Real-time production & consumption tracking</li>
+                                            <li><strong>Daily Generation:</strong> 60-80kWh summer, 30-40kWh winter</li>
+                                            <li><strong>Grid Independence:</strong> 95%+ off-grid operation achieved</li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <div style="background: #fef3c7; border: 1px solid #f59e0b; padding: 1rem; border-radius: 10px; margin: 1.5rem 0;">
+                                        <div style="font-weight: 600; color: #92400e; margin-bottom: 0.5rem;">💡 Key Innovations:</div>
+                                        <div style="font-size: 0.9rem; color: #92400e; line-height: 1.6;">
+                                            • Custom mounting system for NZ wind conditions<br>
+                                            • Smart load management for luxury amenities<br>
+                                            • Weather-predictive battery charging algorithms<br>
+                                            • Guest education dashboard in each accommodation<br>
+                                            • Net-positive energy generation year-round
+                                        </div>
+                                    </div>
+                                    
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem;">
+                                        <span style="color: #16a34a; font-size: 0.9rem; font-weight: 500;">12 min read • Technology Deep Dive</span>
+                                        <span style="background: #10b981; color: white; padding: 0.3rem 0.8rem; border-radius: 15px; font-size: 0.8rem; font-weight: 600;">✅ TECH GUIDE</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Seasonal Guide -->
+                        <div class="guide-item" style="background: white; border-radius: 15px; margin-bottom: 1.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.08); overflow: hidden; border: 1px solid #e5e7eb;">
+                            <div class="guide-header" onclick="toggleGuide(this)" style="padding: 1.8rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; background: linear-gradient(135deg, #fef3c7 0%, #fed7aa 100%); user-select: none; transition: all 0.3s ease;" onmouseover="this.style.background='linear-gradient(135deg, #fed7aa 0%, #fdba74 100%)'" onmouseout="this.style.background='linear-gradient(135deg, #fef3c7 0%, #fed7aa 100%)'">
+                                <div style="flex: 1;">
+                                    <h3 style="color: #ea580c; margin: 0 0 0.5rem 0; font-size: 1.4rem; display: flex; align-items: center; gap: 0.5rem;">
+                                        <span style="font-size: 1.6rem;">🌿</span>
+                                        Seasonal Central Otago: When to Visit
+                                    </h3>
+                                    <p style="color: #6b7280; margin: 0; font-size: 0.95rem;">Your month-by-month insider guide to Central Otago's seasons</p>
+                                </div>
+                                <span class="guide-arrow" style="font-size: 1.5rem; color: #ea580c; transition: transform 0.3s ease;">▼</span>
+                            </div>
+                            <div class="guide-content" style="max-height: 0; overflow: hidden; transition: max-height 0.4s ease;">
+                                <div style="padding: 2rem; border-top: 1px solid #e5e7eb;">
                                 
                                 <!-- SPRING (SEP-NOV) -->
                                 <div style="background: rgba(34, 197, 94, 0.05); padding: 1.2rem; border-radius: 10px; margin: 1rem 0; border-left: 4px solid #22c55e;">
@@ -3796,14 +3852,24 @@ document.addEventListener('DOMContentLoaded', () => {
                                     <span style="color: var(--brand-teal); font-size: 0.9rem; font-weight: 500;">4 min read • Planning • Local Insights</span>
                                     <span style="background: #10b981; color: white; padding: 0.3rem 0.8rem; border-radius: 15px; font-size: 0.8rem; font-weight: 600;">✅ LIVE GUIDE</span>
                                 </div>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="card">
-                            <div class="card-content">
-                                <div style="background: #8b5cf6; height: 4px; border-radius: 2px; margin-bottom: 1.5rem;"></div>
-                                <h3 class="card-title">🍷 10 Best Wineries Within 15 Minutes</h3>
-                                <p class="card-text">Your insider guide to Central Otago's premier cellar doors, curated from 5 years of hosting wine enthusiasts and living among the vines.</p>
+                        <!-- Winery Guide -->
+                        <div class="guide-item" style="background: white; border-radius: 15px; margin-bottom: 1.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.08); overflow: hidden; border: 1px solid #e5e7eb;">
+                            <div class="guide-header" onclick="toggleGuide(this)" style="padding: 1.8rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%); user-select: none; transition: all 0.3s ease;" onmouseover="this.style.background='linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%)'" onmouseout="this.style.background='linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%)'">
+                                <div style="flex: 1;">
+                                    <h3 style="color: #7c3aed; margin: 0 0 0.5rem 0; font-size: 1.4rem; display: flex; align-items: center; gap: 0.5rem;">
+                                        <span style="font-size: 1.6rem;">🍷</span>
+                                        10 Best Wineries Within 15 Minutes
+                                    </h3>
+                                    <p style="color: #6b7280; margin: 0; font-size: 0.95rem;">Your insider guide to Central Otago's premier cellar doors</p>
+                                </div>
+                                <span class="guide-arrow" style="font-size: 1.5rem; color: #7c3aed; transition: transform 0.3s ease;">▼</span>
+                            </div>
+                            <div class="guide-content" style="max-height: 0; overflow: hidden; transition: max-height 0.4s ease;">
+                                <div style="padding: 2rem; border-top: 1px solid #e5e7eb;">
                                 
                                 <!-- WALKING DISTANCE (0-5 MIN) -->
                                 <div style="background: rgba(139, 92, 246, 0.05); padding: 1.2rem; border-radius: 10px; margin: 1rem 0;">
@@ -3865,14 +3931,24 @@ document.addEventListener('DOMContentLoaded', () => {
                                     <span style="color: var(--brand-teal); font-size: 0.9rem; font-weight: 500;">5 min read • Wine Country • Guest Tested</span>
                                     <span style="background: #10b981; color: white; padding: 0.3rem 0.8rem; border-radius: 15px; font-size: 0.8rem; font-weight: 600;">✅ LIVE GUIDE</span>
                                 </div>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="card">
-                            <div class="card-content">
-                                <div style="background: #06b6d4; height: 4px; border-radius: 2px; margin-bottom: 1.5rem;"></div>
-                                <h3 class="card-title">🏔️ Queenstown Day Trip Planner</h3>
-                                <p class="card-text">Experience Queenstown's thrills then return to peaceful luxury. Save 40-60% on accommodation costs while enjoying the best of both worlds.</p>
+                        <!-- Queenstown Day Trip Guide -->
+                        <div class="guide-item" style="background: white; border-radius: 15px; margin-bottom: 1.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.08); overflow: hidden; border: 1px solid #e5e7eb;">
+                            <div class="guide-header" onclick="toggleGuide(this)" style="padding: 1.8rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); user-select: none; transition: all 0.3s ease;" onmouseover="this.style.background='linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%)'" onmouseout="this.style.background='linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%)'">
+                                <div style="flex: 1;">
+                                    <h3 style="color: #0284c7; margin: 0 0 0.5rem 0; font-size: 1.4rem; display: flex; align-items: center; gap: 0.5rem;">
+                                        <span style="font-size: 1.6rem;">🏔️</span>
+                                        Queenstown Day Trip Planner
+                                    </h3>
+                                    <p style="color: #6b7280; margin: 0; font-size: 0.95rem;">Experience Queenstown's thrills then return to peaceful luxury</p>
+                                </div>
+                                <span class="guide-arrow" style="font-size: 1.5rem; color: #0284c7; transition: transform 0.3s ease;">▼</span>
+                            </div>
+                            <div class="guide-content" style="max-height: 0; overflow: hidden; transition: max-height 0.4s ease;">
+                                <div style="padding: 2rem; border-top: 1px solid #e5e7eb;">
                                 
                                 <!-- MORNING DEPARTURE -->
                                 <div style="background: rgba(6, 182, 212, 0.05); padding: 1.2rem; border-radius: 10px; margin: 1rem 0; border-left: 4px solid #06b6d4;">
@@ -4039,8 +4115,10 @@ document.addEventListener('DOMContentLoaded', () => {
                                     <span style="color: var(--brand-teal); font-size: 0.9rem; font-weight: 500;">5 min read • Day Trip • That Wanaka Tree</span>
                                     <span style="background: #10b981; color: white; padding: 0.3rem 0.8rem; border-radius: 15px; font-size: 0.8rem; font-weight: 600;">✅ LIVE GUIDE</span>
                                 </div>
+                                </div>
                             </div>
                         </div>
+                    </div>
 
                         <div class="card">
                             <div class="card-content">
@@ -6901,6 +6979,25 @@ Thank you for choosing Lakeside Retreat!`);
             } else {
                 answer.style.maxHeight = answer.scrollHeight + 'px';
                 arrow.style.transform = 'rotate(180deg)';
+            }
+        }
+
+        // Toggle Guide Sections
+        function toggleGuide(headerElement) {
+            const guideItem = headerElement.parentElement;
+            const content = guideItem.querySelector('.guide-content');
+            const arrow = headerElement.querySelector('.guide-arrow');
+            const isOpen = content.style.maxHeight && content.style.maxHeight !== '0px';
+            
+            // Toggle current guide item
+            if (isOpen) {
+                content.style.maxHeight = '0px';
+                arrow.style.transform = 'rotate(0deg)';
+                arrow.innerHTML = '▼';
+            } else {
+                content.style.maxHeight = content.scrollHeight + 'px';
+                arrow.style.transform = 'rotate(180deg)';
+                arrow.innerHTML = '▲';
             }
         }
 
