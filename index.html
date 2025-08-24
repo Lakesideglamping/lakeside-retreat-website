@@ -7116,76 +7116,8 @@ Thank you for choosing Lakeside Retreat!`);
             }
         }
 
-        // Initialize floating button, FAQ system, and FORCE V2 VOUCHER SYSTEM  
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('🎁 FORCING V2 VOUCHER SYSTEM ON PAGE LOAD');
-            
-            // Initialize FAQ dropdowns
-            console.log('📋 Initializing FAQ dropdowns');
-            document.querySelectorAll('.faq-answer').forEach(answer => {
-                if (!answer.style.maxHeight) {
-                    answer.style.maxHeight = '0px';
-                    console.log('✅ Set initial maxHeight to 0px for FAQ item');
-                }
-            });
-            
-            // Test FAQ function availability
-            if (typeof window.toggleFAQ === 'function') {
-                console.log('✅ toggleFAQ function is available globally');
-            } else {
-                console.error('❌ toggleFAQ function is NOT available globally');
-            }
-            
-            // Alternative: Add click listeners directly to FAQ questions
-            console.log('📋 Adding direct click listeners to FAQ questions');
-            document.querySelectorAll('.faq-question').forEach((question, index) => {
-                console.log(`🔗 Adding click listener to FAQ question ${index + 1}`);
-                question.addEventListener('click', function() {
-                    console.log(`🖱️ FAQ question ${index + 1} clicked directly`);
-                    window.toggleFAQ(this);
-                });
-            });
-            
-            // Force replace old voucher HTML with new V2 system
-            setTimeout(() => {
-                const oldVoucherOptions = document.querySelectorAll('.voucher-option:not(.voucher-option-v2-new)');
-                console.log('Found old voucher elements to replace:', oldVoucherOptions.length);
-                
-                oldVoucherOptions.forEach(oldOption => {
-                    const amount = oldOption.getAttribute('data-amount');
-                    if (amount && !amount.includes('-v2')) {
-                        oldOption.setAttribute('data-amount', amount + '-v2');
-                        oldOption.className = oldOption.className.replace('voucher-option', 'voucher-option-v2-new');
-                        
-                        // Update all child elements
-                        const header = oldOption.querySelector('.voucher-option-header');
-                        if (header) header.className = 'voucher-option-header-v2-new';
-                        
-                        const price = oldOption.querySelector('.voucher-price');
-                        if (price) price.className = 'voucher-price-v2-new';
-                        
-                        // Update onclick handler
-                        const newAmount = amount + '-v2';
-                        oldOption.setAttribute('onclick', `selectVoucherAmountV2New('${newAmount}')`);
-                        console.log('✅ Converted voucher option:', amount, '→', newAmount);
-                    }
-                });
-                
-                // Force initialize new system
-                if (typeof selectVoucherAmountV2New === 'function') {
-                    selectVoucherAmountV2New('dome-rose-v2');
-                    console.log('✅ V2 voucher system forcefully initialized');
-                } else {
-                    console.error('❌ V2 voucher functions not loaded');
-                }
-            }, 100);
-            
-            createFloatingBookButton();
-            window.addEventListener('scroll', handleFloatingButton);
-        });
-
         // ========================================
-        // FAQ ACCORDION FUNCTIONALITY - GLOBAL FUNCTION
+        // FAQ ACCORDION FUNCTIONALITY - DEFINE FIRST
         // ========================================
         window.toggleFAQ = function(questionElement) {
             console.log('🔽 FAQ TOGGLE: Called on element:', questionElement);
@@ -7242,6 +7174,89 @@ Thank you for choosing Lakeside Retreat!`);
         function toggleFAQ(questionElement) {
             return window.toggleFAQ(questionElement);
         }
+
+        // Initialize floating button, FAQ system, and FORCE V2 VOUCHER SYSTEM  
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🎁 FORCING V2 VOUCHER SYSTEM ON PAGE LOAD');
+            
+            // Initialize FAQ dropdowns
+            console.log('📋 Initializing FAQ dropdowns');
+            document.querySelectorAll('.faq-answer').forEach(answer => {
+                if (!answer.style.maxHeight) {
+                    answer.style.maxHeight = '0px';
+                    console.log('✅ Set initial maxHeight to 0px for FAQ item');
+                }
+            });
+            
+            // Test FAQ function availability
+            if (typeof window.toggleFAQ === 'function') {
+                console.log('✅ toggleFAQ function is available globally');
+            } else {
+                console.error('❌ toggleFAQ function is NOT available globally');
+            }
+            
+            // Test regular function too
+            if (typeof toggleFAQ === 'function') {
+                console.log('✅ toggleFAQ regular function is available');
+            } else {
+                console.error('❌ toggleFAQ regular function is NOT available');
+            }
+            
+            // Count FAQ items for debugging
+            const faqItems = document.querySelectorAll('.faq-item');
+            const faqQuestions = document.querySelectorAll('.faq-question');
+            const faqAnswers = document.querySelectorAll('.faq-answer');
+            console.log(`📊 FAQ Elements Found: ${faqItems.length} items, ${faqQuestions.length} questions, ${faqAnswers.length} answers`);
+            
+            // Alternative: Add click listeners directly to FAQ questions
+            console.log('📋 Adding direct click listeners to FAQ questions');
+            document.querySelectorAll('.faq-question').forEach((question, index) => {
+                console.log(`🔗 Adding click listener to FAQ question ${index + 1}`);
+                question.addEventListener('click', function() {
+                    console.log(`🖱️ FAQ question ${index + 1} clicked directly`);
+                    window.toggleFAQ(this);
+                });
+            });
+            
+            // Force replace old voucher HTML with new V2 system
+            setTimeout(() => {
+                const oldVoucherOptions = document.querySelectorAll('.voucher-option:not(.voucher-option-v2-new)');
+                console.log('Found old voucher elements to replace:', oldVoucherOptions.length);
+                
+                oldVoucherOptions.forEach(oldOption => {
+                    const amount = oldOption.getAttribute('data-amount');
+                    if (amount && !amount.includes('-v2')) {
+                        oldOption.setAttribute('data-amount', amount + '-v2');
+                        oldOption.className = oldOption.className.replace('voucher-option', 'voucher-option-v2-new');
+                        
+                        // Update all child elements
+                        const header = oldOption.querySelector('.voucher-option-header');
+                        if (header) header.className = 'voucher-option-header-v2-new';
+                        
+                        const price = oldOption.querySelector('.voucher-price');
+                        if (price) price.className = 'voucher-price-v2-new';
+                        
+                        // Update onclick handler
+                        const newAmount = amount + '-v2';
+                        oldOption.setAttribute('onclick', `selectVoucherAmountV2New('${newAmount}')`);
+                        console.log('✅ Converted voucher option:', amount, '→', newAmount);
+                    }
+                });
+                
+                // Force initialize new system
+                if (typeof selectVoucherAmountV2New === 'function') {
+                    selectVoucherAmountV2New('dome-rose-v2');
+                    console.log('✅ V2 voucher system forcefully initialized');
+                } else {
+                    console.error('❌ V2 voucher functions not loaded');
+                }
+            }, 100);
+            
+            createFloatingBookButton();
+            window.addEventListener('scroll', handleFloatingButton);
+        });
+
+        // DUPLICATE FAQ FUNCTION REMOVED - NOW DEFINED ABOVE
 
         // VOUCHER SYSTEM V2 - NEW FUNCTIONS - FORCE OVERRIDE
         console.log('🎁 NEW VOUCHER SYSTEM V2 LOADING...', new Date());
