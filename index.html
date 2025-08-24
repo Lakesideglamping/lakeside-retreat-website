@@ -5063,44 +5063,70 @@ document.addEventListener('DOMContentLoaded', () => {
                         </div>
 
                         <div class="faq-item" style="background: white; border-radius: 12px; margin-bottom: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05); overflow: hidden;">
-                            <div class="faq-question" onclick="toggleFAQ(this)" style="padding: 1.5rem; cursor: pointer; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center; font-weight: 600; color: var(--brand-teal); user-select: none;">
+                            <div class="faq-question" style="padding: 1.5rem; cursor: pointer; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center; font-weight: 600; color: var(--brand-teal); user-select: none;" onclick="
+                                var answer = this.parentElement.querySelector('.faq-answer');
+                                var arrow = this.querySelector('.faq-arrow');
+                                if (answer.style.display === 'block') {
+                                    answer.style.display = 'none';
+                                    arrow.innerHTML = '▼';
+                                } else {
+                                    answer.style.display = 'block';
+                                    arrow.innerHTML = '▲';
+                                }
+                            ">
                                 <span>🏕️ Booking & Redemption</span>
-                                <span class="faq-arrow" style="font-size: 1.2rem; transition: transform 0.3s ease;">▼</span>
+                                <span class="faq-arrow" style="font-size: 1.2rem;">▼</span>
                             </div>
-                            <div class="faq-answer" style="padding: 0; max-height: 0; overflow: hidden; transition: all 0.3s ease;">
-                                <div style="padding: 1.5rem; border-top: 1px solid #f0f0f0; color: var(--text); line-height: 1.6; font-size: 0.9rem;">
-                                    • Vouchers must be redeemed by contacting us directly: <strong>info@lakesideretreat.co.nz</strong> or <strong>+64-21-368-682</strong><br>
-                                    • Minimum 48 hours advance booking required<br>
-                                    • Bookings are subject to availability and seasonal demand<br>
-                                    • Peak periods (December-February, Easter, Queen's Birthday) have limited availability<br>
-                                    • Voucher code must be provided at time of booking
-                                </div>
+                            <div class="faq-answer" style="padding: 1.5rem; border-top: 1px solid #f0f0f0; color: var(--text); line-height: 1.6; font-size: 0.9rem; display: none;">
+                                • Vouchers must be redeemed by contacting us directly: <strong>info@lakesideretreat.co.nz</strong> or <strong>+64-21-368-682</strong><br>
+                                • Minimum 48 hours advance booking required<br>
+                                • Bookings are subject to availability and seasonal demand<br>
+                                • Peak periods (December-February, Easter, Queen's Birthday) have limited availability<br>
+                                • Voucher code must be provided at time of booking
                             </div>
                         </div>
 
                         <div class="faq-item" style="background: white; border-radius: 12px; margin-bottom: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05); overflow: hidden;">
-                            <div class="faq-question" onclick="toggleFAQ(this)" style="padding: 1.5rem; cursor: pointer; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center; font-weight: 600; color: var(--brand-teal); user-select: none;">
+                            <div class="faq-question" style="padding: 1.5rem; cursor: pointer; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center; font-weight: 600; color: var(--brand-teal); user-select: none;" onclick="
+                                var answer = this.parentElement.querySelector('.faq-answer');
+                                var arrow = this.querySelector('.faq-arrow');
+                                if (answer.style.display === 'block') {
+                                    answer.style.display = 'none';
+                                    arrow.innerHTML = '▼';
+                                } else {
+                                    answer.style.display = 'block';
+                                    arrow.innerHTML = '▲';
+                                }
+                            ">
                                 <span>💰 Payment & Pricing</span>
-                                <span class="faq-arrow" style="font-size: 1.2rem; transition: transform 0.3s ease;">▼</span>
+                                <span class="faq-arrow" style="font-size: 1.2rem;">▼</span>
                             </div>
-                            <div class="faq-answer" style="padding: 0; max-height: 0; overflow: hidden; transition: all 0.3s ease;">
-                                <div style="padding: 1.5rem; border-top: 1px solid #f0f0f0; color: var(--text); line-height: 1.6; font-size: 0.9rem;">
-                                    • <strong>Experience vouchers:</strong> Cover complete accommodation experience regardless of peak/off-peak pricing<br>
-                                    • <strong>Credit vouchers ($500):</strong> Flexible credit applied to any booking, balance payable by guest<br>
-                                    • <strong>Custom amounts:</strong> Applied as credit to total booking cost<br>
-                                    • <strong>Seasonal pricing:</strong> Experience vouchers include all seasonal rates - no additional charges<br>
-                                    • Any credit amount exceeding voucher value must be paid by standard payment methods<br>
-                                    • <strong>No cash refunds</strong> for unused voucher amounts under $50
-                                </div>
+                            <div class="faq-answer" style="padding: 1.5rem; border-top: 1px solid #f0f0f0; color: var(--text); line-height: 1.6; font-size: 0.9rem; display: none;">
+                                • <strong>Experience vouchers:</strong> Cover complete accommodation experience regardless of peak/off-peak pricing<br>
+                                • <strong>Credit vouchers ($500):</strong> Flexible credit applied to any booking, balance payable by guest<br>
+                                • <strong>Custom amounts:</strong> Applied as credit to total booking cost<br>
+                                • <strong>Seasonal pricing:</strong> Experience vouchers include all seasonal rates - no additional charges<br>
+                                • Any credit amount exceeding voucher value must be paid by standard payment methods<br>
+                                • <strong>No cash refunds</strong> for unused voucher amounts under $50
                             </div>
                         </div>
 
                         <div class="faq-item" style="background: white; border-radius: 12px; margin-bottom: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05); overflow: hidden;">
-                            <div class="faq-question" onclick="toggleFAQ(this)" style="padding: 1.5rem; cursor: pointer; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center; font-weight: 600; color: var(--brand-teal); user-select: none;">
+                            <div class="faq-question" style="padding: 1.5rem; cursor: pointer; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center; font-weight: 600; color: var(--brand-teal); user-select: none;" onclick="
+                                var answer = this.parentElement.querySelector('.faq-answer');
+                                var arrow = this.querySelector('.faq-arrow');
+                                if (answer.style.display === 'block') {
+                                    answer.style.display = 'none';
+                                    arrow.innerHTML = '▼';
+                                } else {
+                                    answer.style.display = 'block';
+                                    arrow.innerHTML = '▲';
+                                }
+                            ">
                                 <span>🔄 Cancellation & Changes</span>
-                                <span class="faq-arrow" style="font-size: 1.2rem; transition: transform 0.3s ease;">▼</span>
+                                <span class="faq-arrow" style="font-size: 1.2rem;">▼</span>
                             </div>
-                            <div class="faq-answer" style="padding: 0; max-height: 0; overflow: hidden; transition: all 0.3s ease;">
+                            <div class="faq-answer" style="padding: 1.5rem; border-top: 1px solid #f0f0f0; color: var(--text); line-height: 1.6; font-size: 0.9rem; display: none;">
                                 <div style="padding: 1.5rem; border-top: 1px solid #f0f0f0; color: var(--text); line-height: 1.6; font-size: 0.9rem;">
                                     • <strong>Standard cancellation policy applies</strong> to voucher bookings<br>
                                     • Free cancellation up to 7 days before arrival<br>
@@ -5112,11 +5138,21 @@ document.addEventListener('DOMContentLoaded', () => {
                         </div>
 
                         <div class="faq-item" style="background: white; border-radius: 12px; margin-bottom: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05); overflow: hidden;">
-                            <div class="faq-question" onclick="toggleFAQ(this)" style="padding: 1.5rem; cursor: pointer; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center; font-weight: 600; color: var(--brand-teal); user-select: none;">
+                            <div class="faq-question" style="padding: 1.5rem; cursor: pointer; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center; font-weight: 600; color: var(--brand-teal); user-select: none;" onclick="
+                                var answer = this.parentElement.querySelector('.faq-answer');
+                                var arrow = this.querySelector('.faq-arrow');
+                                if (answer.style.display === 'block') {
+                                    answer.style.display = 'none';
+                                    arrow.innerHTML = '▼';
+                                } else {
+                                    answer.style.display = 'block';
+                                    arrow.innerHTML = '▲';
+                                }
+                            ">
                                 <span>🔄 Transferability & Restrictions</span>
-                                <span class="faq-arrow" style="font-size: 1.2rem; transition: transform 0.3s ease;">▼</span>
+                                <span class="faq-arrow" style="font-size: 1.2rem;">▼</span>
                             </div>
-                            <div class="faq-answer" style="padding: 0; max-height: 0; overflow: hidden; transition: all 0.3s ease;">
+                            <div class="faq-answer" style="padding: 1.5rem; border-top: 1px solid #f0f0f0; color: var(--text); line-height: 1.6; font-size: 0.9rem; display: none;">
                                 <div style="padding: 1.5rem; border-top: 1px solid #f0f0f0; color: var(--text); line-height: 1.6; font-size: 0.9rem;">
                                     • Vouchers are <strong>fully transferable</strong> and may be gifted to others<br>
                                     • Only <strong>one voucher per booking</strong> (vouchers cannot be combined)<br>
