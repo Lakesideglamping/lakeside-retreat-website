@@ -3635,7 +3635,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 </div>
                                 <span class="guide-arrow" style="font-size: 1.5rem; color: var(--brand-teal); transition: transform 0.3s ease;">▼</span>
                             </div>
-                            <div class="guide-content" style="max-height: 0; overflow: hidden; transition: max-height 0.4s ease;">
+                            <div class="guide-content" style="max-height: 0; overflow: hidden; transition: max-height 0.5s ease-in-out;">
                                 <div style="padding: 2rem; border-top: 1px solid #e5e7eb;">
                                 
                                 <!-- BUDGET EATS ($15-30) -->
@@ -3735,7 +3735,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 </div>
                                 <span class="guide-arrow" style="font-size: 1.5rem; color: #16a34a; transition: transform 0.3s ease;">▼</span>
                             </div>
-                            <div class="guide-content" style="max-height: 0; overflow: hidden; transition: max-height 0.4s ease;">
+                            <div class="guide-content" style="max-height: 0; overflow: hidden; transition: max-height 0.5s ease-in-out;">
                                 <div style="padding: 2rem; border-top: 1px solid #e5e7eb;">
                                     <p style="line-height: 1.8; margin-bottom: 1.5rem;">From I.T. professional to renewable energy designer - Sandy's technical story of achieving commercial-grade energy independence while maintaining five-star comfort.</p>
                                     
@@ -3782,7 +3782,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 </div>
                                 <span class="guide-arrow" style="font-size: 1.5rem; color: #ea580c; transition: transform 0.3s ease;">▼</span>
                             </div>
-                            <div class="guide-content" style="max-height: 0; overflow: hidden; transition: max-height 0.4s ease;">
+                            <div class="guide-content" style="max-height: 0; overflow: hidden; transition: max-height 0.5s ease-in-out;">
                                 <div style="padding: 2rem; border-top: 1px solid #e5e7eb;">
                                 
                                 <!-- SPRING (SEP-NOV) -->
@@ -3868,7 +3868,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 </div>
                                 <span class="guide-arrow" style="font-size: 1.5rem; color: #7c3aed; transition: transform 0.3s ease;">▼</span>
                             </div>
-                            <div class="guide-content" style="max-height: 0; overflow: hidden; transition: max-height 0.4s ease;">
+                            <div class="guide-content" style="max-height: 0; overflow: hidden; transition: max-height 0.5s ease-in-out;">
                                 <div style="padding: 2rem; border-top: 1px solid #e5e7eb;">
                                 
                                 <!-- WALKING DISTANCE (0-5 MIN) -->
@@ -3947,7 +3947,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 </div>
                                 <span class="guide-arrow" style="font-size: 1.5rem; color: #0284c7; transition: transform 0.3s ease;">▼</span>
                             </div>
-                            <div class="guide-content" style="max-height: 0; overflow: hidden; transition: max-height 0.4s ease;">
+                            <div class="guide-content" style="max-height: 0; overflow: hidden; transition: max-height 0.5s ease-in-out;">
                                 <div style="padding: 2rem; border-top: 1px solid #e5e7eb;">
                                 
                                 <!-- MORNING DEPARTURE -->
@@ -6984,20 +6984,46 @@ Thank you for choosing Lakeside Retreat!`);
 
         // Toggle Guide Sections
         function toggleGuide(headerElement) {
+            console.log('toggleGuide called');
             const guideItem = headerElement.parentElement;
             const content = guideItem.querySelector('.guide-content');
             const arrow = headerElement.querySelector('.guide-arrow');
+            
+            if (!content || !arrow) {
+                console.log('Content or arrow not found');
+                return;
+            }
+            
             const isOpen = content.style.maxHeight && content.style.maxHeight !== '0px';
+            console.log('Is open:', isOpen, 'Current maxHeight:', content.style.maxHeight);
+            
+            // Close all other guide items first
+            document.querySelectorAll('.guide-item').forEach(item => {
+                if (item !== guideItem) {
+                    const otherContent = item.querySelector('.guide-content');
+                    const otherArrow = item.querySelector('.guide-arrow');
+                    if (otherContent && otherArrow) {
+                        otherContent.style.maxHeight = '0px';
+                        otherArrow.style.transform = 'rotate(0deg)';
+                        otherArrow.innerHTML = '▼';
+                    }
+                }
+            });
             
             // Toggle current guide item
             if (isOpen) {
                 content.style.maxHeight = '0px';
                 arrow.style.transform = 'rotate(0deg)';
                 arrow.innerHTML = '▼';
+                console.log('Closed guide');
             } else {
-                content.style.maxHeight = content.scrollHeight + 'px';
+                // Calculate the actual height needed
+                const scrollHeight = content.scrollHeight;
+                console.log('ScrollHeight:', scrollHeight);
+                content.style.maxHeight = Math.max(scrollHeight, 1500) + 'px';
                 arrow.style.transform = 'rotate(180deg)';
                 arrow.innerHTML = '▲';
+                console.log('Opened guide, set maxHeight to:', content.style.maxHeight);
             }
         }
 
