@@ -2332,7 +2332,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         </div>
                     </div>
 
-                    <button class="btn btn-primary" style="width: 100%;" onclick="goToVoucherStep(2)">
+                    <button class="btn btn-primary" style="width: 100%;" onclick="goToVoucherStepV2New(2)">
                         Continue to Personalization
                     </button>
                 </div>
@@ -5596,10 +5596,19 @@ We'll create a personalized voucher with your message and deliver it instantly v
         let currentVoucherStep = 1;
 
         function openVoucherPurchaseModal() {
-            // Console statement removed for production
+            console.log('🎁 Opening V2 NEW voucher modal');
             document.getElementById('voucherPurchaseModal').classList.add('active');
             document.body.style.overflow = 'hidden';
             resetVoucherModal();
+            
+            // Force initialize V2 system when modal opens
+            setTimeout(() => {
+                if (typeof selectVoucherAmountV2New === 'function') {
+                    selectVoucherAmountV2New('dome-rose-v2');
+                    console.log('✅ V2 voucher system initialized in modal');
+                }
+            }, 100);
+            
             trackEvent('voucher', 'purchase_modal_opened');
         }
 
@@ -5669,8 +5678,13 @@ We'll create a personalized voucher with your message and deliver it instantly v
         }
 
         function goToVoucherStep(step) {
-            // Console statement removed for production
+            console.log('🎁 V2 NEW: Going to voucher step', step);
             currentVoucherStep = step;
+            
+            // Force use V2 system
+            if (step === 2 && typeof updateVoucherSummaryV2New === 'function') {
+                updateVoucherSummaryV2New();
+            }
             
             // Hide all steps
             document.querySelectorAll('.voucher-purchase-step').forEach(stepElement => {
@@ -7270,13 +7284,14 @@ Thank you for choosing Lakeside Retreat!`);
             if (summaryOccasionEl) summaryOccasionEl.textContent = occasion.charAt(0).toUpperCase() + occasion.slice(1);
         }
 
-        // Navigate between voucher steps
-        function goToVoucherStep(step) {
+        // Navigate between voucher steps V2 NEW
+        function goToVoucherStepV2New(step) {
+            console.log('🎁 V2 NEW: Navigate to step', step);
             document.querySelectorAll('.voucher-purchase-step').forEach(s => s.classList.remove('active'));
             document.getElementById(`voucherStep${step}`).classList.add('active');
             
-            if (step === 2) {
-                updateVoucherSummary();
+            if (step === 2 && typeof updateVoucherSummaryV2New === 'function') {
+                updateVoucherSummaryV2New();
             }
         }
 
@@ -7470,18 +7485,18 @@ Thank you for choosing Lakeside Retreat!`);
             trackEvent('voucher', 'purchase_completed', voucherData.amount);
         }
 
-        // Open voucher purchase modal
-        function openVoucherPurchaseModal() {
-            document.getElementById('voucherPurchaseModal').style.display = 'block';
-            document.body.style.overflow = 'hidden';
-            // Reset to step 1
-            goToVoucherStep(1);
-        }
+        // Open voucher purchase modal V2 - DUPLICATE REMOVED
+        // This function is now handled above with V2 initialization
 
-        // Close voucher purchase modal
-        function closeVoucherPurchaseModal() {
+        // Close voucher purchase modal V2 NEW
+        function closeVoucherPurchaseModalV2New() {
             document.getElementById('voucherPurchaseModal').style.display = 'none';
             document.body.style.overflow = '';
+        }
+        
+        // Keep old function name for compatibility
+        function closeVoucherPurchaseModal() {
+            closeVoucherPurchaseModalV2New();
         }
 
         // Toggle Guide Sections
