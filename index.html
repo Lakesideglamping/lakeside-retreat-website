@@ -2415,7 +2415,39 @@ document.addEventListener('DOMContentLoaded', () => {
                             Back
                         </button>
                         <button class="btn btn-primary" style="flex: 1;" onclick="processVoucherPurchase()">
-                            Purchase Voucher
+                            Generate Preview & Purchase
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="voucher-purchase-step" id="voucherStep4">
+                    <h3 style="color: var(--brand-teal); margin-bottom: 1.5rem;">Voucher Preview</h3>
+                    
+                    <div style="background: #f8f9fa; padding: 1rem; border-radius: 10px; margin-bottom: 1.5rem; text-align: center;">
+                        <p style="margin: 0; color: #666; font-size: 0.9rem;">This is how your gift voucher will look:</p>
+                    </div>
+                    
+                    <!-- Voucher Preview Container -->
+                    <div id="voucherPreview" style="background: white; border: 2px dashed #ccc; border-radius: 15px; padding: 2rem; margin: 1rem 0; max-width: 500px; margin: 0 auto 2rem auto; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                        <!-- Voucher content will be generated here -->
+                    </div>
+                    
+                    <div style="background: #e6fffa; padding: 1rem; border-radius: 10px; margin: 1rem 0; font-size: 0.9rem;">
+                        <p style="margin: 0; color: var(--brand-teal);"><strong>📧 Next Steps:</strong></p>
+                        <ul style="margin: 0.5rem 0 0 1rem; color: #666;">
+                            <li>Click "Confirm & Send" to process your order</li>
+                            <li>You'll receive a purchase confirmation email</li>
+                            <li>Recipient receives the voucher within 2 hours</li>
+                            <li>Voucher includes unique code for booking</li>
+                        </ul>
+                    </div>
+                    
+                    <div style="display: flex; gap: 1rem;">
+                        <button class="btn btn-outline" style="flex: 1;" onclick="goToVoucherStep(3)">
+                            Back to Edit
+                        </button>
+                        <button class="btn btn-primary" style="flex: 1;" onclick="confirmVoucherPurchase()">
+                            Confirm & Send Voucher
                         </button>
                     </div>
                 </div>
@@ -4979,6 +5011,111 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                 </div>
             </section>
+
+            <!-- Gift Voucher Terms & Conditions Section -->
+            <section class="section" style="background: #f8f9fa; margin-top: 0; padding: 3rem 0;">
+                <div class="container">
+                    <div class="section-header" style="text-align: center; margin-bottom: 2rem;">
+                        <h2 style="font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--brand-teal); margin-bottom: 1rem;">Gift Voucher Terms & Conditions</h2>
+                        <p style="font-size: 1rem; color: var(--text); opacity: 0.8; max-width: 600px; margin: 0 auto;">Important information about your gift voucher purchase and redemption</p>
+                    </div>
+                    
+                    <div style="max-width: 900px; margin: 0 auto;">
+                        <!-- Terms in accordion format -->
+                        <div class="faq-item" style="background: white; border-radius: 12px; margin-bottom: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05); overflow: hidden;">
+                            <div class="faq-question" onclick="toggleFAQ(this)" style="padding: 1.5rem; cursor: pointer; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center; font-weight: 600; color: var(--brand-teal); user-select: none;">
+                                <span>📅 Voucher Validity & Expiry</span>
+                                <span class="faq-arrow" style="font-size: 1.2rem; transition: transform 0.3s ease;">▼</span>
+                            </div>
+                            <div class="faq-answer" style="padding: 0; max-height: 0; overflow: hidden; transition: all 0.3s ease;">
+                                <div style="padding: 1.5rem; border-top: 1px solid #f0f0f0; color: var(--text); line-height: 1.6; font-size: 0.9rem;">
+                                    • All gift vouchers are valid for <strong>12 months</strong> from the date of purchase<br>
+                                    • Vouchers cannot be extended beyond the expiry date under any circumstances<br>
+                                    • Expired vouchers have no monetary value and cannot be refunded or exchanged<br>
+                                    • It is the recipient's responsibility to use the voucher before expiry
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="faq-item" style="background: white; border-radius: 12px; margin-bottom: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05); overflow: hidden;">
+                            <div class="faq-question" onclick="toggleFAQ(this)" style="padding: 1.5rem; cursor: pointer; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center; font-weight: 600; color: var(--brand-teal); user-select: none;">
+                                <span>🏕️ Booking & Redemption</span>
+                                <span class="faq-arrow" style="font-size: 1.2rem; transition: transform 0.3s ease;">▼</span>
+                            </div>
+                            <div class="faq-answer" style="padding: 0; max-height: 0; overflow: hidden; transition: all 0.3s ease;">
+                                <div style="padding: 1.5rem; border-top: 1px solid #f0f0f0; color: var(--text); line-height: 1.6; font-size: 0.9rem;">
+                                    • Vouchers must be redeemed by contacting us directly: <strong>info@lakesideretreat.co.nz</strong> or <strong>+64-21-368-682</strong><br>
+                                    • Minimum 48 hours advance booking required<br>
+                                    • Bookings are subject to availability and seasonal demand<br>
+                                    • Peak periods (December-February, Easter, Queen's Birthday) have limited availability<br>
+                                    • Voucher code must be provided at time of booking
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="faq-item" style="background: white; border-radius: 12px; margin-bottom: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05); overflow: hidden;">
+                            <div class="faq-question" onclick="toggleFAQ(this)" style="padding: 1.5rem; cursor: pointer; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center; font-weight: 600; color: var(--brand-teal); user-select: none;">
+                                <span>💰 Payment & Pricing</span>
+                                <span class="faq-arrow" style="font-size: 1.2rem; transition: transform 0.3s ease;">▼</span>
+                            </div>
+                            <div class="faq-answer" style="padding: 0; max-height: 0; overflow: hidden; transition: all 0.3s ease;">
+                                <div style="padding: 1.5rem; border-top: 1px solid #f0f0f0; color: var(--text); line-height: 1.6; font-size: 0.9rem;">
+                                    • <strong>Partial vouchers ($200):</strong> Credit applied to any booking, balance payable by guest<br>
+                                    • <strong>Full vouchers ($450/$900):</strong> Cover specified accommodation for stated period<br>
+                                    • <strong>Custom amounts:</strong> Applied as credit to total booking cost<br>
+                                    • Any amount exceeding voucher value must be paid by standard payment methods<br>
+                                    • <strong>No cash refunds</strong> for unused voucher amounts under $50
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="faq-item" style="background: white; border-radius: 12px; margin-bottom: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05); overflow: hidden;">
+                            <div class="faq-question" onclick="toggleFAQ(this)" style="padding: 1.5rem; cursor: pointer; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center; font-weight: 600; color: var(--brand-teal); user-select: none;">
+                                <span>🔄 Cancellation & Changes</span>
+                                <span class="faq-arrow" style="font-size: 1.2rem; transition: transform 0.3s ease;">▼</span>
+                            </div>
+                            <div class="faq-answer" style="padding: 0; max-height: 0; overflow: hidden; transition: all 0.3s ease;">
+                                <div style="padding: 1.5rem; border-top: 1px solid #f0f0f0; color: var(--text); line-height: 1.6; font-size: 0.9rem;">
+                                    • <strong>Standard cancellation policy applies</strong> to voucher bookings<br>
+                                    • Free cancellation up to 7 days before arrival<br>
+                                    • 50% charge for cancellations 3-7 days before arrival<br>
+                                    • No refund for cancellations within 3 days of arrival<br>
+                                    • <strong>Date changes:</strong> Subject to availability, no additional fees if 7+ days notice
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="faq-item" style="background: white; border-radius: 12px; margin-bottom: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05); overflow: hidden;">
+                            <div class="faq-question" onclick="toggleFAQ(this)" style="padding: 1.5rem; cursor: pointer; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center; font-weight: 600; color: var(--brand-teal); user-select: none;">
+                                <span>🔄 Transferability & Restrictions</span>
+                                <span class="faq-arrow" style="font-size: 1.2rem; transition: transform 0.3s ease;">▼</span>
+                            </div>
+                            <div class="faq-answer" style="padding: 0; max-height: 0; overflow: hidden; transition: all 0.3s ease;">
+                                <div style="padding: 1.5rem; border-top: 1px solid #f0f0f0; color: var(--text); line-height: 1.6; font-size: 0.9rem;">
+                                    • Vouchers are <strong>fully transferable</strong> and may be gifted to others<br>
+                                    • Only <strong>one voucher per booking</strong> (vouchers cannot be combined)<br>
+                                    • Vouchers cannot be exchanged for cash or other products/services<br>
+                                    • <strong>Not valid with other promotions</strong> or discount codes<br>
+                                    • Cannot be used for group bookings over 6 people
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="background: var(--primary); color: white; padding: 2rem; border-radius: 15px; margin-top: 2rem; text-align: center;">
+                            <h4 style="margin: 0 0 1rem 0; font-size: 1.1rem;">Questions About Our Terms?</h4>
+                            <p style="margin: 0 0 1.5rem 0; font-size: 0.9rem; opacity: 0.9;">Contact us directly for clarification on any terms & conditions</p>
+                            <div style="display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap;">
+                                <a href="mailto:info@lakesideretreat.co.nz" style="color: white; text-decoration: none; display: flex; align-items: center; gap: 0.5rem;">
+                                    <i class="fas fa-envelope"></i> info@lakesideretreat.co.nz
+                                </a>
+                                <a href="tel:+6421368682" style="color: white; text-decoration: none; display: flex; align-items: center; gap: 0.5rem;">
+                                    <i class="fas fa-phone"></i> +64-21-368-682
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
     </main>
 
@@ -6980,6 +7117,274 @@ Thank you for choosing Lakeside Retreat!`);
                 answer.style.maxHeight = answer.scrollHeight + 'px';
                 arrow.style.transform = 'rotate(180deg)';
             }
+        }
+
+        // VOUCHER SYSTEM FUNCTIONS
+        let selectedVoucherAmount = 450; // Default selection
+        let voucherData = {
+            amount: 450,
+            recipientName: '',
+            recipientEmail: '',
+            message: '',
+            occasion: '',
+            purchaserName: '',
+            purchaserEmail: '',
+            purchaserPhone: '',
+            voucherCode: '',
+            customAmount: null
+        };
+
+        // Generate unique voucher code
+        function generateVoucherCode() {
+            const timestamp = Date.now().toString().slice(-6);
+            const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+            return `LSR-${timestamp}-${random}`;
+        }
+
+        // Select voucher amount
+        function selectVoucherAmount(amount) {
+            selectedVoucherAmount = amount;
+            
+            // Update visual selection
+            document.querySelectorAll('.voucher-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            document.querySelector(`[data-amount="${amount}"]`).classList.add('selected');
+            
+            // Show/hide custom amount input
+            const customInput = document.getElementById('customAmountInput');
+            if (amount === 'custom') {
+                customInput.style.display = 'block';
+                document.getElementById('customVoucherAmount').focus();
+            } else {
+                customInput.style.display = 'none';
+                voucherData.amount = amount;
+                voucherData.customAmount = null;
+            }
+            
+            updateVoucherSummary();
+        }
+
+        // Update voucher summary
+        function updateVoucherSummary() {
+            let amount = selectedVoucherAmount;
+            if (selectedVoucherAmount === 'custom') {
+                amount = document.getElementById('customVoucherAmount').value || 0;
+                voucherData.customAmount = amount;
+            }
+            
+            document.getElementById('summaryAmount').textContent = `$${amount}`;
+            document.getElementById('summaryTotal').textContent = `$${amount}`;
+            
+            const recipient = document.getElementById('voucherRecipientName').value || '-';
+            document.getElementById('summaryRecipient').textContent = recipient;
+            
+            const occasion = document.getElementById('voucherOccasion').value || '-';
+            document.getElementById('summaryOccasion').textContent = occasion.charAt(0).toUpperCase() + occasion.slice(1);
+        }
+
+        // Navigate between voucher steps
+        function goToVoucherStep(step) {
+            document.querySelectorAll('.voucher-purchase-step').forEach(s => s.classList.remove('active'));
+            document.getElementById(`voucherStep${step}`).classList.add('active');
+            
+            if (step === 2) {
+                updateVoucherSummary();
+            }
+        }
+
+        // Process voucher purchase (generate preview)
+        function processVoucherPurchase() {
+            // Validate form
+            if (!validateVoucherForm()) return;
+            
+            // Collect all data
+            collectVoucherData();
+            
+            // Generate voucher code
+            voucherData.voucherCode = generateVoucherCode();
+            
+            // Generate preview
+            generateVoucherPreview();
+            
+            // Go to preview step
+            goToVoucherStep(4);
+        }
+
+        // Validate voucher form
+        function validateVoucherForm() {
+            const recipientName = document.getElementById('voucherRecipientName').value.trim();
+            const recipientEmail = document.getElementById('voucherRecipientEmail').value.trim();
+            const purchaserName = document.getElementById('voucherPurchaserName').value.trim();
+            const purchaserEmail = document.getElementById('voucherPurchaserEmail').value.trim();
+            const purchaserPhone = document.getElementById('voucherPurchaserPhone').value.trim();
+            
+            if (!recipientName || !recipientEmail || !purchaserName || !purchaserEmail || !purchaserPhone) {
+                alert('Please fill in all required fields.');
+                return false;
+            }
+            
+            if (selectedVoucherAmount === 'custom') {
+                const customAmount = document.getElementById('customVoucherAmount').value;
+                if (!customAmount || customAmount < 50) {
+                    alert('Please enter a custom amount of at least $50.');
+                    return false;
+                }
+            }
+            
+            return true;
+        }
+
+        // Collect voucher data
+        function collectVoucherData() {
+            voucherData.recipientName = document.getElementById('voucherRecipientName').value.trim();
+            voucherData.recipientEmail = document.getElementById('voucherRecipientEmail').value.trim();
+            voucherData.message = document.getElementById('voucherMessage').value.trim();
+            voucherData.occasion = document.getElementById('voucherOccasion').value;
+            voucherData.purchaserName = document.getElementById('voucherPurchaserName').value.trim();
+            voucherData.purchaserEmail = document.getElementById('voucherPurchaserEmail').value.trim();
+            voucherData.purchaserPhone = document.getElementById('voucherPurchaserPhone').value.trim();
+            
+            if (selectedVoucherAmount === 'custom') {
+                voucherData.amount = document.getElementById('customVoucherAmount').value;
+            } else {
+                voucherData.amount = selectedVoucherAmount;
+            }
+        }
+
+        // Generate voucher preview
+        function generateVoucherPreview() {
+            const previewContainer = document.getElementById('voucherPreview');
+            const template = getVoucherTemplate(voucherData.amount);
+            previewContainer.innerHTML = template;
+        }
+
+        // Get voucher template based on amount
+        function getVoucherTemplate(amount) {
+            const currentDate = new Date().toLocaleDateString();
+            const expiryDate = new Date();
+            expiryDate.setFullYear(expiryDate.getFullYear() + 1);
+            const expiryDateString = expiryDate.toLocaleDateString();
+            
+            const baseTemplate = `
+                <div style="background: linear-gradient(135deg, {gradientColors}); padding: 1.5rem; border-radius: 12px; color: white; text-align: center; position: relative;">
+                    <div style="position: absolute; top: 10px; right: 15px; background: rgba(255,255,255,0.2); padding: 0.25rem 0.5rem; border-radius: 15px; font-size: 0.7rem; font-weight: 600;">
+                        GIFT VOUCHER
+                    </div>
+                    
+                    <div style="margin-bottom: 1rem;">
+                        <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">{icon}</div>
+                        <h3 style="margin: 0; font-size: 1.3rem; font-weight: 700;">LAKESIDE RETREAT</h3>
+                        <p style="margin: 0.25rem 0; font-size: 0.9rem; opacity: 0.9;">Central Otago Luxury Experience</p>
+                    </div>
+                    
+                    <div style="background: rgba(255,255,255,0.15); padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                        <div style="font-size: 2.2rem; font-weight: 800; margin-bottom: 0.25rem;">$${amount}</div>
+                        <div style="font-size: 1rem; font-weight: 600; opacity: 0.95;">{description}</div>
+                    </div>
+                </div>
+                
+                <div style="padding: 1.5rem; color: #333;">
+                    <div style="text-align: center; margin-bottom: 1.5rem;">
+                        <h4 style="color: var(--brand-teal); margin: 0 0 0.5rem 0;">Gift For: ${voucherData.recipientName}</h4>
+                        ${voucherData.occasion ? `<p style="margin: 0; font-size: 0.9rem; color: #666;">${voucherData.occasion.charAt(0).toUpperCase() + voucherData.occasion.slice(1)} Gift</p>` : ''}
+                    </div>
+                    
+                    ${voucherData.message ? `
+                    <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px; margin: 1rem 0; border-left: 4px solid var(--brand-teal);">
+                        <p style="margin: 0; font-style: italic; font-size: 0.9rem; line-height: 1.5;">"${voucherData.message}"</p>
+                    </div>
+                    ` : ''}
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0; font-size: 0.8rem;">
+                        <div>
+                            <strong>Voucher Code:</strong><br>
+                            <code style="background: #e6fffa; color: var(--brand-teal); padding: 0.25rem 0.5rem; border-radius: 4px; font-weight: 600;">${voucherData.voucherCode}</code>
+                        </div>
+                        <div>
+                            <strong>Valid Until:</strong><br>
+                            <span style="color: #dc2626; font-weight: 600;">${expiryDateString}</span>
+                        </div>
+                        <div>
+                            <strong>Valid For:</strong><br>
+                            All accommodation types
+                        </div>
+                        <div>
+                            <strong>Issued:</strong><br>
+                            ${currentDate}
+                        </div>
+                    </div>
+                    
+                    <div style="text-align: center; background: #e6fffa; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                        <p style="margin: 0 0 0.5rem 0; color: var(--brand-teal); font-weight: 600; font-size: 0.9rem;">📞 To book your experience:</p>
+                        <p style="margin: 0; font-size: 0.85rem; color: #666;">
+                            Email: info@lakesideretreat.co.nz<br>
+                            Phone: +64-21-368-682<br>
+                            Quote voucher code: ${voucherData.voucherCode}
+                        </p>
+                    </div>
+                    
+                    <div style="border-top: 1px solid #e5e7eb; padding-top: 1rem; font-size: 0.7rem; color: #666; text-align: center;">
+                        Subject to terms & conditions • 12-month validity • Booking subject to availability
+                    </div>
+                </div>
+            `;
+            
+            // Return template with specific styling based on amount
+            if (amount == 200) {
+                return baseTemplate
+                    .replace('{gradientColors}', '#10b981 0%, #059669 100%')
+                    .replace('{icon}', '💝')
+                    .replace('{description}', 'Partial Payment Towards Your Escape');
+            } else if (amount == 450) {
+                return baseTemplate
+                    .replace('{gradientColors}', '#8b5cf6 0%, #7c3aed 100%')
+                    .replace('{icon}', '🏕️')
+                    .replace('{description}', 'One Night Luxury Dome Experience');
+            } else if (amount == 900) {
+                return baseTemplate
+                    .replace('{gradientColors}', '#3b82f6 0%, #2563eb 100%')
+                    .replace('{icon}', '🌟')
+                    .replace('{description}', 'Two Night Luxury Retreat Package');
+            } else {
+                return baseTemplate
+                    .replace('{gradientColors}', '#1f2937 0%, #374151 100%')
+                    .replace('{icon}', '💎')
+                    .replace('{description}', 'Custom Amount Credit');
+            }
+        }
+
+        // Confirm voucher purchase (final step)
+        function confirmVoucherPurchase() {
+            // In a real implementation, this would process payment
+            // For now, we'll simulate the purchase
+            
+            alert(`🎁 Voucher Purchase Confirmation\n\n` +
+                  `Amount: $${voucherData.amount}\n` +
+                  `Recipient: ${voucherData.recipientName}\n` +
+                  `Voucher Code: ${voucherData.voucherCode}\n\n` +
+                  `The voucher will be sent to ${voucherData.recipientEmail} within 2 hours.\n\n` +
+                  `You will receive a purchase confirmation at ${voucherData.purchaserEmail}.`);
+            
+            // Close modal
+            closeVoucherPurchaseModal();
+            
+            // Track event
+            trackEvent('voucher', 'purchase_completed', voucherData.amount);
+        }
+
+        // Open voucher purchase modal
+        function openVoucherPurchaseModal() {
+            document.getElementById('voucherPurchaseModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+            // Reset to step 1
+            goToVoucherStep(1);
+        }
+
+        // Close voucher purchase modal
+        function closeVoucherPurchaseModal() {
+            document.getElementById('voucherPurchaseModal').style.display = 'none';
+            document.body.style.overflow = '';
         }
 
         // Toggle Guide Sections
