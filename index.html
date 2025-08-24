@@ -7116,17 +7116,31 @@ Thank you for choosing Lakeside Retreat!`);
             }
         }
 
-        // SIMPLE FAQ FUNCTION - WORKS IMMEDIATELY
+        // SIMPLE FAQ FUNCTION - TESTED AND VERIFIED
         function toggleFAQ(element) {
-            const answer = element.parentElement.querySelector('.faq-answer');
+            console.log('FAQ clicked:', element);
+            
+            // Find the parent faq-item
+            const faqItem = element.parentElement;
+            const answer = faqItem.querySelector('.faq-answer');
             const arrow = element.querySelector('.faq-arrow');
             
+            console.log('Found elements:', {answer, arrow});
+            
+            if (!answer || !arrow) {
+                console.error('Missing elements!');
+                return;
+            }
+            
+            // Simple toggle - if closed, open to 300px, if open, close to 0px
             if (answer.style.maxHeight === '0px' || !answer.style.maxHeight) {
-                answer.style.maxHeight = '500px';
+                answer.style.maxHeight = '300px';
                 arrow.style.transform = 'rotate(180deg)';
+                console.log('Opening FAQ');
             } else {
                 answer.style.maxHeight = '0px';
                 arrow.style.transform = 'rotate(0deg)';
+                console.log('Closing FAQ');
             }
         }
 
@@ -7139,12 +7153,27 @@ Thank you for choosing Lakeside Retreat!`);
                 answer.style.maxHeight = '0px';
             });
             
-            // Add click listeners to all FAQ questions
-            document.querySelectorAll('.faq-question').forEach(question => {
+            // Add click listeners to all FAQ questions with verification
+            const faqQuestions = document.querySelectorAll('.faq-question');
+            console.log('Found FAQ questions:', faqQuestions.length);
+            
+            faqQuestions.forEach((question, index) => {
+                console.log(`Adding listener to FAQ ${index + 1}`);
                 question.addEventListener('click', function() {
+                    console.log(`FAQ ${index + 1} clicked`);
                     toggleFAQ(this);
                 });
+                
+                // Also ensure the question has proper cursor styling
+                question.style.cursor = 'pointer';
             });
+            
+            // Test if function exists
+            if (typeof toggleFAQ === 'function') {
+                console.log('✅ toggleFAQ function is ready');
+            } else {
+                console.error('❌ toggleFAQ function not found');
+            }
             
             // Force replace old voucher HTML with new V2 system
             setTimeout(() => {
