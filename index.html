@@ -7095,10 +7095,12 @@ Thank you for choosing Lakeside Retreat!`);
         // FAQ ACCORDION FUNCTIONALITY
         // ========================================
         function toggleFAQ(questionElement) {
+            console.log('toggleFAQ called on:', questionElement);
             const faqItem = questionElement.parentElement;
             const answer = faqItem.querySelector('.faq-answer');
             const arrow = questionElement.querySelector('.faq-arrow');
             const isOpen = answer.style.maxHeight && answer.style.maxHeight !== '0px';
+            console.log('FAQ elements found:', {answer, arrow, isOpen});
             
             // Close all other FAQ items
             document.querySelectorAll('.faq-item').forEach(item => {
