@@ -7129,6 +7129,23 @@ Thank you for choosing Lakeside Retreat!`);
                 }
             });
             
+            // Test FAQ function availability
+            if (typeof window.toggleFAQ === 'function') {
+                console.log('✅ toggleFAQ function is available globally');
+            } else {
+                console.error('❌ toggleFAQ function is NOT available globally');
+            }
+            
+            // Alternative: Add click listeners directly to FAQ questions
+            console.log('📋 Adding direct click listeners to FAQ questions');
+            document.querySelectorAll('.faq-question').forEach((question, index) => {
+                console.log(`🔗 Adding click listener to FAQ question ${index + 1}`);
+                question.addEventListener('click', function() {
+                    console.log(`🖱️ FAQ question ${index + 1} clicked directly`);
+                    window.toggleFAQ(this);
+                });
+            });
+            
             // Force replace old voucher HTML with new V2 system
             setTimeout(() => {
                 const oldVoucherOptions = document.querySelectorAll('.voucher-option:not(.voucher-option-v2-new)');
@@ -7168,9 +7185,9 @@ Thank you for choosing Lakeside Retreat!`);
         });
 
         // ========================================
-        // FAQ ACCORDION FUNCTIONALITY
+        // FAQ ACCORDION FUNCTIONALITY - GLOBAL FUNCTION
         // ========================================
-        function toggleFAQ(questionElement) {
+        window.toggleFAQ = function(questionElement) {
             console.log('🔽 FAQ TOGGLE: Called on element:', questionElement);
             
             if (!questionElement) {
@@ -7219,6 +7236,11 @@ Thank you for choosing Lakeside Retreat!`);
                 arrow.style.transform = 'rotate(180deg)';
                 console.log('✅ Set maxHeight to:', scrollHeight + 'px');
             }
+        };
+        
+        // Also create a regular function for backwards compatibility
+        function toggleFAQ(questionElement) {
+            return window.toggleFAQ(questionElement);
         }
 
         // VOUCHER SYSTEM V2 - NEW FUNCTIONS - FORCE OVERRIDE
