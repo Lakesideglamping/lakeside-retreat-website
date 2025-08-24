@@ -5040,17 +5040,25 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div style="max-width: 900px; margin: 0 auto;">
                         <!-- Terms in accordion format -->
                         <div class="faq-item" style="background: white; border-radius: 12px; margin-bottom: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05); overflow: hidden;">
-                            <div class="faq-question" onclick="toggleFAQ(this)" style="padding: 1.5rem; cursor: pointer; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center; font-weight: 600; color: var(--brand-teal); user-select: none;">
+                            <div class="faq-question" style="padding: 1.5rem; cursor: pointer; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center; font-weight: 600; color: var(--brand-teal); user-select: none;" onclick="
+                                var answer = this.parentElement.querySelector('.faq-answer');
+                                var arrow = this.querySelector('.faq-arrow');
+                                if (answer.style.display === 'block') {
+                                    answer.style.display = 'none';
+                                    arrow.innerHTML = '▼';
+                                } else {
+                                    answer.style.display = 'block';
+                                    arrow.innerHTML = '▲';
+                                }
+                            ">
                                 <span>📅 Voucher Validity & Expiry</span>
-                                <span class="faq-arrow" style="font-size: 1.2rem; transition: transform 0.3s ease;">▼</span>
+                                <span class="faq-arrow" style="font-size: 1.2rem;">▼</span>
                             </div>
-                            <div class="faq-answer" style="padding: 0; max-height: 0; overflow: hidden; transition: all 0.3s ease;">
-                                <div style="padding: 1.5rem; border-top: 1px solid #f0f0f0; color: var(--text); line-height: 1.6; font-size: 0.9rem;">
-                                    • All gift vouchers are valid for <strong>12 months</strong> from the date of purchase<br>
-                                    • Vouchers cannot be extended beyond the expiry date under any circumstances<br>
-                                    • Expired vouchers have no monetary value and cannot be refunded or exchanged<br>
-                                    • It is the recipient's responsibility to use the voucher before expiry
-                                </div>
+                            <div class="faq-answer" style="padding: 1.5rem; border-top: 1px solid #f0f0f0; color: var(--text); line-height: 1.6; font-size: 0.9rem; display: none;">
+                                • All gift vouchers are valid for <strong>12 months</strong> from the date of purchase<br>
+                                • Vouchers cannot be extended beyond the expiry date under any circumstances<br>
+                                • Expired vouchers have no monetary value and cannot be refunded or exchanged<br>
+                                • It is the recipient's responsibility to use the voucher before expiry
                             </div>
                         </div>
 
@@ -7116,64 +7124,13 @@ Thank you for choosing Lakeside Retreat!`);
             }
         }
 
-        // SIMPLE FAQ FUNCTION - TESTED AND VERIFIED
-        function toggleFAQ(element) {
-            console.log('FAQ clicked:', element);
-            
-            // Find the parent faq-item
-            const faqItem = element.parentElement;
-            const answer = faqItem.querySelector('.faq-answer');
-            const arrow = element.querySelector('.faq-arrow');
-            
-            console.log('Found elements:', {answer, arrow});
-            
-            if (!answer || !arrow) {
-                console.error('Missing elements!');
-                return;
-            }
-            
-            // Simple toggle - if closed, open to 300px, if open, close to 0px
-            if (answer.style.maxHeight === '0px' || !answer.style.maxHeight) {
-                answer.style.maxHeight = '300px';
-                arrow.style.transform = 'rotate(180deg)';
-                console.log('Opening FAQ');
-            } else {
-                answer.style.maxHeight = '0px';
-                arrow.style.transform = 'rotate(0deg)';
-                console.log('Closing FAQ');
-            }
-        }
+        // FAQ INLINE ONCLICK - NO EXTERNAL FUNCTION NEEDED
 
         // Initialize floating button, FAQ system, and FORCE V2 VOUCHER SYSTEM  
         document.addEventListener('DOMContentLoaded', function() {
             console.log('🎁 FORCING V2 VOUCHER SYSTEM ON PAGE LOAD');
             
-            // Initialize FAQ dropdowns - SIMPLE
-            document.querySelectorAll('.faq-answer').forEach(answer => {
-                answer.style.maxHeight = '0px';
-            });
-            
-            // Add click listeners to all FAQ questions with verification
-            const faqQuestions = document.querySelectorAll('.faq-question');
-            console.log('Found FAQ questions:', faqQuestions.length);
-            
-            faqQuestions.forEach((question, index) => {
-                console.log(`Adding listener to FAQ ${index + 1}`);
-                question.addEventListener('click', function() {
-                    console.log(`FAQ ${index + 1} clicked`);
-                    toggleFAQ(this);
-                });
-                
-                // Also ensure the question has proper cursor styling
-                question.style.cursor = 'pointer';
-            });
-            
-            // Test if function exists
-            if (typeof toggleFAQ === 'function') {
-                console.log('✅ toggleFAQ function is ready');
-            } else {
-                console.error('❌ toggleFAQ function not found');
-            }
+            // FAQ dropdowns use inline onclick - no initialization needed
             
             // Force replace old voucher HTML with new V2 system
             setTimeout(() => {
