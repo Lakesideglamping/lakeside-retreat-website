@@ -6,6 +6,7 @@
     <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="pragma" content="no-cache">
     <meta http-equiv="expires" content="0">
+    <meta name="cache-buster-v2-new" content="v2-new-system-20250824-1141">
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
 <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
 <!-- Advanced Content Security Policy -->
@@ -1185,7 +1186,8 @@ document.addEventListener('DOMContentLoaded', () => {
             margin-bottom: 1.5rem;
         }
 
-        .voucher-option {
+        /* V2 NEW Styles */
+        .voucher-option-v2-new {
             background: white;
             border: 2px solid var(--border);
             border-radius: 15px;
@@ -1195,29 +1197,29 @@ document.addEventListener('DOMContentLoaded', () => {
             transition: all 0.3s ease;
         }
 
-        .voucher-option:hover {
+        .voucher-option-v2-new:hover {
             border-color: var(--brand-teal);
             transform: translateY(-2px);
         }
 
-        .voucher-option.selected {
+        .voucher-option-v2-new.selected-v2-new {
             border-color: var(--primary);
             background: rgba(45, 90, 90, 0.05);
         }
 
-        .voucher-option-header h4 {
+        .voucher-option-header-v2-new h4 {
             margin: 0.5rem 0;
             color: var(--brand-teal);
         }
 
-        .voucher-price {
+        .voucher-price-v2-new {
             font-size: 1.5rem;
             font-weight: 700;
             color: var(--brand-teal);
             margin: 0.5rem 0;
         }
 
-        .voucher-option p {
+        .voucher-option-v2-new p {
             font-size: 0.9rem;
             color: var(--text);
             margin: 0;
@@ -2263,39 +2265,39 @@ document.addEventListener('DOMContentLoaded', () => {
                     <h3 style="color: var(--brand-teal); margin-bottom: 1.5rem;">Choose Your Voucher Amount</h3>
                     
                     <div class="voucher-options-grid">
-                        <div class="voucher-option" data-amount="credit-500" data-type="credit" onclick="selectVoucherAmount('credit-500')">
-                            <div class="voucher-option-header">
+                        <div class="voucher-option-v2-new" data-amount="credit-500-v2" data-type="credit" onclick="selectVoucherAmountV2New('credit-500-v2')">
+                            <div class="voucher-option-header-v2-new">
                                 <div style="font-size: 2rem; margin-bottom: 0.5rem;">💎</div>
                                 <h4>Flexible Credit</h4>
-                                <div class="voucher-price">$500</div>
+                                <div class="voucher-price-v2-new">$500</div>
                             </div>
                             <p>Credit towards any accommodation, any time</p>
                         </div>
                         
-                        <div class="voucher-option selected" data-amount="dome-rose" data-type="experience" onclick="selectVoucherAmount('dome-rose')">
-                            <div class="voucher-option-header">
+                        <div class="voucher-option-v2-new selected-v2-new" data-amount="dome-rose-v2" data-type="experience" onclick="selectVoucherAmountV2New('dome-rose-v2')">
+                            <div class="voucher-option-header-v2-new">
                                 <div style="font-size: 2rem; margin-bottom: 0.5rem;">🌹</div>
                                 <h4>Dome Rosé Experience</h4>
-                                <div class="voucher-price">One Night</div>
+                                <div class="voucher-price-v2-new">One Night</div>
                                 <div style="background: var(--primary); color: white; padding: 0.25rem 0.5rem; border-radius: 10px; font-size: 0.7rem; margin-top: 0.5rem;">MOST POPULAR</div>
                             </div>
                             <p>Complete one night stay, any season</p>
                         </div>
                         
-                        <div class="voucher-option" data-amount="cottage-experience" data-type="experience" onclick="selectVoucherAmount('cottage-experience')">
-                            <div class="voucher-option-header">
+                        <div class="voucher-option-v2-new" data-amount="cottage-experience-v2" data-type="experience" onclick="selectVoucherAmountV2New('cottage-experience-v2')">
+                            <div class="voucher-option-header-v2-new">
                                 <div style="font-size: 2rem; margin-bottom: 0.5rem;">🏡</div>
                                 <h4>Cottage Experience</h4>
-                                <div class="voucher-price">One Night</div>
+                                <div class="voucher-price-v2-new">One Night</div>
                             </div>
                             <p>Complete lakeside cottage stay, any season</p>
                         </div>
                         
-                        <div class="voucher-option custom" data-amount="custom" onclick="selectVoucherAmount('custom')">
-                            <div class="voucher-option-header">
+                        <div class="voucher-option-v2-new custom" data-amount="custom-v2" onclick="selectVoucherAmountV2New('custom-v2')">
+                            <div class="voucher-option-header-v2-new">
                                 <div style="font-size: 2rem; margin-bottom: 0.5rem;">🎁</div>
                                 <h4>Custom Amount</h4>
-                                <div class="voucher-price">Your Choice</div>
+                                <div class="voucher-price-v2-new">Your Choice</div>
                             </div>
                             <p>Perfect for specific budgets</p>
                         </div>
@@ -7125,10 +7127,10 @@ Thank you for choosing Lakeside Retreat!`);
             }
         }
 
-        // VOUCHER SYSTEM FUNCTIONS
-        let selectedVoucherAmount = 'dome-rose'; // Default selection
-        let voucherData = {
-            amount: 'dome-rose',
+        // VOUCHER SYSTEM V2 - NEW FUNCTIONS
+        let selectedVoucherAmountV2New = 'dome-rose-v2'; // Default selection
+        let voucherDataV2New = {
+            amount: 'dome-rose-v2',
             recipientName: '',
             recipientEmail: '',
             message: '',
@@ -7147,58 +7149,68 @@ Thank you for choosing Lakeside Retreat!`);
             return `LSR-${timestamp}-${random}`;
         }
 
-        // Select voucher amount
-        function selectVoucherAmount(amount) {
-            selectedVoucherAmount = amount;
+        // Select voucher amount V2 NEW
+        function selectVoucherAmountV2New(amount) {
+            selectedVoucherAmountV2New = amount;
+            console.log('V2 NEW: Selecting voucher amount:', amount);
             
-            // Update visual selection
-            document.querySelectorAll('.voucher-option').forEach(option => {
-                option.classList.remove('selected');
+            // Update visual selection - V2 NEW classes
+            document.querySelectorAll('.voucher-option-v2-new').forEach(option => {
+                option.classList.remove('selected-v2-new');
             });
-            document.querySelector(`[data-amount="${amount}"]`).classList.add('selected');
+            const selectedOption = document.querySelector(`[data-amount="${amount}"]`);
+            if (selectedOption) {
+                selectedOption.classList.add('selected-v2-new');
+            }
             
             // Show/hide custom amount input
             const customInput = document.getElementById('customAmountInput');
-            if (amount === 'custom') {
+            if (amount === 'custom-v2') {
                 customInput.style.display = 'block';
                 document.getElementById('customVoucherAmount').focus();
             } else {
                 customInput.style.display = 'none';
-                voucherData.amount = amount;
-                voucherData.customAmount = null;
+                voucherDataV2New.amount = amount;
+                voucherDataV2New.customAmount = null;
             }
             
-            updateVoucherSummary();
+            updateVoucherSummaryV2New();
         }
 
-        // Update voucher summary
-        function updateVoucherSummary() {
+        // Update voucher summary V2 NEW
+        function updateVoucherSummaryV2New() {
             let displayAmount = '';
             let displayType = '';
             
-            if (selectedVoucherAmount === 'custom') {
+            console.log('V2 NEW: Updating summary for:', selectedVoucherAmountV2New);
+            
+            if (selectedVoucherAmountV2New === 'custom-v2') {
                 displayAmount = `$${document.getElementById('customVoucherAmount').value || 0}`;
                 displayType = 'Custom Credit';
-                voucherData.customAmount = document.getElementById('customVoucherAmount').value;
-            } else if (selectedVoucherAmount === 'credit-500') {
+                voucherDataV2New.customAmount = document.getElementById('customVoucherAmount').value;
+            } else if (selectedVoucherAmountV2New === 'credit-500-v2') {
                 displayAmount = '$500';
                 displayType = 'Flexible Credit';
-            } else if (selectedVoucherAmount === 'dome-rose') {
+            } else if (selectedVoucherAmountV2New === 'dome-rose-v2') {
                 displayAmount = 'One Night';
                 displayType = 'Dome Rosé Experience';
-            } else if (selectedVoucherAmount === 'cottage-experience') {
+            } else if (selectedVoucherAmountV2New === 'cottage-experience-v2') {
                 displayAmount = 'One Night';
                 displayType = 'Cottage Experience';
             }
             
-            document.getElementById('summaryAmount').textContent = displayAmount;
-            document.getElementById('summaryTotal').textContent = displayType;
+            const summaryAmountEl = document.getElementById('summaryAmount');
+            const summaryTotalEl = document.getElementById('summaryTotal');
+            if (summaryAmountEl) summaryAmountEl.textContent = displayAmount;
+            if (summaryTotalEl) summaryTotalEl.textContent = displayType;
             
-            const recipient = document.getElementById('voucherRecipientName').value || '-';
-            document.getElementById('summaryRecipient').textContent = recipient;
+            const recipient = document.getElementById('voucherRecipientName')?.value || '-';
+            const summaryRecipientEl = document.getElementById('summaryRecipient');
+            if (summaryRecipientEl) summaryRecipientEl.textContent = recipient;
             
-            const occasion = document.getElementById('voucherOccasion').value || '-';
-            document.getElementById('summaryOccasion').textContent = occasion.charAt(0).toUpperCase() + occasion.slice(1);
+            const occasion = document.getElementById('voucherOccasion')?.value || '-';
+            const summaryOccasionEl = document.getElementById('summaryOccasion');
+            if (summaryOccasionEl) summaryOccasionEl.textContent = occasion.charAt(0).toUpperCase() + occasion.slice(1);
         }
 
         // Navigate between voucher steps
