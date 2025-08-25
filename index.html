@@ -129,6 +129,9 @@
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Stripe.js Library -->
+    <script src="https://js.stripe.com/v3/"></script>
  <!-- Google Analytics 4 -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-M6TC9MB5CR"></script>
     <script>
@@ -6465,8 +6468,10 @@ Thank you for choosing Lakeside Retreat!`);
             document.getElementById('totalAmount').textContent = `${total} NZD`;
         }
 
-        // SECURE PAYMENT: Process payment securely with Stripe
+        // STRIPE PAYMENT: Process payment with Stripe Checkout
         async function processInstantPayment() {
+            console.log('Starting Stripe payment process...');
+            
             try {
                 // Validate guest details are filled
                 const firstName = document.getElementById('guestFirstName').value;
@@ -6484,71 +6489,100 @@ Thank you for choosing Lakeside Retreat!`);
                     return;
                 }
 
-                // Use secure payment processing if available
-                if (window.SecurePayment && window.SecurePayment.processSecurePaymentFromForm) {
-                    await window.SecurePayment.processSecurePaymentFromForm();
-                } else {
-                    // Fallback to secure API call
-                    const bookingData = {
-                        accommodation: selectedAccommodation,
-                        checkIn: document.getElementById('bookingCheckin').value,
-                        checkOut: document.getElementById('bookingCheckout').value,
-                        guests: document.getElementById('bookingAdults').value,
-                        guestName: firstName + ' ' + lastName,
-                        guestEmail: emailInput.value,
-                        guestPhone: phone,
-                        specialRequests: document.getElementById('specialRequests').value
-                    };
+                // Check if Stripe is loaded
+                if (typeof Stripe === 'undefined') {
+                    throw new Error('Stripe library not loaded. Please refresh the page.');
+                }
 
-                    // Sanitize data if secure functions available
-                    if (window.SecureFrontend && window.SecureFrontend.sanitizeFormData) {
-                        const formData = new FormData();
-                        Object.keys(bookingData).forEach(key => {
-                            formData.append(key, bookingData[key]);
-                        });
-                        const sanitizedData = window.SecureFrontend.sanitizeFormData(formData);
-                        Object.assign(bookingData, sanitizedData);
-                    }
+                // Initialize Stripe
+                const stripe = Stripe('pk_live_51ObA6xDwsGZX1xFlwBMuduT8zhQ8IiDe7uY1v2PMLhu6g9K2YC387Cxn5Dj2r6LtMpqQ9XjrCF4oGfVmfK5PIqY700UMtUH8WS');
+                console.log('Stripe initialized successfully');
 
-                    // Process payment securely
-                    const response = await fetch('/api/process-booking', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-Token': await getCSRFToken()
-                        },
-                        credentials: 'include',
-                        body: JSON.stringify(bookingData)
-                    });
+                // Prepare booking data
+                const bookingData = {
+                    accommodation: selectedAccommodation,
+                    checkIn: document.getElementById('bookingCheckin').value,
+                    checkOut: document.getElementById('bookingCheckout').value,
+                    guests: document.getElementById('bookingAdults').value,
+                    guestName: firstName + ' ' + lastName,
+                    guestEmail: emailInput.value,
+                    guestPhone: phone,
+                    specialRequests: document.getElementById('specialRequests').value
+                };
 
-                    if (!response.ok) {
-                        throw new Error('Payment processing failed');
-                    }
+                // Calculate total from booking form
+                const totalText = document.getElementById('totalAmount').textContent;
+                const total = parseFloat(totalText.replace(' NZD', '')) || 0;
+                
+                console.log('Booking data:', bookingData);
+                console.log('Total amount:', total);
 
-                    const result = await response.json();
-                    
-                    // Show success
-                    if (window.SecureFrontend && window.SecureFrontend.showSuccess) {
-                        window.SecureFrontend.showSuccess('Payment processed successfully! Your booking is confirmed.');
-                    } else {
-                        alert('Payment processed successfully! Your booking is confirmed.');
-                    }
+                // Create Stripe checkout session
+                console.log('Creating Stripe checkout session...');
+                const response = await fetch('/api/create-checkout-session', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        booking: bookingData,
+                        line_items: [{
+                            price_data: {
+                                currency: 'nzd',
+                                product_data: {
+                                    name: `Lakeside Retreat - ${selectedAccommodation}`,
+                                    description: `${bookingData.checkIn} to ${bookingData.checkOut}`,
+                                },
+                                unit_amount: Math.round(total * 100), // Stripe expects cents
+                            },
+                            quantity: 1,
+                        }],
+                        success_url: window.location.origin + '/?payment=success',
+                        cancel_url: window.location.origin + '/?payment=cancelled',
+                        customer_email: emailInput.value,
+                        metadata: {
+                            property: selectedAccommodation,
+                            checkin: bookingData.checkIn,
+                            checkout: bookingData.checkOut,
+                            guests: bookingData.guests,
+                            phone: phone,
+                            special_requests: bookingData.specialRequests
+                        }
+                    })
+                });
 
-                    // Close modal and redirect
-                    setTimeout(() => {
-                        closeBookingModal();
-                        showPage('home');
-                    }, 2000);
+                console.log('Response status:', response.status);
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
+                }
+
+                const session = await response.json();
+                console.log('Stripe session:', session);
+                
+                if (session.error) {
+                    throw new Error(session.error);
+                }
+
+                if (!session.id) {
+                    throw new Error('No session ID received from server');
+                }
+
+                // Redirect to Stripe Checkout
+                console.log('Redirecting to Stripe checkout...');
+                const result = await stripe.redirectToCheckout({
+                    sessionId: session.id
+                });
+
+                if (result.error) {
+                    console.error('Stripe redirect error:', result.error);
+                    throw new Error(result.error.message);
                 }
                 
             } catch (error) {
-                // Console statement removed for production
-                
-                if (window.SecureFrontend && window.SecureFrontend.handleSecurityError) {
-                    window.SecureFrontend.handleSecurityError(error, 'payment_processing');
-                } else {
-                    alert('Payment processing failed. Please try again.');
-                }
+                console.error('Payment error:', error);
+                alert(`Payment processing failed: ${error.message}. Please try again.`);
             }
         }
 
