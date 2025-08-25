@@ -44,6 +44,7 @@
       .text-white { color: #ffffff; }
       .font-bold { font-weight: 700; }
       .mb-6 { margin-bottom: 1.5rem; }
+      @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
     
     <!-- Enhanced SEO Meta Tags -->
@@ -2181,6 +2182,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <li><a href="#" class="nav-link" onclick="showPage('reviews')">Reviews</a></li>
                 <li><a href="#" class="nav-link" onclick="showPage('story')">Our Story</a></li>
                                         <li><a href="#" class="nav-link" onclick="showPage('explore')">Explore</a></li>
+                        <li><a href="#" class="nav-link" onclick="scrollToFAQ()">FAQ</a></li>
                         <li><a href="#" class="nav-link" onclick="showPage('voucher')">Gift Vouchers</a></li>
                         <li><a href="#" class="nav-link" onclick="showPage('contact')">Contact</a></li>
                 <li><a href="#" class="nav-link" onclick="openSearch()"><i class="fas fa-search"></i></a></li>
@@ -2204,6 +2206,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <a href="#" class="nav-link" onclick="showPage('reviews'); toggleMobileMenu()">Reviews</a>
         <a href="#" class="nav-link" onclick="showPage('story'); toggleMobileMenu()">Our Story</a>
         <a href="#" class="nav-link" onclick="showPage('explore'); toggleMobileMenu()">Explore</a>
+        <a href="#" class="nav-link" onclick="scrollToFAQ(); toggleMobileMenu()">FAQ</a>
         <a href="#" class="nav-link" onclick="showPage('contact'); toggleMobileMenu()">Contact</a>
         <a href="#" class="btn btn-primary book-now-highlight" onclick="openBookingModal(); toggleMobileMenu()">Book Now</a>
     </div>
@@ -3079,6 +3082,99 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                 </div>
             </section>
+
+            <!-- FAQ Section -->
+            <section id="faq" class="section" style="background: rgba(45, 90, 90, 0.03); padding: 4rem 0;">
+                <div class="container">
+                    <div class="section-header" style="text-align: center; margin-bottom: 3rem;">
+                        <h2 style="font-family: 'Playfair Display', serif; font-size: 2.5rem; color: var(--brand-teal); margin-bottom: 1rem;">Frequently Asked Questions</h2>
+                        <p style="font-size: 1.1rem; color: var(--text); opacity: 0.8; max-width: 600px; margin: 0 auto;">Everything you need to know before booking your luxury eco-retreat</p>
+                    </div>
+                    
+                    <div style="max-width: 800px; margin: 0 auto;">
+                        <!-- FAQ Item 1 -->
+                        <div class="faq-item" style="background: white; border-radius: 12px; margin-bottom: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05); overflow: hidden;">
+                            <div class="faq-question" onclick="toggleFAQ(this)" style="padding: 1.5rem; cursor: pointer; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center; font-weight: 600; color: var(--brand-teal); user-select: none;">
+                                <span>What's included in my stay?</span>
+                                <span class="faq-arrow" style="font-size: 1.2rem; transition: transform 0.3s ease;">▼</span>
+                            </div>
+                            <div class="faq-answer" style="padding: 0; max-height: 0; overflow: hidden; transition: all 0.3s ease;">
+                                <div style="padding: 1.5rem; border-top: 1px solid #f0f0f0; color: var(--text); line-height: 1.6;">
+                                    <strong>Dome guests receive:</strong> Continental breakfast, private spa access, stovetop cooking & Weber BBQ, 55" OLED TV, air conditioning, free WiFi, and parking.<br><br>
+                                    <strong>Cottage guests receive:</strong> Complete cooking facilities with outdoor BBQ, wood-fired hot tub, garage parking, washing machine, pet-friendly accommodation, and direct lake access.<br><br>
+                                    <strong>All guests enjoy:</strong> Cycle trail maps, local winery recommendations, and Stephen & Sandy's personal hosting.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- FAQ Item 2 -->
+                        <div class="faq-item" style="background: white; border-radius: 12px; margin-bottom: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05); overflow: hidden;">
+                            <div class="faq-question" onclick="toggleFAQ(this)" style="padding: 1.5rem; cursor: pointer; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center; font-weight: 600; color: var(--brand-teal); user-select: none;">
+                                <span>How close are the nearest wineries?</span>
+                                <span class="faq-arrow" style="font-size: 1.2rem; transition: transform 0.3s ease;">▼</span>
+                            </div>
+                            <div class="faq-answer" style="padding: 0; max-height: 0; overflow: hidden; transition: all 0.3s ease;">
+                                <div style="padding: 1.5rem; border-top: 1px solid #f0f0f0; color: var(--text); line-height: 1.6;">
+                                    <strong>Walking distance:</strong> Rippon Vineyard (5min walk), Mt Difficulty (8min walk)<br>
+                                    <strong>Short drive:</strong> Gibbston Valley (15min), Chard Farm (20min), Peregrine (25min)<br>
+                                    <strong>Wine tour operators:</strong> We can arrange private tours or recommend local operators<br><br>
+                                    Perfect for wine enthusiasts - you're literally in the heart of Central Otago's premium wine region!
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- FAQ Item 3 -->
+                        <div class="faq-item" style="background: white; border-radius: 12px; margin-bottom: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05); overflow: hidden;">
+                            <div class="faq-question" onclick="toggleFAQ(this)" style="padding: 1.5rem; cursor: pointer; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center; font-weight: 600; color: var(--brand-teal); user-select: none;">
+                                <span>Can I bring my pet to the cottage?</span>
+                                <span class="faq-arrow" style="font-size: 1.2rem; transition: transform 0.3s ease;">▼</span>
+                            </div>
+                            <div class="faq-answer" style="padding: 0; max-height: 0; overflow: hidden; transition: all 0.3s ease;">
+                                <div style="padding: 1.5rem; border-top: 1px solid #f0f0f0; color: var(--text); line-height: 1.6;">
+                                    <strong>Lakeside Cottage:</strong> ✅ Pet-friendly! Well-behaved pets welcome (additional cleaning fee applies)<br>
+                                    <strong>Both Domes:</strong> ❌ No pets (adults-only luxury experience)<br><br>
+                                    <strong>Pet amenities:</strong> Secure yard area, nearby dog walking areas, pet washing station<br>
+                                    <strong>Requirements:</strong> Pets must be house-trained, current vaccinations, owner supervision at all times
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- FAQ Item 4 -->
+                        <div class="faq-item" style="background: white; border-radius: 12px; margin-bottom: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05); overflow: hidden;">
+                            <div class="faq-question" onclick="toggleFAQ(this)" style="padding: 1.5rem; cursor: pointer; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center; font-weight: 600; color: var(--brand-teal); user-select: none;">
+                                <span>What about the weather and seasonal activities?</span>
+                                <span class="faq-arrow" style="font-size: 1.2rem; transition: transform 0.3s ease;">▼</span>
+                            </div>
+                            <div class="faq-answer" style="padding: 0; max-height: 0; overflow: hidden; transition: all 0.3s ease;">
+                                <div style="padding: 1.5rem; border-top: 1px solid #f0f0f0; color: var(--text); line-height: 1.6;">
+                                    <strong>Summer (Dec-Feb):</strong> Perfect for lake activities, cycling, long winery days (20-30°C)<br>
+                                    <strong>Autumn (Mar-May):</strong> Wine harvest season, golden vineyard colors, crisp air (15-25°C)<br>
+                                    <strong>Winter (Jun-Aug):</strong> Cozy dome season, skiing at Cardrona (45min), hot spa weather (5-15°C)<br>
+                                    <strong>Spring (Sep-Nov):</strong> Cherry blossoms, fresh growth, ideal for outdoor activities (10-20°C)<br><br>
+                                    All accommodations have heating/cooling for year-round comfort!
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- FAQ Item 5 -->
+                        <div class="faq-item" style="background: white; border-radius: 12px; margin-bottom: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05); overflow: hidden;">
+                            <div class="faq-question" onclick="toggleFAQ(this)" style="padding: 1.5rem; cursor: pointer; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center; font-weight: 600; color: var(--brand-teal); user-select: none;">
+                                <span>How do I check in and get support during my stay?</span>
+                                <span class="faq-arrow" style="font-size: 1.2rem; transition: transform 0.3s ease;">▼</span>
+                            </div>
+                            <div class="faq-answer" style="padding: 0; max-height: 0; overflow: hidden; transition: all 0.3s ease;">
+                                <div style="padding: 1.5rem; border-top: 1px solid #f0f0f0; color: var(--text); line-height: 1.6;">
+                                    <strong>Check-in:</strong> Digital keypad entry, detailed instructions sent 24hrs before arrival<br>
+                                    <strong>Onsite hosts:</strong> Stephen & Sandy live onsite and available for immediate assistance<br>
+                                    <strong>Emergency contact:</strong> 24/7 phone support at +64-21-368-682<br>
+                                    <strong>Local recommendations:</strong> Personal concierge service for activities, restaurants, wineries<br><br>
+                                    We're here to make your stay perfect - no request is too small!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
 
         <!-- Stay Page -->
@@ -3156,7 +3252,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="container">
                     <div class="section-header">
                         <h2 class="section-title">Detailed Accommodations</h2>
-                        <p class="section-subtitle">All accommodations feature our 16.72kW solar array with 20kW hybrid inverter and smart energy management. Dome bookings include continental breakfast and private spa access. Cottage guests enjoy full cooking facilities and direct lake access. Stephen & Sandy provide technical energy system tours upon request.</p>
+                        <p class="section-subtitle">All accommodations are solar-powered and eco-friendly. Dome bookings include continental breakfast and private spa access. Cottage guests enjoy full cooking facilities and direct lake access. Stephen & Sandy are your onsite hosts ready to help with local recommendations.</p>
                     </div>
                     
                     <!-- ACCOMMODATION COMPARISON TABLE -->
@@ -4440,7 +4536,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                     </div>
                                 </div>
                                 <h4 style="font-weight: 600; margin-bottom: 1rem; color: var(--dark);">Advanced Energy Paradise</h4>
-                                <p class="card-text">"The location for cycling is unbeatable - step out the door and you're on the trail. After a day exploring Central Otago, coming back to their energy-positive accommodation with live monitoring dashboard was perfect. Stephen's energy system tour was incredibly educational."</p>
+                                <p class="card-text">"The location for cycling is unbeatable - step out the door and you're on the trail. After a day exploring Central Otago, coming back to their beautiful accommodation was perfect. Stephen and Sandy were wonderful hosts with great local knowledge."</p>
                                 <div style="display: flex; align-items: center; gap: 1rem; margin-top: 1.5rem;">
                                     <div style="width: 40px; height: 40px; border-radius: 50%; background: #1d4ed8; color: white; display: flex; align-items: center; justify-content: center; font-weight: 600;">D</div>
                                     <div>
@@ -4506,7 +4602,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div class="card-content">
                             <div style="text-align: center; margin-bottom: 2rem;">
                                 <h2 style="font-family: 'Playfair Display', serif; color: var(--brand-teal); margin-bottom: 0.5rem;">Stephen & Sandy</h2>
-                                <p style="font-style: italic; color: var(--text); opacity: 0.8;">Your Energy Technology Expert Hosts at Lakeside Retreat</p>
+                                <p style="font-style: italic; color: var(--text); opacity: 0.8;">Your Hosts at Lakeside Retreat</p>
                             </div>
 
                             <h3 style="font-family: 'Playfair Display', serif; color: var(--brand-teal); margin-top: 2rem; margin-bottom: 1rem;">The Wrong Turn That Changed Everything</h3>
@@ -4565,7 +4661,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             
                             <div style="text-align: center; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border);">
                                 <p style="font-weight: 600; color: var(--brand-teal); margin-bottom: 0.5rem;">Stephen & Sandy</p>
-                                <p style="font-style: italic; color: var(--text); opacity: 0.8; margin-bottom: 0;">Renewable Energy Technology Experts & Founders, Lakeside Retreat</p>
+                                <p style="font-style: italic; color: var(--text); opacity: 0.8; margin-bottom: 0;">Founders, Lakeside Retreat</p>
                                 <p style="font-size: 0.9rem; color: var(--text); opacity: 0.7;">96 Smiths Way, Mount Pisa • 16.72kW Solar Array • 16kWh Battery Storage</p>
                             </div>
                         </div>
@@ -4674,13 +4770,6 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <div style="color: var(--brand-teal); font-weight: 600; margin-top: 1rem;">30 minutes drive • Half or full day</div>
                             </div>
                         </div>
-                        <div class="card">
-                            <div class="card-content">
-                                <h3 class="card-title">🔋 Energy System Tours</h3>
-                                <p class="card-text">Take a guided tour of our commercial-grade solar array and learn about Signergy battery management. Perfect for tech enthusiasts and renewable energy advocates.</p>
-                                <div style="color: var(--brand-teal); font-weight: 600; margin-top: 1rem;">On-demand with Stephen & Sandy</div>
-                            </div>
-                        </div>
                     </div>
                     
                     <div style="text-align: center; margin-top: 3rem;">
@@ -4702,8 +4791,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="container">
                     <div class="hero-content">
                         <h1>Connect with Stephen & Sandy</h1>
-                        <div class="tagline">Personal Service • Local Knowledge • Energy Technology Expertise</div>
-                        <p>Planning your Central Otago escape? Have questions about our commercial-grade solar systems? Need recommendations for wine tastings or cycle routes? As your onsite energy technology expert hosts, we're here to ensure your stay exceeds every expectation. Real people, real responses, real local and renewable energy expertise.</p>
+                        <div class="tagline">Personal Service • Local Knowledge • Your Perfect Stay</div>
+                        <p>Planning your Central Otago escape? Need recommendations for wine tastings or cycle routes? As your onsite hosts, we're here to ensure your stay exceeds every expectation. Real people, real responses, real local expertise.</p>
                         
                         <div style="background: rgba(45, 90, 90, 0.05); padding: 2rem; border-radius: 15px; margin: 2rem 0; max-width: 600px; margin-left: auto; margin-right: auto;">
                             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; text-align: left;">
@@ -4713,7 +4802,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 </div>
                                 <div>
                                     <div style="font-weight: 600; color: var(--brand-teal); margin-bottom: 0.5rem;">We Love Helping With:</div>
-                                    <div style="font-size: 0.95rem;">🗓️ Activity planning & bookings<br>🍷 Winery recommendations<br>🔋 Energy system tours & tech talks<br>🚴 Cycle route mapping</div>
+                                    <div style="font-size: 0.95rem;">🗓️ Activity planning & bookings<br>🍷 Winery recommendations<br>🚴 Cycle route mapping<br>🏔️ Local insider tips</div>
                                 </div>
                             </div>
                         </div>
@@ -4727,44 +4816,105 @@ document.addEventListener('DOMContentLoaded', () => {
                             <div class="card-content">
                                 <h3 class="card-title">Get in Touch</h3>
                                 
+                                <!-- Business Hours -->
+                                <div style="background: rgba(45, 90, 90, 0.05); padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem;">
+                                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                                        <span style="color: var(--brand-teal);">🕐</span>
+                                        <strong>Business Hours</strong>
+                                    </div>
+                                    <div style="font-size: 0.9rem; line-height: 1.6;">
+                                        <div>Monday - Sunday: 8:00 AM - 8:00 PM NZST</div>
+                                        <div style="color: var(--brand-sage); margin-top: 0.25rem;">📧 Email replies within 4 hours</div>
+                                        <div style="color: var(--brand-sage);">💬 WhatsApp for instant queries</div>
+                                    </div>
+                                </div>
+                                
                                 <!-- Contact Methods -->
                                 <div style="margin-bottom: 1.5rem;">
-                                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">📧 <strong>Email:</strong> info@lakesideretreat.co.nz</div>
-                                    <div style="font-size: 0.85rem; color: var(--text); opacity: 0.8; margin-left: 1.5rem;">Best for: Bookings, detailed questions, energy system inquiries</div>
+                                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                                        📧 <strong>Email:</strong> 
+                                        <a href="mailto:info@lakesideretreat.co.nz" style="color: var(--brand-teal); text-decoration: none;">info@lakesideretreat.co.nz</a>
+                                    </div>
+                                    <div style="font-size: 0.85rem; color: var(--text); opacity: 0.8; margin-left: 1.5rem;">Best for: Bookings, detailed questions, special requests</div>
                                 </div>
                                 
                                 <div style="margin-bottom: 1.5rem;">
-                                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">📱 <strong>Phone/WhatsApp:</strong> 021 368 682 | 021 870 018</div>
-                                    <div style="font-size: 0.85rem; color: var(--text); opacity: 0.8; margin-left: 1.5rem;">Best for: Urgent queries, local recommendations, same-day bookings</div>
-                                    <div style="font-size: 0.85rem; color: var(--text); opacity: 0.8; margin-left: 1.5rem;"><strong>International:</strong> +64 21 368 682 | +64 21 870 018</div>
+                                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                                        📱 <strong>Stephen (Your Host):</strong>
+                                        <a href="tel:+6421368682" style="color: var(--brand-teal); text-decoration: none;">021 368 682</a>
+                                    </div>
+                                    <div style="font-size: 0.85rem; color: var(--text); opacity: 0.8; margin-left: 1.5rem;">Bookings, local recommendations, any questions</div>
+                                    <div style="font-size: 0.85rem; color: var(--text); opacity: 0.8; margin-left: 1.5rem;"><strong>International:</strong> +64 21 368 682</div>
                                 </div>
                                 
                                 <div style="margin-bottom: 1.5rem;">
-                                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">📍 <strong>Address:</strong></div>
-                                    <div style="margin-left: 1.5rem; line-height: 1.4;">96 Smiths Way, Mount Pisa<br>Cromwell, Otago 9310<br>New Zealand</div>
+                                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">📍 <strong>Location:</strong></div>
+                                    <div style="margin-left: 1.5rem; line-height: 1.4;">96 Smiths Way, Mount Pisa<br>Cromwell, Otago 9310<br>New Zealand<br><em style="color: var(--brand-sage);">55min from Queenstown • 30min from Wanaka</em></div>
                                 </div>
                                 
-                                <div style="background: rgba(45, 90, 90, 0.05); padding: 1rem; border-radius: 8px;">
-                                    <div style="font-weight: 600; color: var(--brand-teal); margin-bottom: 0.5rem;">🔋 Our Energy System</div>
-                                    <div style="font-size: 0.9rem; line-height: 1.4;">16.72kW Solar Array<br>16kWh Signergy Battery Storage<br>20kW Hybrid Inverter<br><em>Tech tours available by request</em></div>
+                                <!-- Quick Action Buttons -->
+                                <div style="display: flex; gap: 0.8rem; flex-wrap: wrap; margin: 1.5rem 0;">
+                                    <a href="mailto:info@lakesideretreat.co.nz?subject=Booking%20Inquiry%20-%20Lakeside%20Retreat" class="btn btn-outline btn-small" style="flex: 1; min-width: 100px; text-align: center;">
+                                        ✉️ Email
+                                    </a>
+                                    <a href="tel:+6421368682" class="btn btn-outline btn-small" style="flex: 1; min-width: 100px; text-align: center;">
+                                        📞 Call
+                                    </a>
+                                    <a href="https://wa.me/6421368682?text=Hi%20Stephen,%20I'm%20interested%20in%20booking%20at%20Lakeside%20Retreat" target="_blank" class="btn btn-small" style="flex: 1; min-width: 100px; text-align: center; background: #25D366; color: white; border: 1px solid #25D366;">
+                                        💬 WhatsApp
+                                    </a>
                                 </div>
+                                
                             </div>
                         </div>
                         <div class="card">
                             <div class="card-content">
                                 <h3 class="card-title">Send us a Message</h3>
-                                <form>
+                                
+                                <!-- Success/Error Messages -->
+                                <div id="contactFormFeedback" style="display: none; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                                    <div id="feedbackMessage"></div>
+                                </div>
+                                
+                                <form id="contactForm" onsubmit="handleContactFormSubmit(event)">
                                     <div class="form-group">
-                                        <input type="text" class="form-input" placeholder="Your Name" required>
+                                        <input type="text" id="contactName" class="form-input" placeholder="Your Name" required minlength="2" maxlength="50">
+                                        <div class="error-message" id="nameError" style="display: none; color: #dc2626; font-size: 0.85rem; margin-top: 0.25rem;"></div>
                                     </div>
                                     <div class="form-group">
-                                        <input type="email" class="form-input" placeholder="Your Email" required onblur="validateEmail(this)" oninput="clearEmailError(this)">
-                        <div class="email-error-message" id="contactEmailError" style="display: none; color: #dc2626; font-size: 0.85rem; margin-top: 0.25rem;"></div>
+                                        <input type="email" id="contactEmail" class="form-input" placeholder="Your Email" required onblur="validateEmail(this)" oninput="clearEmailError(this)">
+                                        <div class="email-error-message" id="contactEmailError" style="display: none; color: #dc2626; font-size: 0.85rem; margin-top: 0.25rem;"></div>
                                     </div>
                                     <div class="form-group">
-                                        <textarea class="form-textarea" rows="4" placeholder="Your Message (let us know if you're interested in our energy system tours!)" required></textarea>
+                                        <input type="tel" id="contactPhone" class="form-input" placeholder="Your Phone (optional)" pattern="[0-9+\-\s()]+" title="Please enter a valid phone number">
                                     </div>
-                                    <button type="submit" class="btn btn-primary">Send Message</button>
+                                    <div class="form-group">
+                                        <select id="contactSubject" class="form-input" required>
+                                            <option value="">Select Subject</option>
+                                            <option value="booking">Booking Inquiry</option>
+                                            <option value="availability">Check Availability</option>
+                                            <option value="activities">Local Activities Info</option>
+                                            <option value="special">Special Request</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <textarea id="contactMessage" class="form-textarea" rows="4" placeholder="Your Message" required minlength="10" maxlength="1000"></textarea>
+                                        <div style="text-align: right; font-size: 0.85rem; color: #666; margin-top: 0.25rem;">
+                                            <span id="charCount">0</span>/1000 characters
+                                        </div>
+                                    </div>
+                                    <!-- Honeypot field for spam protection -->
+                                    <div style="position: absolute; left: -9999px;">
+                                        <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+                                    </div>
+                                    <button type="submit" id="contactSubmitBtn" class="btn btn-primary" style="position: relative;">
+                                        <span id="btnText">Send Message</span>
+                                        <span id="btnLoader" style="display: none;">
+                                            <span style="display: inline-block; width: 16px; height: 16px; border: 2px solid #fff; border-radius: 50%; border-top-color: transparent; animation: spin 0.6s linear infinite;"></span>
+                                            Sending...
+                                        </span>
+                                    </button>
                                 </form>
                             </div>
                         </div>
@@ -5181,136 +5331,6 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
     </main>
 
-    <!-- FREQUENTLY ASKED QUESTIONS SECTION -->
-    <section class="section" style="background: rgba(45, 90, 90, 0.03); margin-top: 0; padding: 4rem 0;">
-        <div class="container">
-            <div class="section-header" style="text-align: center; margin-bottom: 3rem;">
-                <h2 style="font-family: 'Playfair Display', serif; font-size: 2.5rem; color: var(--brand-teal); margin-bottom: 1rem;">Frequently Asked Questions</h2>
-                <p style="font-size: 1.1rem; color: var(--text); opacity: 0.8; max-width: 600px; margin: 0 auto;">Everything you need to know before booking your luxury eco-retreat</p>
-                
-                <!-- Instant Contact CTA -->
-                <div style="margin-top: 2rem; padding: 1.5rem; background: linear-gradient(135deg, #25D366 0%, #20B358 100%); border-radius: 15px; display: inline-block;">
-                    <p style="color: white; margin: 0 0 1rem 0; font-weight: 600;">Can't find your answer? Get instant help!</p>
-                    <a href="https://wa.me/6421368682?text=Hi Stephen & Sandy! I have a question about booking Lakeside Retreat." target="_blank" style="
-                        background: white;
-                        color: #25D366;
-                        padding: 12px 24px;
-                        border-radius: 25px;
-                        text-decoration: none;
-                        font-weight: 600;
-                        display: inline-flex;
-                        align-items: center;
-                        gap: 8px;
-                        transition: all 0.3s ease;
-                        font-size: 0.95rem;
-                    " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.2)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
-                        💬 WhatsApp Stephen & Sandy
-                    </a>
-                </div>
-            </div>
-            
-            <div style="max-width: 800px; margin: 0 auto;">
-                <!-- FAQ Item 1 -->
-                <div class="faq-item" style="background: white; border-radius: 12px; margin-bottom: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05); overflow: hidden;">
-                    <div class="faq-question" onclick="toggleFAQ(this)" style="padding: 1.5rem; cursor: pointer; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center; font-weight: 600; color: var(--brand-teal); user-select: none;">
-                        <span>What's included in my stay?</span>
-                        <span class="faq-arrow" style="font-size: 1.2rem; transition: transform 0.3s ease;">▼</span>
-                    </div>
-                    <div class="faq-answer" style="padding: 0; max-height: 0; overflow: hidden; transition: all 0.3s ease;">
-                        <div style="padding: 1.5rem; border-top: 1px solid #f0f0f0; color: var(--text); line-height: 1.6;">
-                            <strong>Dome guests receive:</strong> Continental breakfast, private spa access, stovetop cooking & Weber BBQ, 55" OLED TV, air conditioning, free WiFi, and parking.<br><br>
-                            <strong>Cottage guests receive:</strong> Complete cooking facilities with outdoor BBQ, wood-fired hot tub, garage parking, washing machine, pet-friendly accommodation, and direct lake access.<br><br>
-                            <strong>All guests enjoy:</strong> Access to 16.72kW solar system tours, cycle trail maps, local winery recommendations, and Stephen & Sandy's personal hosting.
-                        </div>
-                    </div>
-                </div>
-
-                <!-- FAQ Item 2 -->
-                <div class="faq-item" style="background: white; border-radius: 12px; margin-bottom: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05); overflow: hidden;">
-                    <div class="faq-question" onclick="toggleFAQ(this)" style="padding: 1.5rem; cursor: pointer; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center; font-weight: 600; color: var(--brand-teal); user-select: none;">
-                        <span>How close are the nearest wineries?</span>
-                        <span class="faq-arrow" style="font-size: 1.2rem; transition: transform 0.3s ease;">▼</span>
-                    </div>
-                    <div class="faq-answer" style="padding: 0; max-height: 0; overflow: hidden; transition: all 0.3s ease;">
-                        <div style="padding: 1.5rem; border-top: 1px solid #f0f0f0; color: var(--text); line-height: 1.6;">
-                            <strong>Walking distance:</strong> Rippon Vineyard (5min walk), Mt Difficulty (8min walk)<br>
-                            <strong>Short drive:</strong> Gibbston Valley (15min), Chard Farm (20min), Peregrine (25min)<br>
-                            <strong>Wine tour operators:</strong> We can arrange private tours or recommend local operators<br><br>
-                            Perfect for wine enthusiasts - you're literally in the heart of Central Otago's premium wine region!
-                        </div>
-                    </div>
-                </div>
-
-                <!-- FAQ Item 3 -->
-                <div class="faq-item" style="background: white; border-radius: 12px; margin-bottom: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05); overflow: hidden;">
-                    <div class="faq-question" onclick="toggleFAQ(this)" style="padding: 1.5rem; cursor: pointer; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center; font-weight: 600; color: var(--brand-teal); user-select: none;">
-                        <span>Can I bring my pet to the cottage?</span>
-                        <span class="faq-arrow" style="font-size: 1.2rem; transition: transform 0.3s ease;">▼</span>
-                    </div>
-                    <div class="faq-answer" style="padding: 0; max-height: 0; overflow: hidden; transition: all 0.3s ease;">
-                        <div style="padding: 1.5rem; border-top: 1px solid #f0f0f0; color: var(--text); line-height: 1.6;">
-                            <strong>Lakeside Cottage:</strong> ✅ Pet-friendly! Well-behaved pets welcome (additional cleaning fee applies)<br>
-                            <strong>Both Domes:</strong> ❌ No pets (adults-only luxury experience)<br><br>
-                            <strong>Pet amenities:</strong> Secure yard area, nearby dog walking areas, pet washing station<br>
-                            <strong>Requirements:</strong> Pets must be house-trained, current vaccinations, owner supervision at all times
-                        </div>
-                    </div>
-                </div>
-
-                <!-- FAQ Item 4 -->
-                <div class="faq-item" style="background: white; border-radius: 12px; margin-bottom: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05); overflow: hidden;">
-                    <div class="faq-question" onclick="toggleFAQ(this)" style="padding: 1.5rem; cursor: pointer; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center; font-weight: 600; color: var(--brand-teal); user-select: none;">
-                        <span>What about the weather and seasonal activities?</span>
-                        <span class="faq-arrow" style="font-size: 1.2rem; transition: transform 0.3s ease;">▼</span>
-                    </div>
-                    <div class="faq-answer" style="padding: 0; max-height: 0; overflow: hidden; transition: all 0.3s ease;">
-                        <div style="padding: 1.5rem; border-top: 1px solid #f0f0f0; color: var(--text); line-height: 1.6;">
-                            <strong>Summer (Dec-Feb):</strong> Perfect for lake activities, cycling, long winery days (20-30°C)<br>
-                            <strong>Autumn (Mar-May):</strong> Wine harvest season, golden vineyard colors, crisp air (15-25°C)<br>
-                            <strong>Winter (Jun-Aug):</strong> Cozy dome season, skiing at Cardrona (45min), hot spa weather (5-15°C)<br>
-                            <strong>Spring (Sep-Nov):</strong> Cherry blossoms, fresh growth, ideal for outdoor activities (10-20°C)<br><br>
-                            All accommodations have heating/cooling for year-round comfort!
-                        </div>
-                    </div>
-                </div>
-
-                <!-- FAQ Item 5 -->
-                <div class="faq-item" style="background: white; border-radius: 12px; margin-bottom: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05); overflow: hidden;">
-                    <div class="faq-question" onclick="toggleFAQ(this)" style="padding: 1.5rem; cursor: pointer; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center; font-weight: 600; color: var(--brand-teal); user-select: none;">
-                        <span>How do I check in and get support during my stay?</span>
-                        <span class="faq-arrow" style="font-size: 1.2rem; transition: transform 0.3s ease;">▼</span>
-                    </div>
-                    <div class="faq-answer" style="padding: 0; max-height: 0; overflow: hidden; transition: all 0.3s ease;">
-                        <div style="padding: 1.5rem; border-top: 1px solid #f0f0f0; color: var(--text); line-height: 1.6;">
-                            <strong>Check-in:</strong> 3:00 PM onwards (self-check-in with keypad entry)<br>
-                            <strong>Check-out:</strong> 10:00 AM (express checkout available)<br>
-                            <strong>On-site hosts:</strong> Stephen & Sandy live on-property for immediate assistance<br>
-                            <strong>Contact:</strong> Phone/text +64 21 368 682 (available 24/7 for emergencies)<br><br>
-                            <strong>Pre-arrival:</strong> Detailed arrival instructions, local recommendations, and contact details sent 48 hours before arrival
-                        </div>
-                    </div>
-                </div>
-
-                <!-- FAQ Item 6 -->
-                <div class="faq-item" style="background: white; border-radius: 12px; margin-bottom: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05); overflow: hidden;">
-                    <div class="faq-question" onclick="toggleFAQ(this)" style="padding: 1.5rem; cursor: pointer; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center; font-weight: 600; color: var(--brand-teal); user-select: none;">
-                        <span>Tell me about the solar system - how does it work?</span>
-                        <span class="faq-arrow" style="font-size: 1.2rem; transition: transform 0.3s ease;">▼</span>
-                    </div>
-                    <div class="faq-answer" style="padding: 0; max-height: 0; overflow: hidden; transition: all 0.3s ease;">
-                        <div style="padding: 1.5rem; border-top: 1px solid #f0f0f0; color: var(--text); line-height: 1.6;">
-                            <strong>System specs:</strong> 16.72kW solar array with 16kWh battery storage + 20kW hybrid inverter<br>
-                            <strong>Daily generation:</strong> 60-80kWh in summer, 30-40kWh in winter<br>
-                            <strong>Guest experience:</strong> Real-time monitoring displays, energy dashboard, guided tours available<br>
-                            <strong>Sustainability:</strong> 95%+ off-grid operation, net-positive energy generation<br><br>
-                            <strong>Tech enthusiasts welcome:</strong> Stephen loves sharing technical details and system performance data!
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- Enhanced Footer with Advanced Internal Linking -->
     <footer class="footer">
         <div class="container">
@@ -5442,7 +5462,7 @@ document.addEventListener('DOMContentLoaded', () => {
             { name: 'Sarah from Auckland', action: 'just booked Dome Pinot', time: '2 minutes ago' },
             { name: 'Mike from Melbourne', action: 'just booked Lakeside Cottage', time: '5 minutes ago' },
             { name: 'Lisa from Wellington', action: 'just booked Dome Rosé', time: '8 minutes ago' },
-            { name: 'David from Sydney', action: 'just booked an energy system tour', time: '12 minutes ago' },
+            { name: 'David from Sydney', action: 'just booked a weekend stay', time: '12 minutes ago' },
             { name: 'Emma from Christchurch', action: 'just booked Lakeside Cottage', time: '15 minutes ago' }
         ];
 
@@ -7521,6 +7541,164 @@ Thank you for choosing Lakeside Retreat!`);
         }
 
         // Toggle Guide Sections
+        // Contact Form Character Counter
+        document.addEventListener('DOMContentLoaded', function() {
+            const messageTextarea = document.getElementById('contactMessage');
+            const charCounter = document.getElementById('charCount');
+            
+            if (messageTextarea && charCounter) {
+                messageTextarea.addEventListener('input', function() {
+                    charCounter.textContent = this.value.length;
+                });
+            }
+        });
+
+        // Contact Form Submission Handler
+        async function handleContactFormSubmit(event) {
+            event.preventDefault();
+            
+            // Check honeypot (anti-spam)
+            const honeypot = document.getElementById('website');
+            if (honeypot && honeypot.value) {
+                console.log('Spam detected');
+                return false;
+            }
+            
+            // Get form elements
+            const form = document.getElementById('contactForm');
+            const submitBtn = document.getElementById('contactSubmitBtn');
+            const btnText = document.getElementById('btnText');
+            const btnLoader = document.getElementById('btnLoader');
+            const feedback = document.getElementById('contactFormFeedback');
+            const feedbackMessage = document.getElementById('feedbackMessage');
+            
+            // Get form data
+            const formData = {
+                name: document.getElementById('contactName').value.trim(),
+                email: document.getElementById('contactEmail').value.trim(),
+                phone: document.getElementById('contactPhone').value.trim(),
+                subject: document.getElementById('contactSubject').value,
+                message: document.getElementById('contactMessage').value.trim(),
+                timestamp: new Date().toISOString(),
+                source: 'Lakeside Retreat Contact Form'
+            };
+            
+            // Validate form data
+            if (!formData.name || formData.name.length < 2) {
+                showFormError('Please enter your name (at least 2 characters)');
+                return false;
+            }
+            
+            if (!validateEmailFormat(formData.email)) {
+                showFormError('Please enter a valid email address');
+                return false;
+            }
+            
+            if (!formData.message || formData.message.length < 10) {
+                showFormError('Please enter a message (at least 10 characters)');
+                return false;
+            }
+            
+            // Show loading state
+            submitBtn.disabled = true;
+            btnText.style.display = 'none';
+            btnLoader.style.display = 'inline-block';
+            
+            try {
+                // Send to backend API
+                const response = await fetch('/api/contact', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                if (response.ok) {
+                    // Success
+                    showFormSuccess('Thank you for your message! We\'ll respond within 4 hours during business hours (8am-8pm NZST).');
+                    form.reset();
+                    document.getElementById('charCount').textContent = '0';
+                    
+                    // Track event if analytics available
+                    if (typeof trackEvent === 'function') {
+                        trackEvent('contact', 'form_submitted', formData.subject);
+                    }
+                } else {
+                    // Server error
+                    showFormError('Sorry, there was an error sending your message. Please try again or email us directly at info@lakesideretreat.co.nz');
+                }
+            } catch (error) {
+                console.error('Contact form error:', error);
+                // Network error or API not available - fallback to mailto
+                const mailtoLink = `mailto:info@lakesideretreat.co.nz?subject=${encodeURIComponent(formData.subject)}&body=${encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\nPhone: ${formData.phone || 'Not provided'}\n\nMessage:\n${formData.message}`)}`;
+                window.location.href = mailtoLink;
+                showFormSuccess('Opening your email client to send the message...');
+            } finally {
+                // Reset button state
+                submitBtn.disabled = false;
+                btnText.style.display = 'inline';
+                btnLoader.style.display = 'none';
+            }
+            
+            return false;
+        }
+        
+        // Helper function to validate email format
+        function validateEmailFormat(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+        
+        // Show form success message
+        function showFormSuccess(message) {
+            const feedback = document.getElementById('contactFormFeedback');
+            const feedbackMessage = document.getElementById('feedbackMessage');
+            
+            if (feedback && feedbackMessage) {
+                feedback.style.display = 'block';
+                feedback.style.background = '#d1fae5';
+                feedback.style.border = '1px solid #10b981';
+                feedback.style.color = '#065f46';
+                feedbackMessage.innerHTML = `✅ ${message}`;
+                
+                // Auto-hide after 10 seconds
+                setTimeout(() => {
+                    feedback.style.display = 'none';
+                }, 10000);
+            }
+        }
+        
+        // Show form error message
+        function showFormError(message) {
+            const feedback = document.getElementById('contactFormFeedback');
+            const feedbackMessage = document.getElementById('feedbackMessage');
+            
+            if (feedback && feedbackMessage) {
+                feedback.style.display = 'block';
+                feedback.style.background = '#fee2e2';
+                feedback.style.border = '1px solid #ef4444';
+                feedback.style.color = '#991b1b';
+                feedbackMessage.innerHTML = `❌ ${message}`;
+                
+                // Auto-hide after 5 seconds
+                setTimeout(() => {
+                    feedback.style.display = 'none';
+                }, 5000);
+            }
+        }
+
+        // FAQ Scroll Function
+        function scrollToFAQ() {
+            showPage('home');
+            setTimeout(() => {
+                const faqSection = document.getElementById('faq');
+                if (faqSection) {
+                    faqSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }, 300);
+        }
+
         function toggleGuide(headerElement) {
             console.log('toggleGuide called');
             const guideItem = headerElement.parentElement;

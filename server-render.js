@@ -2,10 +2,39 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const nodemailer = require('nodemailer');
 require('dotenv').config();
 
 const app = express();
-const PORT = process.env.PORT || 10000;
+const PORT = process.env.PORT || 10001;
+
+// Titan Email (Nodemailer) configuration
+let transporter = null;
+
+if (process.env.EMAIL_HOST && process.env.EMAIL_USER && process.env.EMAIL_PASS) {
+  transporter = nodemailer.createTransport({
+    host: process.env.EMAIL_HOST,
+    port: parseInt(process.env.EMAIL_PORT) || 587,
+    secure: false, // true for 465, false for other ports
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS
+    },
+    tls: {
+      rejectUnauthorized: false // Allow self-signed certificates
+    }
+  });
+  console.log('📧 Titan Email configured for delivery');
+} else {
+  console.log('⚠️  Email credentials not found - emails will be logged only');
+}
+
+// Email configuration
+const EMAIL_CONFIG = {
+  from: process.env.FROM_EMAIL || 'info@lakesideretreat.co.nz',
+  to: 'info@lakesideretreat.co.nz', // Where form submissions should be sent
+  replyTo: process.env.FROM_EMAIL || 'info@lakesideretreat.co.nz'
+};
 
 // Basic middleware
 app.use(cors());
@@ -71,16 +100,82 @@ app.post('/api/booking/create', async (req, res) => {
 app.post('/api/contact', async (req, res) => {
   try {
     console.log('Contact form submission:', req.body);
-    // Add email sending logic here if needed
-    res.json({ 
-      success: true, 
-      message: 'Contact form received' 
-    });
+    
+    const { name, email, phone, subject, message, timestamp } = req.body;
+    
+    // Validate required fields
+    if (!name || !email || !message || !subject) {
+      return res.status(400).json({
+        success: false,
+        error: 'Missing required fields'
+      });
+    }
+    
+    // Create email content
+    const emailSubject = `New Contact Form: ${subject} - ${name}`;
+    const emailBody = `
+New contact form submission from Lakeside Retreat website:
+
+Name: ${name}
+Email: ${email}
+Phone: ${phone || 'Not provided'}
+Subject: ${subject}
+Submitted: ${timestamp || new Date().toISOString()}
+
+Message:
+${message}
+
+---
+This email was sent from the Lakeside Retreat contact form.
+Reply directly to this email to respond to ${name} at ${email}.
+    `;
+    
+    // Email options
+    const mailOptions = {
+      from: EMAIL_CONFIG.from,
+      to: EMAIL_CONFIG.to,
+      replyTo: email, // Reply will go directly to the person who submitted the form
+      subject: emailSubject,
+      text: emailBody,
+      html: emailBody.replace(/\n/g, '<br>')
+    };
+    
+    // Try to send email via Titan
+    if (transporter) {
+      try {
+        await transporter.sendMail(mailOptions);
+        console.log(`✅ Email sent via Titan for contact form from ${name} (${email})`);
+        
+        res.json({ 
+          success: true, 
+          message: 'Thank you for your message! We\'ll get back to you within 4 hours during business hours.' 
+        });
+      } catch (emailError) {
+        console.error('❌ Titan email sending failed:', emailError.message);
+        
+        // Still return success to user but log the email failure
+        res.json({ 
+          success: true, 
+          message: 'Thank you for your message! We\'ve received your submission and will get back to you soon.',
+          emailWarning: 'Email delivery may be delayed'
+        });
+      }
+    } else {
+      // No email service configured - just log and return success
+      console.log(`📝 Contact form logged (no email service): ${name} (${email}) - Subject: ${subject}`);
+      console.log(`📝 Message: ${message}`);
+      
+      res.json({ 
+        success: true, 
+        message: 'Thank you for your message! We\'ve received your submission and will get back to you soon.'
+      });
+    }
+    
   } catch (error) {
     console.error('Contact form error:', error);
     res.status(500).json({ 
       success: false, 
-      error: 'Contact form error' 
+      error: 'There was an error processing your message. Please try again or email us directly at info@lakesideretreat.co.nz' 
     });
   }
 });
