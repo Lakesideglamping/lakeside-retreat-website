@@ -150,13 +150,17 @@ app.post('/api/admin/login', async (req, res) => {
     const trimmedUsername = username ? username.trim() : '';
     const trimmedPassword = password ? password.trim() : '';
     
-    // SUPER SIMPLE - JUST ACCEPT THESE EXACT CREDENTIALS
-    if (trimmedUsername === 'lakesideadmin' && trimmedPassword === 'LakesideAdmin2025') {
+    // Use environment variables for credentials (fallback for development only)
+    const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'lakesideadmin';
+    const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'LakesideAdmin2025';
+    
+    if (trimmedUsername === ADMIN_USERNAME && trimmedPassword === ADMIN_PASSWORD) {
       console.log('LOGIN SUCCESS!');
       
+      const JWT_SECRET = process.env.JWT_SECRET || 'simple-jwt-secret-2025-dev-only';
       const token = jwt.sign(
-        { username: 'lakesideadmin', role: 'admin' },
-        'simple-jwt-secret-2025',
+        { username: trimmedUsername, role: 'admin' },
+        JWT_SECRET,
         { expiresIn: '24h' }
       );
       
@@ -189,32 +193,29 @@ app.post('/api/admin/login', async (req, res) => {
   }
 });
 
-// DEBUG ENDPOINT - REMOVE IN PRODUCTION
+// DEBUG ENDPOINT - DISABLED IN PRODUCTION
 app.get('/api/admin/debug', (req, res) => {
+  if (process.env.NODE_ENV === 'production') {
+    return res.status(404).json({ error: 'Not found' });
+  }
   res.json({
     environment_variables: {
-      ADMIN_USERNAME: process.env.ADMIN_USERNAME,
-      ADMIN_PASSWORD_HASH_EXISTS: !!process.env.ADMIN_PASSWORD_HASH,
+      ADMIN_USERNAME_EXISTS: !!process.env.ADMIN_USERNAME,
       JWT_SECRET_EXISTS: !!process.env.JWT_SECRET,
       NODE_ENV: process.env.NODE_ENV
     },
-    expected_credentials: {
-      username: 'lakesideadmin',
-      password: 'LakesideAdmin2025'
-    },
-    timestamp: new Date().toISOString(),
-    server_version: 'v2.0-functional'
+    message: 'Debug mode - credentials hidden in production',
+    timestamp: new Date().toISOString()
   });
 });
 
-// Test login endpoint - simple GET request
+// Test login endpoint - disabled in production
 app.get('/api/admin/test-login', (req, res) => {
+  if (process.env.NODE_ENV === 'production') {
+    return res.status(404).json({ error: 'Not found' });
+  }
   res.json({
     message: 'Login system is working',
-    credentials_to_use: {
-      username: 'lakesideadmin',
-      password: 'LakesideAdmin2025'
-    },
     login_url: '/admin',
     api_endpoint: '/api/admin/login',
     method: 'POST',
