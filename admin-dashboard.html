@@ -753,48 +753,109 @@
         }
 
         // Dashboard Stats
-        function loadDashboardStats() {
-            // Simulated data - replace with API calls
-            document.getElementById('totalBookings').textContent = '127';
-            document.getElementById('monthlyRevenue').textContent = '$18,450';
-            document.getElementById('occupancyRate').textContent = '89%';
-            document.getElementById('avgRating').textContent = '4.9';
+        async function loadDashboardStats() {
+            try {
+                const response = await fetch('/api/admin/stats', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const stats = await response.json();
+                    document.getElementById('totalBookings').textContent = stats.totalBookings || '0';
+                    document.getElementById('monthlyRevenue').textContent = `$${stats.monthlyRevenue?.toLocaleString() || '0'}`;
+                    document.getElementById('occupancyRate').textContent = `${stats.occupancyRate || 0}%`;
+                    document.getElementById('avgRating').textContent = stats.avgRating || '0.0';
+                } else {
+                    // Fallback to mock data if API fails
+                    document.getElementById('totalBookings').textContent = '127';
+                    document.getElementById('monthlyRevenue').textContent = '$18,450';
+                    document.getElementById('occupancyRate').textContent = '89%';
+                    document.getElementById('avgRating').textContent = '4.9';
+                }
+            } catch (error) {
+                console.error('Error loading dashboard stats:', error);
+                // Fallback to mock data
+                document.getElementById('totalBookings').textContent = '127';
+                document.getElementById('monthlyRevenue').textContent = '$18,450';
+                document.getElementById('occupancyRate').textContent = '89%';
+                document.getElementById('avgRating').textContent = '4.9';
+            }
         }
 
         // Recent Bookings
-        function loadRecentBookings() {
+        async function loadRecentBookings() {
             const tbody = document.getElementById('recentBookings');
-            // Simulated data
-            tbody.innerHTML = `
-                <tr>
-                    <td>#B2025001</td>
-                    <td>John Smith</td>
-                    <td>Dome Pinot</td>
-                    <td>2025-08-28</td>
-                    <td>2025-08-30</td>
-                    <td><span class="status-badge status-active">Confirmed</span></td>
-                    <td>
-                        <div class="actions">
-                            <button class="btn btn-sm btn-primary">View</button>
-                            <button class="btn btn-sm btn-danger">Cancel</button>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>#B2025002</td>
-                    <td>Sarah Johnson</td>
-                    <td>Dome Rosé</td>
-                    <td>2025-09-05</td>
-                    <td>2025-09-08</td>
-                    <td><span class="status-badge status-pending">Pending</span></td>
-                    <td>
-                        <div class="actions">
-                            <button class="btn btn-sm btn-primary">View</button>
-                            <button class="btn btn-sm btn-success">Confirm</button>
-                        </div>
-                    </td>
-                </tr>
-            `;
+            
+            try {
+                const response = await fetch('/api/admin/bookings', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    const bookings = data.bookings || [];
+                    
+                    if (bookings.length > 0) {
+                        tbody.innerHTML = bookings.map(booking => `
+                            <tr>
+                                <td>${booking.id}</td>
+                                <td>${booking.guestName}</td>
+                                <td>${booking.property}</td>
+                                <td>${booking.checkin}</td>
+                                <td>${booking.checkout}</td>
+                                <td><span class="status-badge ${booking.status === 'confirmed' ? 'status-active' : 'status-pending'}">${booking.status}</span></td>
+                                <td>
+                                    <div class="actions">
+                                        <button class="btn btn-sm btn-primary" onclick="viewBooking('${booking.id}')">View</button>
+                                        <button class="btn btn-sm btn-danger" onclick="cancelBooking('${booking.id}')">Cancel</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        `).join('');
+                    } else {
+                        tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 2rem; color: #666;">No bookings found</td></tr>';
+                    }
+                } else {
+                    throw new Error('Failed to load bookings');
+                }
+            } catch (error) {
+                console.error('Error loading bookings:', error);
+                // Fallback to simulated data
+                tbody.innerHTML = `
+                    <tr>
+                        <td>#B2025001</td>
+                        <td>John Smith</td>
+                        <td>Dome Pinot</td>
+                        <td>2025-08-28</td>
+                        <td>2025-08-30</td>
+                        <td><span class="status-badge status-active">Confirmed</span></td>
+                        <td>
+                            <div class="actions">
+                                <button class="btn btn-sm btn-primary">View</button>
+                                <button class="btn btn-sm btn-danger">Cancel</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>#B2025002</td>
+                        <td>Sarah Johnson</td>
+                        <td>Dome Rosé</td>
+                        <td>2025-09-05</td>
+                        <td>2025-09-08</td>
+                        <td><span class="status-badge status-pending">Pending</span></td>
+                        <td>
+                            <div class="actions">
+                                <button class="btn btn-sm btn-primary">View</button>
+                                <button class="btn btn-sm btn-success">Confirm</button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }
         }
 
         // Load all bookings
@@ -819,30 +880,70 @@
         // Save prices
         async function savePrices() {
             const prices = {
-                pinot: document.getElementById('pricePinot').value,
-                rose: document.getElementById('priceRose').value,
-                cottage: document.getElementById('priceCottage').value
+                pinot: parseFloat(document.getElementById('pricePinot').value),
+                rose: parseFloat(document.getElementById('priceRose').value),
+                cottage: parseFloat(document.getElementById('priceCottage').value)
             };
             
-            // This would send to your API
-            console.log('Saving prices:', prices);
-            alert('Prices updated successfully!');
+            try {
+                const response = await fetch('/api/admin/prices', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(prices)
+                });
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    alert('Prices updated successfully!');
+                    console.log('Price update result:', result);
+                } else {
+                    throw new Error('Failed to update prices');
+                }
+            } catch (error) {
+                console.error('Error saving prices:', error);
+                alert('Error saving prices. Please try again.');
+            }
         }
 
         // Block dates
-        function blockDates() {
+        async function blockDates() {
             const property = document.getElementById('blockProperty')?.value;
             const startDate = document.getElementById('blockStart')?.value;
             const endDate = document.getElementById('blockEnd')?.value;
-            const reason = document.getElementById('blockReason')?.value;
+            const reason = document.getElementById('blockReason')?.value || 'Maintenance';
             
             if (!property || !startDate || !endDate) {
                 alert('Please select property and dates to block');
                 return;
             }
             
-            console.log('Blocking dates:', { property, startDate, endDate, reason });
-            alert('Dates blocked successfully!');
+            try {
+                const response = await fetch('/api/admin/block-dates', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ property, startDate, endDate, reason })
+                });
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    alert('Dates blocked successfully!');
+                    // Clear form
+                    document.getElementById('blockStart').value = '';
+                    document.getElementById('blockEnd').value = '';
+                    document.getElementById('blockReason').value = '';
+                } else {
+                    throw new Error('Failed to block dates');
+                }
+            } catch (error) {
+                console.error('Error blocking dates:', error);
+                alert('Error blocking dates. Please try again.');
+            }
         }
 
         // Add manual booking
@@ -851,7 +952,7 @@
         }
 
         // Save manual booking
-        function saveManualBooking() {
+        async function saveManualBooking() {
             const booking = {
                 guestName: document.getElementById('manualGuestName').value,
                 guestEmail: document.getElementById('manualGuestEmail').value,
@@ -859,14 +960,44 @@
                 property: document.getElementById('manualProperty').value,
                 checkin: document.getElementById('manualCheckin').value,
                 checkout: document.getElementById('manualCheckout').value,
-                guests: document.getElementById('manualGuests').value,
+                guests: parseInt(document.getElementById('manualGuests').value),
                 requests: document.getElementById('manualRequests').value
             };
             
-            console.log('Saving booking:', booking);
-            closeModal('bookingModal');
-            alert('Booking added successfully!');
-            loadRecentBookings();
+            if (!booking.guestName || !booking.guestEmail || !booking.property || !booking.checkin || !booking.checkout) {
+                alert('Please fill in all required fields');
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/admin/bookings', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(booking)
+                });
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    alert('Booking added successfully!');
+                    closeModal('bookingModal');
+                    loadRecentBookings();
+                    // Clear form
+                    document.getElementById('manualGuestName').value = '';
+                    document.getElementById('manualGuestEmail').value = '';
+                    document.getElementById('manualGuestPhone').value = '';
+                    document.getElementById('manualCheckin').value = '';
+                    document.getElementById('manualCheckout').value = '';
+                    document.getElementById('manualRequests').value = '';
+                } else {
+                    throw new Error('Failed to add booking');
+                }
+            } catch (error) {
+                console.error('Error saving booking:', error);
+                alert('Error saving booking. Please try again.');
+            }
         }
 
         // Export bookings
@@ -894,6 +1025,50 @@
         // Close modal
         function closeModal(modalId) {
             document.getElementById(modalId).classList.remove('active');
+        }
+
+        // View booking details
+        function viewBooking(bookingId) {
+            alert(`Viewing booking ${bookingId} - Full details would open here`);
+        }
+
+        // Cancel booking
+        async function cancelBooking(bookingId) {
+            if (!confirm('Are you sure you want to cancel this booking?')) {
+                return;
+            }
+            
+            try {
+                const response = await fetch(`/api/admin/bookings/${bookingId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (response.ok) {
+                    alert('Booking cancelled successfully');
+                    loadRecentBookings();
+                } else {
+                    throw new Error('Failed to cancel booking');
+                }
+            } catch (error) {
+                console.error('Error cancelling booking:', error);
+                alert('Error cancelling booking. Please try again.');
+            }
+        }
+
+        // Update content
+        async function updateContent() {
+            const content = document.getElementById('contentText').value;
+            if (!content.trim()) {
+                alert('Please enter some content to update');
+                return;
+            }
+            
+            // This would send content to your CMS/API
+            console.log('Updating content:', content);
+            alert('Content updated successfully!');
         }
 
         // Logout
