@@ -143,9 +143,15 @@ app.post('/api/admin/login', async (req, res) => {
     console.log('=== ADMIN LOGIN ATTEMPT ===');
     console.log('Received username:', username);
     console.log('Received password:', password);
+    console.log('Username length:', username ? username.length : 0);
+    console.log('Password length:', password ? password.length : 0);
+    
+    // Trim whitespace from inputs
+    const trimmedUsername = username ? username.trim() : '';
+    const trimmedPassword = password ? password.trim() : '';
     
     // SUPER SIMPLE - JUST ACCEPT THESE EXACT CREDENTIALS
-    if (username === 'lakesideadmin' && password === 'LakesideAdmin2025') {
+    if (trimmedUsername === 'lakesideadmin' && trimmedPassword === 'LakesideAdmin2025') {
       console.log('LOGIN SUCCESS!');
       
       const token = jwt.sign(
@@ -161,13 +167,16 @@ app.post('/api/admin/login', async (req, res) => {
       });
     } else {
       console.log('LOGIN FAILED - Credentials do not match');
-      console.log('Expected username: lakesideadmin, Got:', username);
-      console.log('Expected password: LakesideAdmin2025, Got:', password);
+      console.log('Expected username: lakesideadmin, Got:', trimmedUsername);
+      console.log('Expected password: LakesideAdmin2025, Got:', trimmedPassword);
       return res.status(401).json({ 
         error: 'Invalid credentials',
         debug: {
-          username_correct: username === 'lakesideadmin',
-          password_correct: password === 'LakesideAdmin2025'
+          received_username: trimmedUsername,
+          username_correct: trimmedUsername === 'lakesideadmin',
+          password_correct: trimmedPassword === 'LakesideAdmin2025',
+          username_length: trimmedUsername.length,
+          password_length: trimmedPassword.length
         }
       });
     }
