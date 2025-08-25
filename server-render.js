@@ -307,6 +307,18 @@ app.get('/api/admin/stats', authenticateAdmin, (req, res) => {
   });
 });
 
+// Cancel/Delete booking (admin only)
+app.delete('/api/admin/bookings/:id', authenticateAdmin, (req, res) => {
+  const bookingId = req.params.id;
+  console.log('Cancelling booking:', bookingId);
+  // In production, delete from database
+  res.json({
+    success: true,
+    message: 'Booking cancelled successfully',
+    bookingId: bookingId
+  });
+});
+
 // Basic booking endpoint (you can expand this)
 app.post('/api/booking/create', async (req, res) => {
   try {
