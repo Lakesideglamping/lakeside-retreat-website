@@ -7973,6 +7973,31 @@ Thank you for choosing Lakeside Retreat!`);
         // ========================================
         let selectedProperty = null;
         let currentBookingData = {};
+        
+        // Stripe configuration
+        const STRIPE_PUBLISHABLE_KEY = 'pk_live_51ObA6xDwsGZX1xFlwBMuduT8zhQ8IiDe7uY1v2PMLhu6g9K2YC387Cxn5Dj2r6LtMpqQ9XjrCF4oGfVmfK5PIqY700UMtUH8WS';
+        let stripe = null;
+        
+        // Initialize Stripe when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof Stripe !== 'undefined') {
+                stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
+            } else {
+                console.warn('Stripe.js not loaded. Loading now...');
+                loadStripeScript();
+            }
+        });
+        
+        // Load Stripe script dynamically if not already loaded
+        function loadStripeScript() {
+            const script = document.createElement('script');
+            script.src = 'https://js.stripe.com/v3/';
+            script.onload = function() {
+                stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
+                console.log('Stripe loaded successfully');
+            };
+            document.head.appendChild(script);
+        }
 
         // Open the new integrated booking modal
         function openIntegratedBookingModal(preSelectedProperty = null) {
@@ -8197,6 +8222,11 @@ Thank you for choosing Lakeside Retreat!`);
                 return;
             }
             
+            if (!stripe) {
+                alert('Payment system is loading. Please try again in a moment.');
+                return;
+            }
+            
             const bookingData = {
                 ...currentBookingData,
                 guest: {
@@ -8206,13 +8236,87 @@ Thank you for choosing Lakeside Retreat!`);
             };
             
             // Show loading state
-            document.getElementById('proceedToPayment').innerHTML = 'Processing payment...';
+            document.getElementById('proceedToPayment').innerHTML = 'Redirecting to payment...';
             document.getElementById('proceedToPayment').disabled = true;
             
-            // Simulate Stripe payment (replace with actual Stripe integration)
-            setTimeout(() => {
-                completeIntegratedBooking(bookingData);
-            }, 2000);
+            // Create Stripe Checkout session
+            createStripeCheckoutSession(bookingData);
+        }
+        
+        // Create Stripe Checkout session
+        function createStripeCheckoutSession(bookingData) {
+            // This would normally call your backend to create a checkout session
+            // For now, we'll redirect directly to Stripe Checkout with the booking data
+            
+            const propertyNames = {
+                'pinot': 'Dome Pinot - Luxury Accommodation',
+                'rose': 'Dome Rosé - Romantic Retreat',
+                'cottage': 'Lakeside Cottage - Family Accommodation'
+            };
+            
+            // In a real implementation, you'd send this data to your backend
+            // which would create a Stripe Checkout session and return the session ID
+            // For demo purposes, we'll simulate this process
+            
+            // Prepare line items for Stripe
+            const lineItems = [{
+                price_data: {
+                    currency: 'nzd',
+                    product_data: {
+                        name: propertyNames[bookingData.property],
+                        description: `${bookingData.nights} night${bookingData.nights > 1 ? 's' : ''} • ${bookingData.checkin} to ${bookingData.checkout}`,
+                        images: ['https://lakeside-retreat-website.onrender.com/images/vineyard.jpeg'], // Replace with actual image
+                    },
+                    unit_amount: bookingData.finalTotal * 100, // Stripe expects amount in cents
+                },
+                quantity: 1,
+            }];
+            
+            // Real Stripe Checkout implementation:
+            console.log('Creating Stripe checkout session...', bookingData);
+            
+            fetch('/api/create-checkout-session', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    booking: bookingData,
+                    line_items: lineItems,
+                    success_url: `${window.location.origin}/booking-success?session_id={CHECKOUT_SESSION_ID}`,
+                    cancel_url: `${window.location.origin}/booking-cancelled`,
+                    customer_email: bookingData.guest.email,
+                    metadata: {
+                        property: bookingData.property,
+                        checkin: bookingData.checkin,
+                        checkout: bookingData.checkout,
+                        guests: `${bookingData.adults} adults, ${bookingData.children} children`,
+                        phone: bookingData.guest.phone,
+                        special_requests: bookingData.guest.specialRequests
+                    }
+                })
+            })
+            .then(response => response.json())
+            .then(session => {
+                return stripe.redirectToCheckout({ sessionId: session.id });
+            })
+            .then(result => {
+                if (result.error) {
+                    alert(result.error.message);
+                    resetPaymentButton();
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('There was an error processing your payment. Please try again.');
+                resetPaymentButton();
+            });
+        }
+        
+        // Reset payment button state
+        function resetPaymentButton() {
+            document.getElementById('proceedToPayment').innerHTML = 'Complete Booking with Stripe →';
+            document.getElementById('proceedToPayment').disabled = false;
         }
 
         // Complete booking and show success
