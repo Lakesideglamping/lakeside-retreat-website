@@ -193,6 +193,22 @@ app.get('/api/admin/debug', (req, res) => {
       username: 'lakesideadmin',
       password: 'LakesideAdmin2025'
     },
+    timestamp: new Date().toISOString(),
+    server_version: 'v2.0-functional'
+  });
+});
+
+// Test login endpoint - simple GET request
+app.get('/api/admin/test-login', (req, res) => {
+  res.json({
+    message: 'Login system is working',
+    credentials_to_use: {
+      username: 'lakesideadmin',
+      password: 'LakesideAdmin2025'
+    },
+    login_url: '/admin',
+    api_endpoint: '/api/admin/login',
+    method: 'POST',
     timestamp: new Date().toISOString()
   });
 });

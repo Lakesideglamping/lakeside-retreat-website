@@ -705,7 +705,10 @@
         // Check authentication
         const token = localStorage.getItem('adminToken');
         if (!token) {
+            console.log('No token found, redirecting to login...');
             window.location.href = '/admin';
+        } else {
+            console.log('Admin token found, loading dashboard...');
         }
 
         // Tab functionality

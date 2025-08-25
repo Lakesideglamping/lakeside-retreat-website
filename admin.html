@@ -311,8 +311,8 @@
         }
         
         function showDashboard() {
-            // Redirect to full admin dashboard
-            window.location.href = '/admin-dashboard.html';
+            // Redirect to full admin dashboard with cache buster
+            window.location.href = '/admin-dashboard.html?t=' + Date.now();
         }
         
         function logout() {
