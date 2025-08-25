@@ -171,16 +171,17 @@ app.post('/api/admin/login', async (req, res) => {
       });
     } else {
       console.log('LOGIN FAILED - Credentials do not match');
-      console.log('Expected username: lakesideadmin, Got:', trimmedUsername);
-      console.log('Expected password: LakesideAdmin2025, Got:', trimmedPassword);
+      console.log('LOGIN FAILED - Invalid credentials');
+      // Don't log actual passwords in production
       return res.status(401).json({ 
         error: 'Invalid credentials',
-        debug: {
+        debug: process.env.NODE_ENV !== 'production' ? {
           received_username: trimmedUsername,
-          username_correct: trimmedUsername === 'lakesideadmin',
-          password_correct: trimmedPassword === 'LakesideAdmin2025',
+          username_correct: trimmedUsername === ADMIN_USERNAME,
           username_length: trimmedUsername.length,
           password_length: trimmedPassword.length
+        } : {
+          message: 'Invalid username or password'
         }
       });
     }
