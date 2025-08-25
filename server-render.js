@@ -131,61 +131,42 @@ const authenticateAdmin = async (req, res, next) => {
   }
 };
 
-// SIMPLE ADMIN LOGIN - TEMPORARY FOR TESTING
+// ULTRA SIMPLE ADMIN LOGIN - HARDCODED FOR NOW
 app.post('/api/admin/login', async (req, res) => {
   try {
     const { username, password } = req.body;
     
-    console.log('=== ADMIN LOGIN DEBUG ===');
+    console.log('=== ADMIN LOGIN ATTEMPT ===');
     console.log('Received username:', username);
     console.log('Received password:', password);
-    console.log('ENV ADMIN_USERNAME:', process.env.ADMIN_USERNAME);
-    console.log('ENV ADMIN_PASSWORD_HASH exists:', !!process.env.ADMIN_PASSWORD_HASH);
-    console.log('ENV JWT_SECRET exists:', !!process.env.JWT_SECRET);
     
-    // SIMPLE CHECK - USE EXACT VALUES FOR NOW
-    const correctUsername = 'lakesideadmin';
-    const correctPassword = 'LakesideAdmin2025';
-    
-    if (!username || !password) {
-      console.log('Missing username or password');
-      return res.status(400).json({ error: 'Username and password required' });
-    }
-    
-    if (username !== correctUsername) {
-      console.log('Username incorrect. Expected:', correctUsername, 'Got:', username);
-      return res.status(401).json({ error: 'Invalid username' });
-    }
-    
-    if (password !== correctPassword) {
-      console.log('Password incorrect. Expected:', correctPassword, 'Got:', password);
-      return res.status(401).json({ error: 'Invalid password' });
-    }
-    
-    console.log('Login successful! Generating token...');
-    
-    const token = jwt.sign(
-      { username: correctUsername, role: 'admin' },
-      process.env.JWT_SECRET || 'simple-jwt-secret-for-testing',
-      { expiresIn: '24h' }
-    );
-    
-    console.log('Token generated successfully');
-    
-    res.json({ 
-      token,
-      message: 'Login successful',
-      expiresIn: '24h',
-      debug: {
-        username_match: username === correctUsername,
-        password_match: password === correctPassword,
-        env_vars: {
-          admin_username: !!process.env.ADMIN_USERNAME,
-          admin_password_hash: !!process.env.ADMIN_PASSWORD_HASH,
-          jwt_secret: !!process.env.JWT_SECRET
+    // SUPER SIMPLE - JUST ACCEPT THESE EXACT CREDENTIALS
+    if (username === 'lakesideadmin' && password === 'LakesideAdmin2025') {
+      console.log('LOGIN SUCCESS!');
+      
+      const token = jwt.sign(
+        { username: 'lakesideadmin', role: 'admin' },
+        'simple-jwt-secret-2025',
+        { expiresIn: '24h' }
+      );
+      
+      return res.json({ 
+        token,
+        message: 'Login successful',
+        expiresIn: '24h'
+      });
+    } else {
+      console.log('LOGIN FAILED - Credentials do not match');
+      console.log('Expected username: lakesideadmin, Got:', username);
+      console.log('Expected password: LakesideAdmin2025, Got:', password);
+      return res.status(401).json({ 
+        error: 'Invalid credentials',
+        debug: {
+          username_correct: username === 'lakesideadmin',
+          password_correct: password === 'LakesideAdmin2025'
         }
-      }
-    });
+      });
+    }
   } catch (error) {
     console.error('Admin login error:', error);
     res.status(500).json({ 
