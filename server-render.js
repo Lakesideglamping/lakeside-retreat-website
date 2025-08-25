@@ -6,7 +6,7 @@ const nodemailer = require('nodemailer');
 require('dotenv').config();
 
 const app = express();
-const PORT = process.env.PORT || 10001;
+const PORT = process.env.PORT || 10000;
 
 // Titan Email (Nodemailer) configuration
 let transporter = null;
