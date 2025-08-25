@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guest Reviews - Lakeside Retreat</title>
+    
+    <style>
+        :root {
+            --brand-teal: #2d5a5a;
+            --brand-sage: #8fbc8f;
+            --text: #333333;
+            --text-light: #666666;
+            --border: #e0e0e0;
+            --background: #f8f9fa;
+            --white: #ffffff;
+            --accent: #f0f9ff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--brand-teal) 0%, var(--brand-sage) 100%);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .stats-section {
+            background: white;
+            padding: 2rem;
+            margin: 2rem auto;
+            max-width: 1200px;
+            border-radius: 15px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .overall-rating {
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .rating-number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--brand-teal);
+            margin-bottom: 0.5rem;
+        }
+
+        .rating-stars {
+            font-size: 1.5rem;
+            color: #fbbf24;
+            margin-bottom: 0.5rem;
+        }
+
+        .rating-text {
+            color: var(--text-light);
+            font-size: 1rem;
+        }
+
+        .rating-breakdown {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .rating-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+        }
+
+        .rating-bar {
+            flex: 1;
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            margin: 0 1rem;
+            overflow: hidden;
+        }
+
+        .rating-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--brand-teal) 0%, var(--brand-sage) 100%);
+            border-radius: 4px;
+        }
+
+        .controls {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem 2rem;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.75rem 1.5rem;
+            border: 2px solid var(--brand-teal);
+            background: white;
+            color: var(--brand-teal);
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .filter-btn.active,
+        .filter-btn:hover {
+            background: var(--brand-teal);
+            color: white;
+        }
+
+        .reviews-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem 4rem;
+        }
+
+        .reviews-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .review-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .review-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+        }
+
+        .review-card.featured {
+            border: 2px solid var(--brand-sage);
+        }
+
+        .review-card.featured::before {
+            content: "⭐ Featured Review";
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: linear-gradient(135deg, var(--brand-sage) 0%, var(--brand-teal) 100%);
+            color: white;
+            padding: 0.5rem 1rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border-bottom-left-radius: 15px;
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .guest-info h3 {
+            color: var(--brand-teal);
+            font-size: 1.2rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .guest-details {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .review-rating {
+            text-align: right;
+        }
+
+        .stars {
+            color: #fbbf24;
+            font-size: 1.2rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .accommodation-badge {
+            background: var(--accent);
+            color: var(--brand-teal);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .review-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--brand-teal);
+            margin: 1rem 0;
+            line-height: 1.4;
+        }
+
+        .review-text {
+            color: var(--text);
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+        }
+
+        .review-highlight {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            padding: 1rem;
+            border-radius: 10px;
+            border-left: 4px solid var(--brand-sage);
+            margin-bottom: 1rem;
+        }
+
+        .highlight-label {
+            font-weight: 600;
+            color: var(--brand-teal);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .review-photos {
+            display: flex;
+            gap: 0.5rem;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+
+        .review-photos img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .review-photos img:hover {
+            transform: scale(1.05);
+        }
+
+        .review-footer {
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+            font-size: 0.9rem;
+            color: var(--text-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .admin-reply {
+            background: #f8fafc;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            border-left: 3px solid var(--brand-teal);
+        }
+
+        .reply-label {
+            font-weight: 600;
+            color: var(--brand-teal);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, var(--brand-teal) 0%, var(--brand-sage) 100%);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        .cta-section h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .cta-section p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: white;
+            color: var(--brand-teal);
+        }
+
+        .btn-primary:hover {
+            background: #f8f9fa;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-secondary:hover {
+            background: white;
+            color: var(--brand-teal);
+        }
+
+        .loading, .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-light);
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .header p {
+                font-size: 1rem;
+            }
+
+            .stats-section {
+                grid-template-columns: 1fr;
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+
+            .reviews-container {
+                padding: 0 1rem 2rem;
+            }
+
+            .reviews-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .review-card {
+                padding: 1.5rem;
+            }
+
+            .controls {
+                padding: 0 1rem 1rem;
+            }
+
+            .cta-section h2 {
+                font-size: 2rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="header">
+        <h1>What Our Guests Say</h1>
+        <p>Discover why travelers from around the world choose Lakeside Retreat for their Central Otago getaway</p>
+    </div>
+
+    <div class="stats-section" id="statsSection">
+        <div class="overall-rating">
+            <div class="rating-number" id="overallRating">-</div>
+            <div class="rating-stars" id="overallStars">☆☆☆☆☆</div>
+            <div class="rating-text">Based on <span id="totalReviews">0</span> guest reviews</div>
+        </div>
+        
+        <div class="rating-breakdown" id="ratingBreakdown">
+            <div class="rating-item">
+                <span>5 stars</span>
+                <div class="rating-bar">
+                    <div class="rating-bar-fill" style="width: 0%"></div>
+                </div>
+                <span id="fiveStars">0</span>
+            </div>
+            <div class="rating-item">
+                <span>4 stars</span>
+                <div class="rating-bar">
+                    <div class="rating-bar-fill" style="width: 0%"></div>
+                </div>
+                <span id="fourStars">0</span>
+            </div>
+            <div class="rating-item">
+                <span>3 stars</span>
+                <div class="rating-bar">
+                    <div class="rating-bar-fill" style="width: 0%"></div>
+                </div>
+                <span id="threeStars">0</span>
+            </div>
+            <div class="rating-item">
+                <span>2 stars</span>
+                <div class="rating-bar">
+                    <div class="rating-bar-fill" style="width: 0%"></div>
+                </div>
+                <span id="twoStars">0</span>
+            </div>
+            <div class="rating-item">
+                <span>1 star</span>
+                <div class="rating-bar">
+                    <div class="rating-bar-fill" style="width: 0%"></div>
+                </div>
+                <span id="oneStars">0</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button class="filter-btn active" onclick="filterReviews('')">All Reviews</button>
+        <button class="filter-btn" onclick="filterReviews('featured')">Featured</button>
+        <button class="filter-btn" onclick="filterReviews('pinot-dome')">Pinot Dome</button>
+        <button class="filter-btn" onclick="filterReviews('rose-dome')">Rosé Dome</button>
+        <button class="filter-btn" onclick="filterReviews('lakeside-cottage')">Lakeside Cottage</button>
+    </div>
+
+    <div class="reviews-container">
+        <div id="loading" class="loading">
+            <div>Loading guest reviews...</div>
+        </div>
+
+        <div id="reviewsGrid" class="reviews-grid" style="display: none;"></div>
+
+        <div id="emptyState" class="empty-state" style="display: none;">
+            <h3>No reviews found</h3>
+            <p>Be the first to share your experience at Lakeside Retreat!</p>
+        </div>
+    </div>
+
+    <div class="cta-section">
+        <h2>Share Your Experience</h2>
+        <p>Help future guests by sharing your thoughts about your stay at Lakeside Retreat</p>
+        <div class="cta-buttons">
+            <a href="/submit-review" class="btn btn-primary">Write a Review</a>
+            <a href="/#contact" class="btn btn-secondary">Book Your Stay</a>
+        </div>
+    </div>
+
+    <script>
+        let allReviews = [];
+        let currentFilter = '';
+
+        // Load reviews on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadReviews();
+            loadStats();
+        });
+
+        async function loadReviews() {
+            try {
+                const response = await fetch('/api/reviews/public');
+                const data = await response.json();
+                
+                if (data.success) {
+                    allReviews = data.reviews;
+                    renderReviews(allReviews);
+                    document.getElementById('loading').style.display = 'none';
+                    document.getElementById('reviewsGrid').style.display = 'grid';
+                } else {
+                    showError('Failed to load reviews');
+                }
+                
+            } catch (error) {
+                console.error('Error loading reviews:', error);
+                showError('Network error loading reviews');
+            }
+        }
+
+        async function loadStats() {
+            try {
+                const response = await fetch('/api/reviews/stats');
+                const data = await response.json();
+                
+                if (data.success && data.overall) {
+                    const stats = data.overall;
+                    
+                    document.getElementById('overallRating').textContent = stats.average_rating || '0.0';
+                    document.getElementById('overallStars').textContent = generateStars(Math.round(stats.average_rating || 0));
+                    document.getElementById('totalReviews').textContent = stats.total_reviews || 0;
+                    
+                    // Update rating breakdown
+                    const total = stats.total_reviews || 1; // Avoid division by zero
+                    updateRatingBar('fiveStars', stats.five_star || 0, total);
+                    updateRatingBar('fourStars', stats.four_star || 0, total);
+                    updateRatingBar('threeStars', stats.three_star || 0, total);
+                    updateRatingBar('twoStars', stats.two_star || 0, total);
+                    updateRatingBar('oneStars', stats.one_star || 0, total);
+                }
+                
+            } catch (error) {
+                console.error('Error loading stats:', error);
+            }
+        }
+
+        function updateRatingBar(elementId, count, total) {
+            const percentage = (count / total) * 100;
+            const element = document.getElementById(elementId);
+            const bar = element.parentElement.querySelector('.rating-bar-fill');
+            
+            element.textContent = count;
+            bar.style.width = percentage + '%';
+        }
+
+        function renderReviews(reviews) {
+            const container = document.getElementById('reviewsGrid');
+            const emptyState = document.getElementById('emptyState');
+            
+            if (reviews.length === 0) {
+                container.style.display = 'none';
+                emptyState.style.display = 'block';
+                return;
+            }
+            
+            emptyState.style.display = 'none';
+            container.style.display = 'grid';
+            
+            container.innerHTML = reviews.map(review => `
+                <div class="review-card ${review.featured ? 'featured' : ''}">
+                    <div class="review-header">
+                        <div class="guest-info">
+                            <h3>${escapeHtml(review.guest_name)}</h3>
+                            <div class="guest-details">
+                                ${review.guest_location ? `📍 ${escapeHtml(review.guest_location)}` : ''}
+                                ${review.stay_dates ? ` • ${escapeHtml(review.stay_dates)}` : ''}
+                                ${review.source && review.source !== 'website' ? `
+                                    <span style="
+                                        background: ${review.source === 'airbnb' ? '#FF5A5F' : 
+                                                     review.source === 'booking' ? '#003580' : 
+                                                     '#666'};
+                                        color: white;
+                                        padding: 2px 8px;
+                                        border-radius: 4px;
+                                        font-size: 0.75rem;
+                                        margin-left: 0.5rem;
+                                        display: inline-block;
+                                    ">
+                                        ${review.source === 'airbnb' ? '🏠 Airbnb' : 
+                                          review.source === 'booking' ? '🏨 Booking.com' : 
+                                          review.source.charAt(0).toUpperCase() + review.source.slice(1)}
+                                    </span>
+                                ` : ''}
+                            </div>
+                        </div>
+                        <div class="review-rating">
+                            <div class="stars">${generateStars(review.overall_rating)}</div>
+                            <div class="accommodation-badge">${formatAccommodationType(review.accommodation_type)}</div>
+                        </div>
+                    </div>
+                    
+                    ${review.review_title ? `<div class="review-title">${escapeHtml(review.review_title)}</div>` : ''}
+                    
+                    <div class="review-text">${escapeHtml(review.review_text)}</div>
+                    
+                    ${review.highlight_positive ? `
+                        <div class="review-highlight">
+                            <div class="highlight-label">💚 What they loved most:</div>
+                            <div>${escapeHtml(review.highlight_positive)}</div>
+                        </div>
+                    ` : ''}
+                    
+                    ${review.review_photos ? renderPhotos(review.review_photos) : ''}
+                    
+                    ${review.admin_reply ? `
+                        <div class="admin-reply">
+                            <div class="reply-label">Response from Lakeside Retreat:</div>
+                            <div>${escapeHtml(review.admin_reply)}</div>
+                        </div>
+                    ` : ''}
+                    
+                    <div class="review-footer">
+                        <div>
+                            ${review.would_recommend ? '✅ Recommends Lakeside Retreat' : ''}
+                            ${renderDetailedRatings(review)}
+                        </div>
+                        <div>${formatDate(review.approved_at)}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderPhotos(photosJson) {
+            try {
+                const photos = JSON.parse(photosJson);
+                if (!photos || photos.length === 0) return '';
+                
+                return `
+                    <div class="review-photos">
+                        ${photos.map(photo => `
+                            <img src="${photo}" alt="Guest photo" onclick="window.open('${photo}', '_blank')">
+                        `).join('')}
+                    </div>
+                `;
+            } catch (e) {
+                return '';
+            }
+        }
+
+        function renderDetailedRatings(review) {
+            const ratings = [
+                { label: 'Cleanliness', value: review.cleanliness_rating },
+                { label: 'Location', value: review.location_rating },
+                { label: 'Value', value: review.value_rating },
+                { label: 'Communication', value: review.communication_rating }
+            ].filter(r => r.value);
+            
+            if (ratings.length === 0) return '';
+            
+            return `
+                <div style="margin-top: 0.5rem; font-size: 0.8rem;">
+                    ${ratings.map(rating => 
+                        `${rating.label}: ${generateStars(rating.value)} ${rating.value}/5`
+                    ).join(' • ')}
+                </div>
+            `;
+        }
+
+        function filterReviews(filter) {
+            currentFilter = filter;
+            
+            // Update button states
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            let filteredReviews = allReviews;
+            
+            if (filter === 'featured') {
+                filteredReviews = allReviews.filter(review => review.featured);
+            } else if (filter && filter !== '') {
+                filteredReviews = allReviews.filter(review => review.accommodation_type === filter);
+            }
+            
+            renderReviews(filteredReviews);
+        }
+
+        function showError(message) {
+            document.getElementById('loading').innerHTML = 
+                `<div style="color: var(--error);">${message}</div>`;
+        }
+
+        // Utility functions
+        function escapeHtml(text) {
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return text ? text.replace(/[&<>"']/g, function(m) { return map[m]; }) : '';
+        }
+
+        function generateStars(rating) {
+            const full = '★';
+            const empty = '☆';
+            let stars = '';
+            for (let i = 1; i <= 5; i++) {
+                stars += i <= rating ? full : empty;
+            }
+            return stars;
+        }
+
+        function formatAccommodationType(type) {
+            const types = {
+                'pinot-dome': 'Pinot Dome',
+                'rose-dome': 'Rosé Dome', 
+                'lakeside-cottage': 'Lakeside Cottage'
+            };
+            return types[type] || type;
+        }
+
+        function formatDate(dateString) {
+            return new Date(dateString).toLocaleDateString('en-NZ', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
+    </script>
+</body>
+</html>

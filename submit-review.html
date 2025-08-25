@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Share Your Experience - Lakeside Retreat</title>
+    
+    <!-- Same styling as main website -->
+    <style>
+        :root {
+            --brand-teal: #2d5a5a;
+            --brand-sage: #8fbc8f;
+            --text: #333333;
+            --text-light: #666666;
+            --border: #e0e0e0;
+            --background: #ffffff;
+            --accent: #f8f9fa;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-family: 'Playfair Display', serif;
+            color: var(--brand-teal);
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .header p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+        }
+
+        .form-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .section {
+            margin-bottom: 2rem;
+        }
+
+        .section h3 {
+            color: var(--brand-teal);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .required {
+            color: #dc2626;
+        }
+
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: var(--brand-teal);
+        }
+
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .rating-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .rating-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: var(--accent);
+            border-radius: 8px;
+        }
+
+        .rating-item label {
+            margin-bottom: 0;
+            font-weight: 500;
+        }
+
+        .star-rating {
+            display: flex;
+            gap: 2px;
+        }
+
+        .star {
+            font-size: 1.5rem;
+            color: #ddd;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .star:hover,
+        .star.active {
+            color: #fbbf24;
+        }
+
+
+        .submit-btn {
+            background: var(--brand-teal);
+            color: white;
+            padding: 16px 32px;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background: #1e4040;
+        }
+
+        .submit-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .loading {
+            display: none;
+            margin-left: 1rem;
+        }
+
+        .feedback {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .feedback.success {
+            background: #d1fae5;
+            border: 1px solid #10b981;
+            color: #047857;
+        }
+
+        .feedback.error {
+            background: #fee2e2;
+            border: 1px solid #ef4444;
+            color: #dc2626;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .rating-group {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Share Your Experience</h1>
+            <p>Help future guests by sharing your thoughts about your stay at Lakeside Retreat</p>
+        </div>
+
+        <div class="form-container">
+            <div id="feedback" class="feedback"></div>
+
+            <form id="reviewForm" enctype="multipart/form-data">
+                <!-- Guest Information -->
+                <div class="section">
+                    <h3>👤 Your Information</h3>
+                    
+                    <div class="form-group">
+                        <label for="guest_name">Name <span class="required">*</span></label>
+                        <input type="text" id="guest_name" name="guest_name" class="form-input" required 
+                               placeholder="Your name (will be displayed with review)">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="guest_email">Email <span class="required">*</span></label>
+                        <input type="email" id="guest_email" name="guest_email" class="form-input" required 
+                               placeholder="your@email.com (for notifications only)">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="guest_location">Location</label>
+                        <input type="text" id="guest_location" name="guest_location" class="form-input" 
+                               placeholder="City, Country (optional)">
+                    </div>
+                </div>
+
+                <!-- Stay Details -->
+                <div class="section">
+                    <h3>🏠 Your Stay</h3>
+                    
+                    <div class="form-group">
+                        <label for="accommodation_type">Accommodation <span class="required">*</span></label>
+                        <select id="accommodation_type" name="accommodation_type" class="form-select" required>
+                            <option value="">Select accommodation</option>
+                            <option value="pinot-dome">Pinot Dome</option>
+                            <option value="rose-dome">Rosé Dome</option>
+                            <option value="lakeside-cottage">Lakeside Cottage</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="stay_dates">Stay Dates</label>
+                        <input type="text" id="stay_dates" name="stay_dates" class="form-input" 
+                               placeholder="e.g., March 15-18, 2025">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="booking_reference">Booking Reference</label>
+                        <input type="text" id="booking_reference" name="booking_reference" class="form-input" 
+                               placeholder="Your booking confirmation number (optional)">
+                    </div>
+                </div>
+
+                <!-- Ratings -->
+                <div class="section">
+                    <h3>⭐ Rate Your Experience</h3>
+                    
+                    <div class="rating-group">
+                        <div class="rating-item">
+                            <label>Overall Experience <span class="required">*</span></label>
+                            <div class="star-rating" data-rating="overall_rating">
+                                <span class="star" data-value="1">★</span>
+                                <span class="star" data-value="2">★</span>
+                                <span class="star" data-value="3">★</span>
+                                <span class="star" data-value="4">★</span>
+                                <span class="star" data-value="5">★</span>
+                            </div>
+                            <input type="hidden" id="overall_rating" name="overall_rating" required>
+                        </div>
+
+                        <div class="rating-item">
+                            <label>Cleanliness</label>
+                            <div class="star-rating" data-rating="cleanliness_rating">
+                                <span class="star" data-value="1">★</span>
+                                <span class="star" data-value="2">★</span>
+                                <span class="star" data-value="3">★</span>
+                                <span class="star" data-value="4">★</span>
+                                <span class="star" data-value="5">★</span>
+                            </div>
+                            <input type="hidden" id="cleanliness_rating" name="cleanliness_rating">
+                        </div>
+
+                        <div class="rating-item">
+                            <label>Location</label>
+                            <div class="star-rating" data-rating="location_rating">
+                                <span class="star" data-value="1">★</span>
+                                <span class="star" data-value="2">★</span>
+                                <span class="star" data-value="3">★</span>
+                                <span class="star" data-value="4">★</span>
+                                <span class="star" data-value="5">★</span>
+                            </div>
+                            <input type="hidden" id="location_rating" name="location_rating">
+                        </div>
+
+                        <div class="rating-item">
+                            <label>Value for Money</label>
+                            <div class="star-rating" data-rating="value_rating">
+                                <span class="star" data-value="1">★</span>
+                                <span class="star" data-value="2">★</span>
+                                <span class="star" data-value="3">★</span>
+                                <span class="star" data-value="4">★</span>
+                                <span class="star" data-value="5">★</span>
+                            </div>
+                            <input type="hidden" id="value_rating" name="value_rating">
+                        </div>
+
+                        <div class="rating-item">
+                            <label>Communication</label>
+                            <div class="star-rating" data-rating="communication_rating">
+                                <span class="star" data-value="1">★</span>
+                                <span class="star" data-value="2">★</span>
+                                <span class="star" data-value="3">★</span>
+                                <span class="star" data-value="4">★</span>
+                                <span class="star" data-value="5">★</span>
+                            </div>
+                            <input type="hidden" id="communication_rating" name="communication_rating">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Written Review -->
+                <div class="section">
+                    <h3>✍️ Your Review</h3>
+                    
+                    <div class="form-group">
+                        <label for="review_title">Review Title</label>
+                        <input type="text" id="review_title" name="review_title" class="form-input" 
+                               placeholder="Summarize your experience in a few words">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="review_text">Tell us about your stay <span class="required">*</span></label>
+                        <textarea id="review_text" name="review_text" class="form-textarea" required 
+                                  placeholder="Share your experience - what you loved, what stood out, and any memorable moments..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="highlight_positive">What did you love most?</label>
+                        <textarea id="highlight_positive" name="highlight_positive" class="form-textarea" 
+                                  placeholder="The highlights of your stay that made it special..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="suggestions">Any suggestions for improvement?</label>
+                        <textarea id="suggestions" name="suggestions" class="form-textarea" 
+                                  placeholder="Any suggestions to help us improve the experience..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="would_recommend" name="would_recommend" value="true" checked>
+                            I would recommend Lakeside Retreat to other travelers
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Note: Photo uploads removed for simplicity -->
+
+                <button type="submit" class="submit-btn">
+                    Submit Review
+                    <span class="loading">Submitting...</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Star rating functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const starRatings = document.querySelectorAll('.star-rating');
+            
+            starRatings.forEach(rating => {
+                const stars = rating.querySelectorAll('.star');
+                const ratingName = rating.getAttribute('data-rating');
+                const hiddenInput = document.getElementById(ratingName);
+                
+                stars.forEach(star => {
+                    star.addEventListener('click', function() {
+                        const value = this.getAttribute('data-value');
+                        hiddenInput.value = value;
+                        
+                        // Update visual state
+                        stars.forEach((s, index) => {
+                            if (index < value) {
+                                s.classList.add('active');
+                            } else {
+                                s.classList.remove('active');
+                            }
+                        });
+                    });
+                    
+                    star.addEventListener('mouseenter', function() {
+                        const value = this.getAttribute('data-value');
+                        stars.forEach((s, index) => {
+                            if (index < value) {
+                                s.style.color = '#fbbf24';
+                            } else {
+                                s.style.color = '#ddd';
+                            }
+                        });
+                    });
+                });
+                
+                rating.addEventListener('mouseleave', function() {
+                    const currentValue = hiddenInput.value;
+                    stars.forEach((s, index) => {
+                        if (index < currentValue) {
+                            s.style.color = '#fbbf24';
+                        } else {
+                            s.style.color = '#ddd';
+                        }
+                    });
+                });
+            });
+        });
+
+
+        // Form submission
+        document.getElementById('reviewForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const submitBtn = document.querySelector('.submit-btn');
+            const loading = document.querySelector('.loading');
+            
+            // Validate required fields
+            if (!formData.get('overall_rating')) {
+                showFeedback('Please provide an overall rating', 'error');
+                return;
+            }
+            
+            // Show loading state
+            submitBtn.disabled = true;
+            loading.style.display = 'inline';
+            
+            try {
+                const response = await fetch('/api/reviews/submit', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showFeedback(result.message, 'success');
+                    this.reset();
+                    // Reset star ratings
+                    document.querySelectorAll('.star').forEach(star => {
+                        star.classList.remove('active');
+                        star.style.color = '#ddd';
+                    });
+                    document.querySelectorAll('input[type="hidden"]').forEach(input => {
+                        input.value = '';
+                    });
+                } else {
+                    showFeedback(result.error || 'Failed to submit review', 'error');
+                }
+            } catch (error) {
+                console.error('Submission error:', error);
+                showFeedback('Network error. Please try again.', 'error');
+            } finally {
+                submitBtn.disabled = false;
+                loading.style.display = 'none';
+            }
+        });
+
+        function showFeedback(message, type) {
+            const feedback = document.getElementById('feedback');
+            feedback.textContent = message;
+            feedback.className = `feedback ${type}`;
+            feedback.style.display = 'block';
+            
+            // Scroll to feedback
+            feedback.scrollIntoView({ behavior: 'smooth' });
+            
+            // Auto-hide after 5 seconds for success messages
+            if (type === 'success') {
+                setTimeout(() => {
+                    feedback.style.display = 'none';
+                }, 5000);
+            }
+        }
+    </script>
+</body>
+</html>

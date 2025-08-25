@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Import External Reviews - Lakeside Retreat Admin</title>
+    
+    <style>
+        :root {
+            --brand-teal: #2d5a5a;
+            --brand-sage: #8fbc8f;
+            --text: #333333;
+            --text-light: #666666;
+            --border: #e0e0e0;
+            --background: #f8f9fa;
+            --white: #ffffff;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --airbnb: #FF5A5F;
+            --booking: #003580;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .header {
+            background: var(--brand-teal);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s;
+        }
+
+        .nav-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .platform-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .platform-tab {
+            padding: 1rem 2rem;
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .platform-tab.active {
+            background: var(--brand-teal);
+            color: white;
+            border-color: var(--brand-teal);
+        }
+
+        .platform-tab.airbnb.active {
+            background: var(--airbnb);
+            border-color: var(--airbnb);
+        }
+
+        .platform-tab.booking.active {
+            background: var(--booking);
+            border-color: var(--booking);
+        }
+
+        .import-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            color: var(--brand-teal);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .instructions {
+            background: var(--background);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            border-left: 4px solid var(--brand-teal);
+        }
+
+        .instructions h3 {
+            margin-bottom: 1rem;
+            color: var(--brand-teal);
+        }
+
+        .instructions ol {
+            margin-left: 1.5rem;
+            color: var(--text-light);
+        }
+
+        .instructions li {
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .required {
+            color: var(--error);
+        }
+
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: var(--brand-teal);
+        }
+
+        .form-textarea {
+            min-height: 150px;
+            resize: vertical;
+            font-family: 'Courier New', monospace;
+        }
+
+        .paste-area {
+            min-height: 300px;
+            font-size: 14px;
+        }
+
+        .rating-input {
+            width: 100px;
+        }
+
+        .date-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .submit-btn {
+            background: var(--brand-teal);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .submit-btn:hover {
+            background: #1e4040;
+        }
+
+        .submit-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .preview-section {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: var(--background);
+            border-radius: 8px;
+            display: none;
+        }
+
+        .preview-section.active {
+            display: block;
+        }
+
+        .preview-title {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--brand-teal);
+        }
+
+        .review-preview {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border: 1px solid var(--border);
+        }
+
+        .preview-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .preview-name {
+            font-weight: 600;
+        }
+
+        .preview-rating {
+            color: var(--warning);
+        }
+
+        .preview-text {
+            color: var(--text-light);
+            line-height: 1.5;
+        }
+
+        .success-message {
+            background: #d1fae5;
+            border: 1px solid var(--success);
+            color: #047857;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .error-message {
+            background: #fee2e2;
+            border: 1px solid var(--error);
+            color: #dc2626;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .batch-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .platform-icon {
+            width: 20px;
+            height: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+
+            .platform-tabs {
+                flex-direction: column;
+            }
+
+            .date-inputs {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="header">
+        <h1>📥 Import External Reviews</h1>
+        <div class="nav-buttons">
+            <a href="/admin/reviews" class="nav-btn">← Back to Reviews</a>
+            <button onclick="logout()" class="nav-btn">Logout</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div id="successMessage" class="success-message"></div>
+        <div id="errorMessage" class="error-message"></div>
+
+        <div class="platform-tabs">
+            <div class="platform-tab airbnb active" onclick="switchPlatform('airbnb')">
+                🏠 Airbnb Reviews
+            </div>
+            <div class="platform-tab booking" onclick="switchPlatform('booking')">
+                🏨 Booking.com Reviews
+            </div>
+            <div class="platform-tab manual" onclick="switchPlatform('manual')">
+                ✍️ Manual Entry
+            </div>
+        </div>
+
+        <!-- Airbnb Import Section -->
+        <div id="airbnbSection" class="import-section platform-section">
+            <h2 class="section-title">Import from Airbnb</h2>
+            
+            <div class="instructions">
+                <h3>How to copy reviews from Airbnb:</h3>
+                <ol>
+                    <li>Log into your Airbnb host account</li>
+                    <li>Go to Performance → Reviews</li>
+                    <li>For each review, copy the guest name, date, rating, and review text</li>
+                    <li>Paste the information in the format below</li>
+                </ol>
+            </div>
+
+            <form id="airbnbForm">
+                <div class="form-group">
+                    <label for="airbnb_paste">Paste Airbnb Reviews <span class="required">*</span></label>
+                    <textarea id="airbnb_paste" class="form-textarea paste-area" 
+                              placeholder="Format (one review per section):
+Guest Name | Date | Rating (1-5)
+Review text here...
+
+Example:
+Sarah M. | November 2024 | 5
+Absolutely stunning location! The Pinot Dome was perfect for our romantic getaway...
+
+John D. | October 2024 | 5
+Amazing views and wonderful hosts..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="airbnb_accommodation">Default Accommodation</label>
+                    <select id="airbnb_accommodation" class="form-select">
+                        <option value="">Mixed/Multiple</option>
+                        <option value="pinot-dome">Pinot Dome</option>
+                        <option value="rose-dome">Rosé Dome</option>
+                        <option value="lakeside-cottage">Lakeside Cottage</option>
+                    </select>
+                </div>
+
+                <button type="button" onclick="parseAirbnbReviews()" class="submit-btn">
+                    Parse Reviews
+                </button>
+            </form>
+        </div>
+
+        <!-- Booking.com Import Section -->
+        <div id="bookingSection" class="import-section platform-section" style="display: none;">
+            <h2 class="section-title">Import from Booking.com</h2>
+            
+            <div class="instructions">
+                <h3>How to copy reviews from Booking.com:</h3>
+                <ol>
+                    <li>Log into your Booking.com extranet</li>
+                    <li>Go to Guest reviews section</li>
+                    <li>Copy each review including guest name, country, date, score, and comments</li>
+                    <li>Paste in the format below</li>
+                </ol>
+            </div>
+
+            <form id="bookingForm">
+                <div class="form-group">
+                    <label for="booking_paste">Paste Booking.com Reviews <span class="required">*</span></label>
+                    <textarea id="booking_paste" class="form-textarea paste-area" 
+                              placeholder="Format (one review per section):
+Guest Name | Country | Date | Score (1-10)
+Positive: What they liked...
+Negative: What could be improved... (optional)
+
+Example:
+Maria S. | Australia | December 2024 | 9.5
+Positive: Beautiful location with stunning lake views. Very clean and comfortable.
+Negative: Nothing, everything was perfect!
+
+David L. | United Kingdom | November 2024 | 10
+Positive: Exceptional property and wonderful hosts..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="booking_accommodation">Default Accommodation</label>
+                    <select id="booking_accommodation" class="form-select">
+                        <option value="">Mixed/Multiple</option>
+                        <option value="pinot-dome">Pinot Dome</option>
+                        <option value="rose-dome">Rosé Dome</option>
+                        <option value="lakeside-cottage">Lakeside Cottage</option>
+                    </select>
+                </div>
+
+                <button type="button" onclick="parseBookingReviews()" class="submit-btn">
+                    Parse Reviews
+                </button>
+            </form>
+        </div>
+
+        <!-- Manual Entry Section -->
+        <div id="manualSection" class="import-section platform-section" style="display: none;">
+            <h2 class="section-title">Manual Review Entry</h2>
+            
+            <form id="manualForm">
+                <div class="form-group">
+                    <label for="manual_name">Guest Name <span class="required">*</span></label>
+                    <input type="text" id="manual_name" class="form-input" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="manual_location">Guest Location</label>
+                    <input type="text" id="manual_location" class="form-input" 
+                           placeholder="e.g., Auckland, New Zealand">
+                </div>
+
+                <div class="form-group">
+                    <label for="manual_accommodation">Accommodation <span class="required">*</span></label>
+                    <select id="manual_accommodation" class="form-select" required>
+                        <option value="">Select accommodation</option>
+                        <option value="pinot-dome">Pinot Dome</option>
+                        <option value="rose-dome">Rosé Dome</option>
+                        <option value="lakeside-cottage">Lakeside Cottage</option>
+                    </select>
+                </div>
+
+                <div class="date-inputs">
+                    <div class="form-group">
+                        <label for="manual_date">Stay Date</label>
+                        <input type="text" id="manual_date" class="form-input" 
+                               placeholder="e.g., November 2024">
+                    </div>
+                    <div class="form-group">
+                        <label for="manual_rating">Rating (1-5) <span class="required">*</span></label>
+                        <input type="number" id="manual_rating" class="form-input rating-input" 
+                               min="1" max="5" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="manual_source">Review Source <span class="required">*</span></label>
+                    <select id="manual_source" class="form-select" required>
+                        <option value="airbnb">Airbnb</option>
+                        <option value="booking">Booking.com</option>
+                        <option value="google">Google Reviews</option>
+                        <option value="tripadvisor">TripAdvisor</option>
+                        <option value="direct">Direct Feedback</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="manual_title">Review Title</label>
+                    <input type="text" id="manual_title" class="form-input" 
+                           placeholder="Optional - summarize the review">
+                </div>
+
+                <div class="form-group">
+                    <label for="manual_text">Review Text <span class="required">*</span></label>
+                    <textarea id="manual_text" class="form-textarea" required
+                              placeholder="Paste or type the full review text here..."></textarea>
+                </div>
+
+                <button type="button" onclick="submitManualReview()" class="submit-btn">
+                    Add Review
+                </button>
+            </form>
+        </div>
+
+        <!-- Preview Section -->
+        <div id="previewSection" class="preview-section">
+            <div class="preview-title">📋 Review Preview</div>
+            <div id="previewContent"></div>
+            <div class="batch-actions">
+                <button onclick="importAllReviews()" class="submit-btn">
+                    Import All Reviews
+                </button>
+                <button onclick="clearPreview()" class="nav-btn">
+                    Clear
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let parsedReviews = [];
+        let currentPlatform = 'airbnb';
+
+        // Check authentication on page load
+        document.addEventListener('DOMContentLoaded', async function() {
+            try {
+                const response = await fetch('/api/admin/check', { credentials: 'include' });
+                const result = await response.json();
+                
+                if (!result.authenticated) {
+                    window.location.href = '/admin/login';
+                }
+            } catch (error) {
+                console.error('Authentication check failed:', error);
+                window.location.href = '/admin/login';
+            }
+        });
+
+        function switchPlatform(platform) {
+            currentPlatform = platform;
+            
+            // Update tabs
+            document.querySelectorAll('.platform-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelector(`.platform-tab.${platform}`).classList.add('active');
+            
+            // Show/hide sections
+            document.querySelectorAll('.platform-section').forEach(section => {
+                section.style.display = 'none';
+            });
+            document.getElementById(`${platform}Section`).style.display = 'block';
+            
+            // Clear preview
+            clearPreview();
+        }
+
+        function parseAirbnbReviews() {
+            const pasteContent = document.getElementById('airbnb_paste').value.trim();
+            const accommodation = document.getElementById('airbnb_accommodation').value;
+            
+            if (!pasteContent) {
+                showError('Please paste Airbnb reviews to import');
+                return;
+            }
+            
+            parsedReviews = [];
+            const reviewBlocks = pasteContent.split(/\n\n+/);
+            
+            for (let i = 0; i < reviewBlocks.length; i += 2) {
+                if (reviewBlocks[i] && reviewBlocks[i + 1]) {
+                    const headerLine = reviewBlocks[i].trim();
+                    const reviewText = reviewBlocks[i + 1].trim();
+                    
+                    // Parse header: Guest Name | Date | Rating
+                    const headerParts = headerLine.split('|').map(p => p.trim());
+                    
+                    if (headerParts.length >= 3) {
+                        const rating = parseInt(headerParts[2]);
+                        
+                        parsedReviews.push({
+                            guest_name: headerParts[0],
+                            stay_dates: headerParts[1],
+                            overall_rating: rating,
+                            review_text: reviewText,
+                            accommodation_type: accommodation || 'Not specified',
+                            source: 'airbnb',
+                            status: 'approved', // Auto-approve external reviews
+                            verified_stay: true
+                        });
+                    }
+                }
+            }
+            
+            if (parsedReviews.length > 0) {
+                showPreview();
+                showSuccess(`Parsed ${parsedReviews.length} Airbnb reviews`);
+            } else {
+                showError('No valid reviews found. Please check the format.');
+            }
+        }
+
+        function parseBookingReviews() {
+            const pasteContent = document.getElementById('booking_paste').value.trim();
+            const accommodation = document.getElementById('booking_accommodation').value;
+            
+            if (!pasteContent) {
+                showError('Please paste Booking.com reviews to import');
+                return;
+            }
+            
+            parsedReviews = [];
+            const reviewBlocks = pasteContent.split(/\n\n+/);
+            
+            for (let i = 0; i < reviewBlocks.length; i += 2) {
+                if (reviewBlocks[i] && reviewBlocks[i + 1]) {
+                    const headerLine = reviewBlocks[i].trim();
+                    const reviewContent = reviewBlocks[i + 1].trim();
+                    
+                    // Parse header: Guest Name | Country | Date | Score
+                    const headerParts = headerLine.split('|').map(p => p.trim());
+                    
+                    if (headerParts.length >= 4) {
+                        // Convert Booking.com score (1-10) to 5-star rating
+                        const bookingScore = parseFloat(headerParts[3]);
+                        const fiveStarRating = Math.round(bookingScore / 2);
+                        
+                        // Parse positive/negative comments
+                        let reviewText = reviewContent;
+                        let positiveText = '';
+                        let negativeText = '';
+                        
+                        const positiveMatch = reviewContent.match(/Positive:\s*(.+?)(?:Negative:|$)/s);
+                        const negativeMatch = reviewContent.match(/Negative:\s*(.+)/s);
+                        
+                        if (positiveMatch) {
+                            positiveText = positiveMatch[1].trim();
+                            reviewText = positiveText;
+                        }
+                        if (negativeMatch) {
+                            negativeText = negativeMatch[1].trim();
+                            if (negativeText && negativeText.toLowerCase() !== 'nothing' && 
+                                !negativeText.toLowerCase().includes('everything was perfect')) {
+                                reviewText += `\n\nAreas for improvement: ${negativeText}`;
+                            }
+                        }
+                        
+                        parsedReviews.push({
+                            guest_name: headerParts[0],
+                            guest_location: headerParts[1],
+                            stay_dates: headerParts[2],
+                            overall_rating: fiveStarRating,
+                            review_text: reviewText,
+                            accommodation_type: accommodation || 'Not specified',
+                            source: 'booking',
+                            status: 'approved',
+                            verified_stay: true,
+                            booking_score: bookingScore // Store original score
+                        });
+                    }
+                }
+            }
+            
+            if (parsedReviews.length > 0) {
+                showPreview();
+                showSuccess(`Parsed ${parsedReviews.length} Booking.com reviews`);
+            } else {
+                showError('No valid reviews found. Please check the format.');
+            }
+        }
+
+        function submitManualReview() {
+            const name = document.getElementById('manual_name').value.trim();
+            const location = document.getElementById('manual_location').value.trim();
+            const accommodation = document.getElementById('manual_accommodation').value;
+            const date = document.getElementById('manual_date').value.trim();
+            const rating = document.getElementById('manual_rating').value;
+            const source = document.getElementById('manual_source').value;
+            const title = document.getElementById('manual_title').value.trim();
+            const text = document.getElementById('manual_text').value.trim();
+            
+            if (!name || !accommodation || !rating || !text) {
+                showError('Please fill in all required fields');
+                return;
+            }
+            
+            parsedReviews = [{
+                guest_name: name,
+                guest_location: location,
+                accommodation_type: accommodation,
+                stay_dates: date,
+                overall_rating: parseInt(rating),
+                review_title: title,
+                review_text: text,
+                source: source,
+                status: 'approved',
+                verified_stay: true
+            }];
+            
+            showPreview();
+            showSuccess('Review ready to import');
+        }
+
+        function showPreview() {
+            const previewSection = document.getElementById('previewSection');
+            const previewContent = document.getElementById('previewContent');
+            
+            previewContent.innerHTML = '';
+            
+            parsedReviews.forEach(review => {
+                const stars = '⭐'.repeat(review.overall_rating);
+                const reviewDiv = document.createElement('div');
+                reviewDiv.className = 'review-preview';
+                reviewDiv.innerHTML = `
+                    <div class="preview-header">
+                        <div>
+                            <span class="preview-name">${review.guest_name}</span>
+                            ${review.guest_location ? `• ${review.guest_location}` : ''}
+                            ${review.stay_dates ? `• ${review.stay_dates}` : ''}
+                        </div>
+                        <div class="preview-rating">${stars}</div>
+                    </div>
+                    <div class="preview-text">
+                        ${review.review_title ? `<strong>${review.review_title}</strong><br>` : ''}
+                        ${review.review_text}
+                    </div>
+                    <div style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--text-light);">
+                        Source: ${review.source.toUpperCase()} | 
+                        Accommodation: ${review.accommodation_type || 'Not specified'}
+                    </div>
+                `;
+                previewContent.appendChild(reviewDiv);
+            });
+            
+            previewSection.classList.add('active');
+        }
+
+        async function importAllReviews() {
+            if (parsedReviews.length === 0) {
+                showError('No reviews to import');
+                return;
+            }
+            
+            let successCount = 0;
+            let failCount = 0;
+            
+            for (const review of parsedReviews) {
+                try {
+                    const response = await fetch('/api/reviews/import', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        credentials: 'include',
+                        body: JSON.stringify(review)
+                    });
+                    
+                    if (response.ok) {
+                        successCount++;
+                    } else {
+                        failCount++;
+                    }
+                } catch (error) {
+                    console.error('Import error:', error);
+                    failCount++;
+                }
+            }
+            
+            if (successCount > 0) {
+                showSuccess(`Successfully imported ${successCount} reviews${failCount > 0 ? ` (${failCount} failed)` : ''}`);
+                
+                // Clear form and preview after successful import
+                setTimeout(() => {
+                    clearPreview();
+                    clearForms();
+                }, 2000);
+            } else {
+                showError('Failed to import reviews. Please try again.');
+            }
+        }
+
+        function clearPreview() {
+            parsedReviews = [];
+            document.getElementById('previewSection').classList.remove('active');
+        }
+
+        function clearForms() {
+            document.getElementById('airbnb_paste').value = '';
+            document.getElementById('booking_paste').value = '';
+            document.getElementById('manualForm').reset();
+        }
+
+        function showSuccess(message) {
+            const successDiv = document.getElementById('successMessage');
+            successDiv.textContent = message;
+            successDiv.style.display = 'block';
+            setTimeout(() => {
+                successDiv.style.display = 'none';
+            }, 5000);
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            setTimeout(() => {
+                errorDiv.style.display = 'none';
+            }, 5000);
+        }
+
+        async function logout() {
+            try {
+                const response = await fetch('/api/admin/logout', {
+                    method: 'POST',
+                    credentials: 'include'
+                });
+                
+                if (response.ok) {
+                    window.location.href = '/admin/login';
+                }
+            } catch (error) {
+                console.error('Logout error:', error);
+                window.location.href = '/admin/login';
+            }
+        }
+    </script>
+</body>
+</html>

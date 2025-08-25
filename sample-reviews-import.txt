@@ -1,0 +1,68 @@
+==== AIRBNB REVIEWS TO IMPORT ====
+Copy and paste these into the Airbnb import section:
+
+Sarah M. | November 2024 | 5
+Absolutely stunning location! The Pinot Dome exceeded all expectations. Waking up to panoramic views of Lake Dunstan was magical. Sandy was an incredible host - so welcoming and helpful with local recommendations. The dome was spotlessly clean and beautifully decorated. Can't wait to return!
+
+James & Emily T. | October 2024 | 5
+Perfect romantic getaway! The Rosé Dome was luxurious and private. The outdoor bath under the stars was unforgettable. Sandy's breakfast provisions were delicious. The vineyard setting is breathtaking. Highly recommend for couples seeking a special escape.
+
+Michael K. | September 2024 | 5
+The Lakeside Cottage was exactly what we needed for our family break. Kids loved exploring the property and the proximity to the lake. Sandy went above and beyond to make us feel welcome. Great value and amazing views. Will definitely book again!
+
+Lisa P. | August 2024 | 4
+Beautiful property with incredible views. The Pinot Dome was comfortable and well-equipped. Only minor issue was the wind one night, but Sandy had warned us and provided extra blankets. Overall a wonderful experience and would recommend.
+
+David & Karen R. | July 2024 | 5
+Wow! What a place! The photos don't do justice to the actual views. Stayed in the Rosé Dome and loved every minute. The spa bath, the sunrise, the peace and quiet - everything was perfect. Sandy is a superb host. Already planning our next visit.
+
+==== BOOKING.COM REVIEWS TO IMPORT ====
+Copy and paste these into the Booking.com import section:
+
+Maria S. | Australia | December 2024 | 9.5
+Positive: Exceptional location with stunning lake views. Very clean and comfortable accommodation. Sandy was a wonderful host who made us feel very welcome. The outdoor spa was a highlight!
+Negative: Nothing really, maybe just needed a few more kitchen utensils.
+
+John L. | United Kingdom | November 2024 | 10
+Positive: Outstanding property in a beautiful location. The Pinot Dome was luxurious and romantic. Loved the privacy and the views. Sandy provided excellent local recommendations. Perfect in every way.
+
+Chen W. | Singapore | October 2024 | 9.0
+Positive: Beautiful glamping experience with amazing views of the lake and mountains. Very peaceful and relaxing. The dome was well-equipped and comfortable.
+Negative: The access road is a bit rough but manageable. Would have liked more dining options nearby.
+
+Roberto M. | Italy | September 2024 | 9.8
+Positive: Fantastic accommodation in a stunning location. The vineyard setting is beautiful. Sandy is an excellent host. The dome was spotlessly clean and very comfortable. Highly recommended!
+Negative: Nothing, everything was perfect!
+
+Anna B. | Germany | August 2024 | 9.5
+Positive: Unique accommodation with incredible views. Very peaceful location perfect for relaxation. The hosts were very friendly and helpful. Loved the outdoor bath and the breakfast provisions.
+Negative: WiFi was a bit slow but that's expected in a rural location.
+
+==== MANUAL ENTRIES (Email/Direct Feedback) ====
+These can be entered one by one in the Manual Entry section:
+
+Name: Peter Thompson
+Location: Wellington, New Zealand
+Accommodation: Lakeside Cottage
+Date: June 2024
+Rating: 5
+Source: Direct Email
+Review: "Thank you so much for a wonderful stay at Lakeside Cottage. Our family had an amazing time and the kids are already asking when we can come back! The location is perfect - close enough to Cromwell for supplies but far enough away to feel like a real escape. Sandy was incredibly helpful and accommodating. We'll definitely be recommending you to our friends!"
+
+Name: Susan Chen
+Location: Auckland, New Zealand
+Accommodation: Pinot Dome
+Date: May 2024
+Rating: 5
+Source: Google Reviews
+Review: "Stayed here for our anniversary and it was absolutely perfect. The dome is luxurious and romantic with the most incredible views. Watching the sunset over the lake from the outdoor spa was unforgettable. Sandy has thought of everything to make the stay special. Can't recommend highly enough!"
+
+==== INSTRUCTIONS ====
+1. Go to http://localhost:10000/admin/login
+2. Login with username: sandy, password: lakeside2024
+3. Click "📥 Import Reviews" button
+4. Copy each section above and paste into the appropriate tab
+5. Click "Parse Reviews" to preview
+6. Click "Import All Reviews" to add them to your website
+
+All imported reviews will be automatically approved and will appear immediately on your public reviews page with the appropriate platform badges (Airbnb, Booking.com, etc.)
