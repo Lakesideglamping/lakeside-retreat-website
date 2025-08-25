@@ -131,59 +131,85 @@ const authenticateAdmin = async (req, res, next) => {
   }
 };
 
-// Admin login endpoint
-app.post('/api/admin/login', strictLimiter, async (req, res) => {
+// SIMPLE ADMIN LOGIN - TEMPORARY FOR TESTING
+app.post('/api/admin/login', async (req, res) => {
   try {
     const { username, password } = req.body;
     
-    console.log('Login attempt for username:', username);
-    console.log('Environment ADMIN_USERNAME:', process.env.ADMIN_USERNAME);
+    console.log('=== ADMIN LOGIN DEBUG ===');
+    console.log('Received username:', username);
+    console.log('Received password:', password);
+    console.log('ENV ADMIN_USERNAME:', process.env.ADMIN_USERNAME);
+    console.log('ENV ADMIN_PASSWORD_HASH exists:', !!process.env.ADMIN_PASSWORD_HASH);
+    console.log('ENV JWT_SECRET exists:', !!process.env.JWT_SECRET);
     
-    // Get admin credentials from environment
-    const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin';
-    const ADMIN_PASSWORD_HASH = process.env.ADMIN_PASSWORD_HASH;
+    // SIMPLE CHECK - USE EXACT VALUES FOR NOW
+    const correctUsername = 'lakesideadmin';
+    const correctPassword = 'LakesideAdmin2025';
     
     if (!username || !password) {
+      console.log('Missing username or password');
       return res.status(400).json({ error: 'Username and password required' });
     }
     
-    if (username !== ADMIN_USERNAME) {
-      console.log('Username mismatch. Expected:', ADMIN_USERNAME, 'Got:', username);
-      return res.status(401).json({ error: 'Invalid credentials' });
+    if (username !== correctUsername) {
+      console.log('Username incorrect. Expected:', correctUsername, 'Got:', username);
+      return res.status(401).json({ error: 'Invalid username' });
     }
     
-    // If no hash is set in environment, use default for 'admin123'
-    let passwordHash = ADMIN_PASSWORD_HASH;
-    if (!passwordHash) {
-      console.log('No ADMIN_PASSWORD_HASH found, using default admin123 hash');
-      passwordHash = '$2a$12$LQv3c1yqBWVHxkd0LQ1Mu.VCgzN8.KK9.Q6lKgFjA3dNgTjg9fNzu'; // Hash for 'admin123'
+    if (password !== correctPassword) {
+      console.log('Password incorrect. Expected:', correctPassword, 'Got:', password);
+      return res.status(401).json({ error: 'Invalid password' });
     }
     
-    console.log('Comparing password with hash');
-    const isValidPassword = await bcrypt.compare(password, passwordHash);
-    
-    if (!isValidPassword) {
-      console.log('Password validation failed');
-      return res.status(401).json({ error: 'Invalid credentials' });
-    }
-    
-    console.log('Login successful for:', username);
+    console.log('Login successful! Generating token...');
     
     const token = jwt.sign(
-      { username: ADMIN_USERNAME, role: 'admin' },
-      process.env.JWT_SECRET || 'default-secret-change-in-production',
+      { username: correctUsername, role: 'admin' },
+      process.env.JWT_SECRET || 'simple-jwt-secret-for-testing',
       { expiresIn: '24h' }
     );
+    
+    console.log('Token generated successfully');
     
     res.json({ 
       token,
       message: 'Login successful',
-      expiresIn: '24h'
+      expiresIn: '24h',
+      debug: {
+        username_match: username === correctUsername,
+        password_match: password === correctPassword,
+        env_vars: {
+          admin_username: !!process.env.ADMIN_USERNAME,
+          admin_password_hash: !!process.env.ADMIN_PASSWORD_HASH,
+          jwt_secret: !!process.env.JWT_SECRET
+        }
+      }
     });
   } catch (error) {
     console.error('Admin login error:', error);
-    res.status(500).json({ error: 'Login failed' });
+    res.status(500).json({ 
+      error: 'Login failed',
+      details: error.message 
+    });
   }
+});
+
+// DEBUG ENDPOINT - REMOVE IN PRODUCTION
+app.get('/api/admin/debug', (req, res) => {
+  res.json({
+    environment_variables: {
+      ADMIN_USERNAME: process.env.ADMIN_USERNAME,
+      ADMIN_PASSWORD_HASH_EXISTS: !!process.env.ADMIN_PASSWORD_HASH,
+      JWT_SECRET_EXISTS: !!process.env.JWT_SECRET,
+      NODE_ENV: process.env.NODE_ENV
+    },
+    expected_credentials: {
+      username: 'lakesideadmin',
+      password: 'LakesideAdmin2025'
+    },
+    timestamp: new Date().toISOString()
+  });
 });
 
 // Admin dashboard endpoint
