@@ -538,8 +538,7 @@ document.addEventListener('DOMContentLoaded', () => {
     </script>
 
     <!-- Security and Performance optimization -->
-    <script src="security-fixes-immediate.js"></script>
-    <script src="secure-payment-integration.js"></script>
+    <!-- Security and payment integration handled inline -->
     <script>
       // WebP support detection
       function supportsWebP() {
@@ -6944,22 +6943,7 @@ Thank you for choosing Lakeside Retreat!`);
             }
         }
 
-        // Get CSRF token before making POST requests
-        let csrfToken = null;
-
-        async function getCSRFToken() {
-            try {
-                const response = await fetch(`${API_BASE_URL}/api/csrf-token`, {
-                    credentials: 'include'
-                });
-                const data = await response.json();
-                csrfToken = data.csrfToken;
-                return csrfToken;
-            } catch (error) {
-                // Console statement removed for production
-                return null;
-            }
-        }
+        // CSRF token is already declared above - using existing implementation
 
         // Secure API call wrapper
         async function secureApiCall(endpoint, options = {}) {
