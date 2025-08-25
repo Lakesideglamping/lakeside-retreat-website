@@ -210,21 +210,7 @@ app.get('/api/admin/debug', (req, res) => {
   });
 });
 
-// Login status endpoint - safe for production
-app.get('/api/admin/status', (req, res) => {
-  res.json({
-    message: 'Login system operational',
-    environment: process.env.NODE_ENV || 'development',
-    custom_credentials_configured: {
-      username: !!process.env.ADMIN_USERNAME,
-      password: !!process.env.ADMIN_PASSWORD,
-      jwt_secret: !!process.env.JWT_SECRET
-    },
-    using_defaults: !process.env.ADMIN_USERNAME && !process.env.ADMIN_PASSWORD,
-    login_url: '/admin',
-    timestamp: new Date().toISOString()
-  });
-});
+// Remove status endpoint now that login is working
 
 // Admin dashboard endpoint
 app.get('/api/admin/dashboard', authenticateAdmin, (req, res) => {
