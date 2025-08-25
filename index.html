@@ -2257,6 +2257,158 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
     </div>
 
+    <!-- INTEGRATED UPLISTING BOOKING MODAL -->
+    <div class="booking-modal" id="integratedBookingModal" style="display: none;">
+        <div class="booking-modal-content">
+            <div class="booking-modal-header">
+                <h2>Book Your Stay - Live Availability</h2>
+                <button class="close-booking-modal" onclick="closeIntegratedBookingModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="booking-modal-body">
+                <!-- Step 1: Accommodation Selection -->
+                <div class="booking-step active" id="integratedStep1">
+                    <h3 style="color: var(--brand-teal); margin-bottom: 1.5rem;">Select Your Accommodation</h3>
+                    
+                    <div class="integrated-accommodation-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+                        <div class="integrated-accommodation-card" data-property="pinot" onclick="selectIntegratedProperty('pinot')" style="border: 2px solid #e5e7eb; border-radius: 10px; padding: 1rem; cursor: pointer; transition: all 0.3s ease; text-align: center;">
+                            <div class="accommodation-image-placeholder" style="background: linear-gradient(135deg, #2d5a5a, #4a7c7c); height: 120px; border-radius: 10px; margin-bottom: 1rem; display: flex; align-items: center; justify-content: center; color: white; font-size: 2rem;">🏡</div>
+                            <h4 style="margin-bottom: 0.5rem;">Dome Pinot</h4>
+                            <p style="font-size: 0.9rem; color: #666; margin-bottom: 0.5rem;">Luxury 50sqm dome with panoramic views</p>
+                            <div style="font-weight: 600; color: var(--brand-teal);">From $450/night</div>
+                        </div>
+                        
+                        <div class="integrated-accommodation-card" data-property="rose" onclick="selectIntegratedProperty('rose')" style="border: 2px solid #e5e7eb; border-radius: 10px; padding: 1rem; cursor: pointer; transition: all 0.3s ease; text-align: center;">
+                            <div class="accommodation-image-placeholder" style="background: linear-gradient(135deg, #be185d, #f3e8ff); height: 120px; border-radius: 10px; margin-bottom: 1rem; display: flex; align-items: center; justify-content: center; color: white; font-size: 2rem;">🌹</div>
+                            <h4 style="margin-bottom: 0.5rem;">Dome Rosé</h4>
+                            <p style="font-size: 0.9rem; color: #666; margin-bottom: 0.5rem;">Romantic 40sqm couples retreat</p>
+                            <div style="font-weight: 600; color: var(--brand-teal);">From $380/night</div>
+                        </div>
+                        
+                        <div class="integrated-accommodation-card" data-property="cottage" onclick="selectIntegratedProperty('cottage')" style="border: 2px solid #e5e7eb; border-radius: 10px; padding: 1rem; cursor: pointer; transition: all 0.3s ease; text-align: center;">
+                            <div class="accommodation-image-placeholder" style="background: linear-gradient(135deg, #059669, #34d399); height: 120px; border-radius: 10px; margin-bottom: 1rem; display: flex; align-items: center; justify-content: center; color: white; font-size: 2rem;">🏠</div>
+                            <h4 style="margin-bottom: 0.5rem;">Lakeside Cottage</h4>
+                            <p style="font-size: 0.9rem; color: #666; margin-bottom: 0.5rem;">Family cottage with direct lake access</p>
+                            <div style="font-weight: 600; color: var(--brand-teal);">From $580/night</div>
+                        </div>
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 2rem;">
+                        <button id="continueToBooking" class="btn btn-primary" style="display: none;" onclick="proceedToAvailabilityCheck()">
+                            Continue to Booking →
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 2: Availability Check & Booking -->
+                <div class="booking-step" id="integratedStep2" style="display: none;">
+                    <div style="display: flex; align-items: center; margin-bottom: 1.5rem;">
+                        <button onclick="backToPropertySelection()" style="background: none; border: none; color: var(--brand-teal); font-size: 1.2rem; margin-right: 1rem; cursor: pointer;">←</button>
+                        <h3 style="color: var(--brand-teal); margin: 0;">Check Availability & Book</h3>
+                    </div>
+                    
+                    <div id="selectedPropertyDisplay" style="background: rgba(45, 90, 90, 0.05); padding: 1rem; border-radius: 10px; margin-bottom: 1.5rem;">
+                        <!-- Selected property details will be displayed here -->
+                    </div>
+
+                    <!-- Dates and Guests -->
+                    <div class="integrated-booking-form">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                            <div>
+                                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Check-in Date</label>
+                                <input type="date" id="integratedCheckin" class="form-input" style="width: 100%;" onchange="checkIntegratedAvailability()">
+                            </div>
+                            <div>
+                                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Check-out Date</label>
+                                <input type="date" id="integratedCheckout" class="form-input" style="width: 100%;" onchange="checkIntegratedAvailability()">
+                            </div>
+                        </div>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                            <div>
+                                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Adults</label>
+                                <select id="integratedAdults" class="form-input" style="width: 100%;" onchange="checkIntegratedAvailability()">
+                                    <option value="1">1 Adult</option>
+                                    <option value="2" selected>2 Adults</option>
+                                    <option value="3">3 Adults</option>
+                                    <option value="4">4 Adults</option>
+                                    <option value="5">5 Adults</option>
+                                    <option value="6">6 Adults</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Children</label>
+                                <select id="integratedChildren" class="form-input" style="width: 100%;" onchange="checkIntegratedAvailability()">
+                                    <option value="0" selected>No Children</option>
+                                    <option value="1">1 Child</option>
+                                    <option value="2">2 Children</option>
+                                    <option value="3">3 Children</option>
+                                    <option value="4">4 Children</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Availability Status -->
+                        <div id="integratedAvailabilityStatus" style="margin-bottom: 1.5rem; padding: 1rem; border-radius: 10px; text-align: center;">
+                            <div style="color: #666; font-style: italic;">
+                                Select dates to check availability
+                            </div>
+                        </div>
+
+                        <!-- Guest Information Form (hidden until availability confirmed) -->
+                        <div id="integratedGuestForm" style="display: none;">
+                            <h4 style="color: var(--brand-teal); margin-bottom: 1rem;">Guest Details</h4>
+                            
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                                <div>
+                                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">First Name *</label>
+                                    <input type="text" id="integratedFirstName" class="form-input" style="width: 100%;" required>
+                                </div>
+                                <div>
+                                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Last Name *</label>
+                                    <input type="text" id="integratedLastName" class="form-input" style="width: 100%;" required>
+                                </div>
+                            </div>
+                            
+                            <div style="margin-bottom: 1rem;">
+                                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Email Address *</label>
+                                <input type="email" id="integratedEmail" class="form-input" style="width: 100%;" required>
+                            </div>
+                            
+                            <div style="margin-bottom: 1rem;">
+                                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Phone Number *</label>
+                                <input type="tel" id="integratedPhone" class="form-input" style="width: 100%;" required>
+                            </div>
+                            
+                            <div style="margin-bottom: 1.5rem;">
+                                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Special Requests (Optional)</label>
+                                <textarea id="integratedSpecialRequests" class="form-textarea" style="width: 100%;" rows="3" placeholder="Any special requirements or requests..."></textarea>
+                            </div>
+
+                            <!-- Payment Button -->
+                            <div style="text-align: center;">
+                                <button id="proceedToPayment" class="btn btn-primary" onclick="proceedToStripePayment()" style="padding: 1rem 2rem; font-size: 1.1rem;">
+                                    Complete Booking with Stripe →
+                                </button>
+                                <p style="font-size: 0.85rem; color: #666; margin-top: 0.5rem;">Secure payment powered by Stripe</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Success Message -->
+                <div class="booking-step" id="integratedSuccess" style="text-align: center; display: none;">
+                    <div style="font-size: 4rem; margin-bottom: 1rem;">🎉</div>
+                    <h3 style="color: var(--brand-teal); margin-bottom: 1rem;">Booking Confirmed!</h3>
+                    <p style="margin-bottom: 2rem;">Your reservation has been confirmed and you'll receive a confirmation email shortly.</p>
+                    <button class="btn btn-primary" onclick="closeIntegratedBookingModal()">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Social Proof Notification -->
     <div class="social-proof" id="socialProof">
         <div style="display: flex; align-items: center; gap: 1rem;">
@@ -2500,7 +2652,7 @@ document.addEventListener('DOMContentLoaded', () => {
     <div class="booking-modal" id="bookingModal">
         <div class="booking-modal-content">
             <div class="booking-modal-header">
-                <h2>Book Your Commercial-Grade Solar Experience</h2>
+                <h2>Book Your Stay - Real-time Availability</h2>
                 <button class="close-booking-modal" onclick="closeBookingModal()">
                     <i class="fas fa-times"></i>
                 </button>
@@ -7814,6 +7966,267 @@ Thank you for choosing Lakeside Retreat!`);
                 arrow.innerHTML = '▲';
                 console.log('Opened guide, set maxHeight to:', content.style.maxHeight);
             }
+        }
+
+        // ========================================
+        // INTEGRATED BOOKING SYSTEM FUNCTIONS
+        // ========================================
+        let selectedProperty = null;
+        let currentBookingData = {};
+
+        // Open the new integrated booking modal
+        function openIntegratedBookingModal(preSelectedProperty = null) {
+            document.getElementById('integratedBookingModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            
+            if (preSelectedProperty) {
+                selectIntegratedProperty(preSelectedProperty);
+            }
+            
+            // Set minimum dates
+            const today = new Date();
+            const tomorrow = new Date(today);
+            tomorrow.setDate(today.getDate() + 1);
+            
+            document.getElementById('integratedCheckin').min = today.toISOString().split('T')[0];
+            document.getElementById('integratedCheckout').min = tomorrow.toISOString().split('T')[0];
+        }
+
+        // Close integrated booking modal
+        function closeIntegratedBookingModal() {
+            document.getElementById('integratedBookingModal').style.display = 'none';
+            document.body.style.overflow = '';
+            resetIntegratedBookingModal();
+        }
+
+        // Reset the modal to initial state
+        function resetIntegratedBookingModal() {
+            // Reset to step 1
+            document.getElementById('integratedStep1').style.display = 'block';
+            document.getElementById('integratedStep2').style.display = 'none';
+            document.getElementById('integratedSuccess').style.display = 'none';
+            
+            // Clear selections
+            selectedProperty = null;
+            document.querySelectorAll('.integrated-accommodation-card').forEach(card => {
+                card.style.borderColor = '#e5e7eb';
+                card.style.backgroundColor = 'white';
+            });
+            
+            document.getElementById('continueToBooking').style.display = 'none';
+            document.getElementById('integratedGuestForm').style.display = 'none';
+            
+            // Clear form fields
+            document.getElementById('integratedCheckin').value = '';
+            document.getElementById('integratedCheckout').value = '';
+            document.getElementById('integratedFirstName').value = '';
+            document.getElementById('integratedLastName').value = '';
+            document.getElementById('integratedEmail').value = '';
+            document.getElementById('integratedPhone').value = '';
+            document.getElementById('integratedSpecialRequests').value = '';
+        }
+
+        // Select property in step 1
+        function selectIntegratedProperty(propertyId) {
+            selectedProperty = propertyId;
+            
+            // Update visual selection
+            document.querySelectorAll('.integrated-accommodation-card').forEach(card => {
+                card.style.borderColor = '#e5e7eb';
+                card.style.backgroundColor = 'white';
+            });
+            
+            const selectedCard = document.querySelector(`[data-property="${propertyId}"]`);
+            selectedCard.style.borderColor = 'var(--brand-teal)';
+            selectedCard.style.backgroundColor = 'rgba(45, 90, 90, 0.05)';
+            
+            // Show continue button
+            document.getElementById('continueToBooking').style.display = 'inline-block';
+        }
+
+        // Proceed to availability check
+        function proceedToAvailabilityCheck() {
+            if (!selectedProperty) return;
+            
+            // Hide step 1, show step 2
+            document.getElementById('integratedStep1').style.display = 'none';
+            document.getElementById('integratedStep2').style.display = 'block';
+            
+            // Update selected property display
+            const propertyNames = {
+                'pinot': 'Dome Pinot - Luxury 50sqm dome',
+                'rose': 'Dome Rosé - Romantic 40sqm retreat', 
+                'cottage': 'Lakeside Cottage - Family cottage with lake access'
+            };
+            
+            const propertyPrices = {
+                'pinot': '$450',
+                'rose': '$380',
+                'cottage': '$580'
+            };
+            
+            document.getElementById('selectedPropertyDisplay').innerHTML = `
+                <h4 style="margin: 0; color: var(--brand-teal);">${propertyNames[selectedProperty]}</h4>
+                <p style="margin: 0.5rem 0 0 0; color: #666;">Starting from ${propertyPrices[selectedProperty]}/night</p>
+            `;
+        }
+
+        // Back to property selection
+        function backToPropertySelection() {
+            document.getElementById('integratedStep1').style.display = 'block';
+            document.getElementById('integratedStep2').style.display = 'none';
+        }
+
+        // Check availability (placeholder for Uplisting API integration)
+        function checkIntegratedAvailability() {
+            const checkin = document.getElementById('integratedCheckin').value;
+            const checkout = document.getElementById('integratedCheckout').value;
+            const adults = document.getElementById('integratedAdults').value;
+            const children = document.getElementById('integratedChildren').value;
+            
+            if (!checkin || !checkout) {
+                document.getElementById('integratedAvailabilityStatus').innerHTML = `
+                    <div style="color: #666; font-style: italic;">
+                        Select dates to check availability
+                    </div>
+                `;
+                return;
+            }
+            
+            // Validate dates
+            const checkinDate = new Date(checkin);
+            const checkoutDate = new Date(checkout);
+            const today = new Date();
+            
+            if (checkinDate <= today) {
+                document.getElementById('integratedAvailabilityStatus').innerHTML = `
+                    <div style="color: #dc2626; padding: 1rem; background: #fef2f2; border-radius: 8px;">
+                        ❌ Check-in date must be at least tomorrow
+                    </div>
+                `;
+                return;
+            }
+            
+            if (checkoutDate <= checkinDate) {
+                document.getElementById('integratedAvailabilityStatus').innerHTML = `
+                    <div style="color: #dc2626; padding: 1rem; background: #fef2f2; border-radius: 8px;">
+                        ❌ Check-out date must be after check-in date
+                    </div>
+                `;
+                return;
+            }
+            
+            // Show loading state
+            document.getElementById('integratedAvailabilityStatus').innerHTML = `
+                <div style="color: #666; padding: 1rem; background: #f9fafb; border-radius: 8px;">
+                    🔄 Checking availability...
+                </div>
+            `;
+            
+            // Simulate availability check (replace with Uplisting API)
+            setTimeout(() => {
+                simulateAvailabilityCheck(selectedProperty, checkin, checkout, adults, children);
+            }, 1500);
+        }
+
+        // Simulate availability check (replace with Uplisting API)
+        function simulateAvailabilityCheck(property, checkin, checkout, adults, children) {
+            const checkinDate = new Date(checkin);
+            const checkoutDate = new Date(checkout);
+            const nights = Math.ceil((checkoutDate - checkinDate) / (1000 * 60 * 60 * 24));
+            
+            // Simulate availability (70% chance)
+            const isAvailable = Math.random() > 0.3;
+            
+            if (isAvailable) {
+                const basePrices = { 'pinot': 450, 'rose': 380, 'cottage': 580 };
+                const totalPrice = basePrices[property] * nights;
+                const gst = Math.round(totalPrice * 0.15);
+                const finalTotal = totalPrice + gst;
+                
+                currentBookingData = {
+                    property, checkin, checkout, adults, children, nights,
+                    basePrice: basePrices[property], totalPrice, gst, finalTotal
+                };
+                
+                document.getElementById('integratedAvailabilityStatus').innerHTML = `
+                    <div style="color: #059669; padding: 1rem; background: #ecfdf5; border-radius: 8px; border: 1px solid #059669;">
+                        <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+                            <span style="font-size: 1.2rem; margin-right: 0.5rem;">✅</span>
+                            <strong>Available for your dates!</strong>
+                        </div>
+                        <div style="font-size: 0.9rem;">
+                            <div>${nights} night${nights > 1 ? 's' : ''} × $${basePrices[property]} = $${totalPrice}</div>
+                            <div>GST (15%): $${gst}</div>
+                            <div style="font-weight: 600; margin-top: 0.5rem; font-size: 1rem;">Total: $${finalTotal} NZD</div>
+                        </div>
+                    </div>
+                `;
+                
+                document.getElementById('integratedGuestForm').style.display = 'block';
+            } else {
+                document.getElementById('integratedAvailabilityStatus').innerHTML = `
+                    <div style="color: #dc2626; padding: 1rem; background: #fef2f2; border-radius: 8px;">
+                        <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+                            <span style="font-size: 1.2rem; margin-right: 0.5rem;">❌</span>
+                            <strong>Not available for selected dates</strong>
+                        </div>
+                        <div style="font-size: 0.9rem;">Please try different dates or contact us directly.</div>
+                    </div>
+                `;
+                
+                document.getElementById('integratedGuestForm').style.display = 'none';
+            }
+        }
+
+        // Proceed to Stripe payment
+        function proceedToStripePayment() {
+            const firstName = document.getElementById('integratedFirstName').value;
+            const lastName = document.getElementById('integratedLastName').value;
+            const email = document.getElementById('integratedEmail').value;
+            const phone = document.getElementById('integratedPhone').value;
+            
+            if (!firstName || !lastName || !email || !phone) {
+                alert('Please fill in all required fields');
+                return;
+            }
+            
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert('Please enter a valid email address');
+                return;
+            }
+            
+            const bookingData = {
+                ...currentBookingData,
+                guest: {
+                    firstName, lastName, email, phone,
+                    specialRequests: document.getElementById('integratedSpecialRequests').value
+                }
+            };
+            
+            // Show loading state
+            document.getElementById('proceedToPayment').innerHTML = 'Processing payment...';
+            document.getElementById('proceedToPayment').disabled = true;
+            
+            // Simulate Stripe payment (replace with actual Stripe integration)
+            setTimeout(() => {
+                completeIntegratedBooking(bookingData);
+            }, 2000);
+        }
+
+        // Complete booking and show success
+        function completeIntegratedBooking(bookingData) {
+            document.getElementById('integratedStep2').style.display = 'none';
+            document.getElementById('integratedSuccess').style.display = 'block';
+            
+            console.log('Booking completed:', bookingData);
+            
+            // Here you would:
+            // 1. Create booking in Uplisting via API
+            // 2. Process payment via Stripe
+            // 3. Send confirmation emails
+            // 4. Update your booking database
         }
 
 </script>
