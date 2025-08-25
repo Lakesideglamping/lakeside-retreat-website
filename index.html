@@ -4795,7 +4795,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                 </div>
             </section>
-            <section class="section" style="padding-top: 1rem;">
+            <section class="section" style="padding-top: 0.5rem;">
                 <div class="container" style="max-width: 800px;">
                     <div class="grid grid-2">
                         <div class="card">
@@ -7132,6 +7132,15 @@ Thank you for choosing Lakeside Retreat!`);
             const heroSection = document.querySelector('.hero');
             
             if (!floatingButton || !heroSection) return;
+            
+            // Hide button on contact page
+            if (currentPage === 'contact') {
+                floatingButton.style.opacity = '0';
+                floatingButton.style.visibility = 'hidden';
+                floatingButton.style.transform = 'translateY(20px)';
+                floatingButton.style.pointerEvents = 'none';
+                return;
+            }
             
             const heroBottom = heroSection.offsetTop + heroSection.offsetHeight;
             const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
