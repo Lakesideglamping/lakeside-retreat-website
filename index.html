@@ -8469,14 +8469,31 @@ Thank you for choosing Lakeside Retreat!`);
                 if (session.error) {
                     throw new Error(session.error);
                 }
-                if (!session.id) {
-                    throw new Error('No session ID received from server');
+                
+                // Handle test mode (when Stripe is not configured)
+                if (session.test_mode) {
+                    console.log('Test mode: Simulating successful booking');
+                    // Show success immediately for testing
+                    completeIntegratedBooking(bookingData);
+                    return;
                 }
-                if (!stripe) {
-                    throw new Error('Stripe not initialized. Please reload the page.');
+                
+                // Handle production mode with Stripe
+                if (session.url) {
+                    console.log('Redirecting to Stripe checkout URL...');
+                    window.location.href = session.url;
+                    return;
                 }
-                console.log('Redirecting to Stripe checkout...');
-                return stripe.redirectToCheckout({ sessionId: session.id });
+                
+                if (session.id) {
+                    if (!window.stripe) {
+                        throw new Error('Stripe not initialized. Please configure Stripe keys.');
+                    }
+                    console.log('Redirecting to Stripe checkout...');
+                    return stripe.redirectToCheckout({ sessionId: session.id });
+                }
+                
+                throw new Error('Invalid session response from server');
             })
             .then(result => {
                 if (result && result.error) {
@@ -8499,17 +8516,44 @@ Thank you for choosing Lakeside Retreat!`);
         }
 
         // Complete booking and show success
-        function completeIntegratedBooking(bookingData) {
-            document.getElementById('integratedStep2').style.display = 'none';
-            document.getElementById('integratedSuccess').style.display = 'block';
-            
-            console.log('Booking completed:', bookingData);
-            
-            // Here you would:
-            // 1. Create booking in Uplisting via API
-            // 2. Process payment via Stripe
-            // 3. Send confirmation emails
-            // 4. Update your booking database
+        async function completeIntegratedBooking(bookingData) {
+            try {
+                console.log('Completing booking:', bookingData);
+                
+                // Send booking confirmation to server
+                const response = await fetch('/api/booking/confirm', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        session_id: 'test_session_' + Date.now(),
+                        guest_info: bookingData.guest,
+                        booking_details: {
+                            property: bookingData.property,
+                            checkin: bookingData.checkin,
+                            checkout: bookingData.checkout,
+                            adults: bookingData.adults,
+                            children: bookingData.children,
+                            total: bookingData.finalTotal
+                        }
+                    })
+                });
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    console.log('Booking confirmed:', result);
+                    
+                    document.getElementById('integratedStep2').style.display = 'none';
+                    document.getElementById('integratedSuccess').style.display = 'block';
+                } else {
+                    throw new Error('Failed to confirm booking');
+                }
+                
+            } catch (error) {
+                console.error('Error completing booking:', error);
+                alert('Booking completion failed. Please contact us directly.');
+            }
         }
 
 </script>

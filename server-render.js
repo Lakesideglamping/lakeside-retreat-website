@@ -398,13 +398,43 @@ app.post('/api/contact', async (req, res) => {
 // Stripe Checkout session creation endpoint (protected)
 app.post('/api/create-checkout-session', strictLimiter, async (req, res) => {
   try {
-    const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
     const { booking, line_items, success_url, cancel_url, customer_email, metadata } = req.body;
     
+    // Store pending booking temporarily (before payment completion)
+    const pendingBookingId = 'P' + Date.now();
+    
     if (!process.env.STRIPE_SECRET_KEY) {
-      return res.status(500).json({ error: 'Stripe not configured' });
+      console.log('Stripe not configured, simulating booking process...');
+      
+      // If Stripe not configured, simulate successful booking for testing
+      const newBooking = {
+        id: 'B' + Date.now(),
+        guestName: metadata?.guest_name || 'Test Guest',
+        guestEmail: customer_email,
+        guestPhone: metadata?.phone || '',
+        property: metadata?.property || 'Dome Pinot',
+        checkin: metadata?.checkin || '2025-09-01',
+        checkout: metadata?.checkout || '2025-09-03',
+        guests: metadata?.guests || '2 adults',
+        requests: metadata?.special_requests || '',
+        status: 'confirmed',
+        total: line_items[0]?.price_data?.unit_amount ? line_items[0].price_data.unit_amount / 100 : 0,
+        paymentMethod: 'stripe_test'
+      };
+      
+      // Add to bookings array
+      bookings.push(newBooking);
+      console.log('Test booking created:', newBooking);
+      
+      // Return success URL for testing
+      return res.json({ 
+        url: success_url.replace('{CHECKOUT_SESSION_ID}', 'test_session_123'),
+        test_mode: true,
+        booking: newBooking
+      });
     }
     
+    const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       line_items: line_items,
@@ -412,7 +442,10 @@ app.post('/api/create-checkout-session', strictLimiter, async (req, res) => {
       success_url: success_url,
       cancel_url: cancel_url,
       customer_email: customer_email,
-      metadata: metadata,
+      metadata: {
+        ...metadata,
+        pending_booking_id: pendingBookingId
+      },
       billing_address_collection: 'required',
       phone_number_collection: {
         enabled: true,
@@ -426,6 +459,60 @@ app.post('/api/create-checkout-session', strictLimiter, async (req, res) => {
       error: 'Payment session creation failed',
       message: error.message
     });
+  }
+});
+
+// Handle successful booking (for testing without Stripe webhooks)
+app.post('/api/booking/confirm', async (req, res) => {
+  try {
+    const { session_id, guest_info, booking_details } = req.body;
+    
+    console.log('Confirming booking:', { session_id, guest_info, booking_details });
+    
+    // Create confirmed booking
+    const confirmedBooking = {
+      id: 'B' + Date.now(),
+      guestName: guest_info.name,
+      guestEmail: guest_info.email,
+      guestPhone: guest_info.phone || '',
+      property: booking_details.property,
+      checkin: booking_details.checkin,
+      checkout: booking_details.checkout,
+      guests: `${booking_details.adults || 2} adults${booking_details.children ? `, ${booking_details.children} children` : ''}`,
+      requests: guest_info.special_requests || '',
+      status: 'confirmed',
+      total: booking_details.total,
+      sessionId: session_id
+    };
+    
+    // Add to bookings array
+    bookings.push(confirmedBooking);
+    console.log('Booking confirmed and added:', confirmedBooking);
+    
+    res.json({
+      success: true,
+      booking: confirmedBooking,
+      message: 'Booking confirmed successfully'
+    });
+    
+  } catch (error) {
+    console.error('Booking confirmation error:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to confirm booking'
+    });
+  }
+});
+
+// Get single booking details
+app.get('/api/booking/:id', (req, res) => {
+  const bookingId = req.params.id;
+  const booking = bookings.find(b => b.id === bookingId);
+  
+  if (booking) {
+    res.json(booking);
+  } else {
+    res.status(404).json({ error: 'Booking not found' });
   }
 });
 
