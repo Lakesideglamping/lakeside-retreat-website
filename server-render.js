@@ -210,13 +210,23 @@ app.get('/api/admin/debug', (req, res) => {
   });
 });
 
-// Test login endpoint - disabled in production
+// Test login endpoint - shows current expected credentials
 app.get('/api/admin/test-login', (req, res) => {
-  if (process.env.NODE_ENV === 'production') {
-    return res.status(404).json({ error: 'Not found' });
-  }
+  const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'lakesideadmin';
+  const hasCustomPassword = !!process.env.ADMIN_PASSWORD;
+  
   res.json({
     message: 'Login system is working',
+    current_credentials: {
+      username: ADMIN_USERNAME,
+      password: hasCustomPassword ? '[CUSTOM PASSWORD SET]' : 'LakesideAdmin2025'
+    },
+    environment: {
+      NODE_ENV: process.env.NODE_ENV,
+      custom_username_set: !!process.env.ADMIN_USERNAME,
+      custom_password_set: !!process.env.ADMIN_PASSWORD,
+      custom_jwt_secret_set: !!process.env.JWT_SECRET
+    },
     login_url: '/admin',
     api_endpoint: '/api/admin/login',
     method: 'POST',
