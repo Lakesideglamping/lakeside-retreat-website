@@ -1,16 +1,72 @@
-// Simplified server for Render.com deployment
+// Secure server for Render.com deployment
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 10000;
 
+// Security middleware
+app.use(require('helmet')({
+  contentSecurityPolicy: false // We handle CSP manually below
+}));
+
+// Rate limiting
+const rateLimit = require('express-rate-limit');
+const generalLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // limit each IP to 100 requests per windowMs
+  message: 'Too many requests from this IP, please try again later.'
+});
+
+const strictLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 5, // limit each IP to 5 requests per windowMs
+  message: 'Too many attempts, please try again later.'
+});
+
+app.use(generalLimiter);
+
 // Basic middleware
 app.use(cors());
 app.use(express.json({ limit: '1mb' }));
 app.use(express.urlencoded({ extended: true, limit: '1mb' }));
+
+// Input validation middleware
+const validateInput = (req, res, next) => {
+  // Basic input sanitization
+  const sanitizeString = (str) => {
+    if (typeof str !== 'string') return str;
+    return str.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+              .replace(/javascript:/gi, '')
+              .replace(/on\w+\s*=/gi, '');
+  };
+  
+  const sanitizeObject = (obj) => {
+    if (typeof obj !== 'object' || obj === null) return obj;
+    const sanitized = {};
+    for (let key in obj) {
+      if (typeof obj[key] === 'string') {
+        sanitized[key] = sanitizeString(obj[key]);
+      } else if (typeof obj[key] === 'object') {
+        sanitized[key] = sanitizeObject(obj[key]);
+      } else {
+        sanitized[key] = obj[key];
+      }
+    }
+    return sanitized;
+  };
+  
+  if (req.body) {
+    req.body = sanitizeObject(req.body);
+  }
+  next();
+};
+
+app.use(validateInput);
 
 // Content Security Policy that allows Stripe
 app.use((req, res, next) => {
@@ -37,6 +93,11 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
+// Serve admin page
+app.get('/admin', (req, res) => {
+  res.sendFile(path.join(__dirname, 'admin.html'));
+});
+
 // Serve other static files
 app.get('/robots.txt', (req, res) => {
   res.sendFile(path.join(__dirname, 'robots.txt'));
@@ -51,6 +112,70 @@ app.get('/api/health', (req, res) => {
     status: 'healthy',
     timestamp: new Date().toISOString(),
     service: 'lakeside-retreat'
+  });
+});
+
+// Admin authentication middleware
+const authenticateAdmin = async (req, res, next) => {
+  try {
+    const token = req.header('Authorization')?.replace('Bearer ', '');
+    if (!token) {
+      return res.status(401).json({ error: 'Access denied. No token provided.' });
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'default-secret-change-in-production');
+    req.admin = decoded;
+    next();
+  } catch (error) {
+    res.status(400).json({ error: 'Invalid token.' });
+  }
+};
+
+// Admin login endpoint
+app.post('/api/admin/login', strictLimiter, async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    
+    // Default admin credentials (change these!)
+    const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin';
+    const ADMIN_PASSWORD_HASH = process.env.ADMIN_PASSWORD_HASH || await bcrypt.hash('admin123', 12);
+    
+    if (!username || !password) {
+      return res.status(400).json({ error: 'Username and password required' });
+    }
+    
+    if (username !== ADMIN_USERNAME) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+    
+    const isValidPassword = await bcrypt.compare(password, ADMIN_PASSWORD_HASH);
+    if (!isValidPassword) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+    
+    const token = jwt.sign(
+      { username: ADMIN_USERNAME, role: 'admin' },
+      process.env.JWT_SECRET || 'default-secret-change-in-production',
+      { expiresIn: '24h' }
+    );
+    
+    res.json({ 
+      token,
+      message: 'Login successful',
+      expiresIn: '24h'
+    });
+  } catch (error) {
+    console.error('Admin login error:', error);
+    res.status(500).json({ error: 'Login failed' });
+  }
+});
+
+// Admin dashboard endpoint
+app.get('/api/admin/dashboard', authenticateAdmin, (req, res) => {
+  res.json({ 
+    message: 'Admin dashboard access granted',
+    admin: req.admin,
+    serverTime: new Date().toISOString()
   });
 });
 
@@ -100,8 +225,8 @@ app.post('/api/contact', async (req, res) => {
   }
 });
 
-// Stripe Checkout session creation endpoint
-app.post('/api/create-checkout-session', async (req, res) => {
+// Stripe Checkout session creation endpoint (protected)
+app.post('/api/create-checkout-session', strictLimiter, async (req, res) => {
   try {
     const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
     const { booking, line_items, success_url, cancel_url, customer_email, metadata } = req.body;
