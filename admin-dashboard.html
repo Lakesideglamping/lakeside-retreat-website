@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Lakeside Retreat</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2d5a5a 0%, #1e4040 100%);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .header h1 {
+            font-size: 1.5rem;
+        }
+        
+        .logout-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #ddd;
+        }
+        
+        .tab {
+            padding: 1rem 2rem;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #666;
+            transition: all 0.3s;
+        }
+        
+        .tab.active {
+            color: #2d5a5a;
+            border-bottom-color: #2d5a5a;
+        }
+        
+        .tab:hover {
+            color: #2d5a5a;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2d5a5a;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .action-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .action-card h2 {
+            color: #2d5a5a;
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: #2d5a5a;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #1e4040;
+        }
+        
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+        
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .btn-warning {
+            background: #ffc107;
+            color: #333;
+        }
+        
+        .table-container {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            overflow-x: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th {
+            background: #f8f9fa;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: #333;
+            border-bottom: 2px solid #ddd;
+        }
+        
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .status-active {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-blocked {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .btn-sm {
+            padding: 0.25rem 0.75rem;
+            font-size: 0.85rem;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+        }
+        
+        .alert {
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+        }
+        
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .alert-danger {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #2d5a5a;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🏡 Lakeside Retreat Admin Dashboard</h1>
+        <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+
+    <div class="container">
+        <!-- Navigation Tabs -->
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('overview')">Overview</button>
+            <button class="tab" onclick="showTab('bookings')">Bookings</button>
+            <button class="tab" onclick="showTab('prices')">Pricing</button>
+            <button class="tab" onclick="showTab('content')">Content</button>
+            <button class="tab" onclick="showTab('reviews')">Reviews</button>
+            <button class="tab" onclick="showTab('settings')">Settings</button>
+        </div>
+
+        <!-- Overview Tab -->
+        <div id="overview" class="tab-content active">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="totalBookings">0</div>
+                    <div class="stat-label">Total Bookings</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="monthlyRevenue">$0</div>
+                    <div class="stat-label">Monthly Revenue</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="occupancyRate">0%</div>
+                    <div class="stat-label">Occupancy Rate</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="avgRating">0.0</div>
+                    <div class="stat-label">Average Rating</div>
+                </div>
+            </div>
+
+            <div class="action-card">
+                <h2>Quick Actions</h2>
+                <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                    <button class="btn btn-primary" onclick="blockDates()">Block Dates</button>
+                    <button class="btn btn-primary" onclick="updatePrices()">Update Prices</button>
+                    <button class="btn btn-primary" onclick="exportBookings()">Export Bookings</button>
+                    <button class="btn btn-success" onclick="syncUplisting()">Sync with Uplisting</button>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <h2 style="margin-bottom: 1rem;">Recent Bookings</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Booking ID</th>
+                            <th>Guest</th>
+                            <th>Property</th>
+                            <th>Check-in</th>
+                            <th>Check-out</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recentBookings">
+                        <tr>
+                            <td colspan="7" style="text-align: center;">Loading bookings...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Bookings Tab -->
+        <div id="bookings" class="tab-content">
+            <div class="action-card">
+                <h2>Manage Bookings</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Search Guest</label>
+                        <input type="text" id="searchGuest" placeholder="Enter guest name or email">
+                    </div>
+                    <div class="form-group">
+                        <label>Filter by Property</label>
+                        <select id="filterProperty">
+                            <option value="">All Properties</option>
+                            <option value="pinot">Dome Pinot</option>
+                            <option value="rose">Dome Rosé</option>
+                            <option value="cottage">Lakeside Cottage</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Date Range</label>
+                        <input type="date" id="filterDateFrom">
+                    </div>
+                    <div class="form-group">
+                        <label>&nbsp;</label>
+                        <input type="date" id="filterDateTo">
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="searchBookings()">Search</button>
+                <button class="btn btn-success" onclick="addManualBooking()">Add Manual Booking</button>
+            </div>
+
+            <div class="table-container">
+                <h2>All Bookings</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Guest</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Property</th>
+                            <th>Dates</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="allBookings">
+                        <tr>
+                            <td colspan="9" style="text-align: center;">No bookings found</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Pricing Tab -->
+        <div id="prices" class="tab-content">
+            <div class="action-card">
+                <h2>Update Accommodation Prices</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Dome Pinot (per night)</label>
+                        <input type="number" id="pricePinot" value="498">
+                    </div>
+                    <div class="form-group">
+                        <label>Dome Rosé (per night)</label>
+                        <input type="number" id="priceRose" value="498">
+                    </div>
+                    <div class="form-group">
+                        <label>Lakeside Cottage (per night)</label>
+                        <input type="number" id="priceCottage" value="245">
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="savePrices()">Save Prices</button>
+            </div>
+
+            <div class="action-card">
+                <h2>Seasonal Pricing</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Season Name</label>
+                        <input type="text" id="seasonName" placeholder="e.g., Summer Peak">
+                    </div>
+                    <div class="form-group">
+                        <label>Start Date</label>
+                        <input type="date" id="seasonStart">
+                    </div>
+                    <div class="form-group">
+                        <label>End Date</label>
+                        <input type="date" id="seasonEnd">
+                    </div>
+                    <div class="form-group">
+                        <label>Price Adjustment (%)</label>
+                        <input type="number" id="seasonAdjustment" placeholder="e.g., 20 for 20% increase">
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="addSeasonalPricing()">Add Seasonal Rate</button>
+            </div>
+
+            <div class="table-container">
+                <h2>Current Seasonal Rates</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Season</th>
+                            <th>Dates</th>
+                            <th>Adjustment</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="seasonalRates">
+                        <tr>
+                            <td colspan="4" style="text-align: center;">No seasonal rates configured</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Content Tab -->
+        <div id="content" class="tab-content">
+            <div class="action-card">
+                <h2>Website Content Management</h2>
+                <div class="form-group">
+                    <label>Page Section</label>
+                    <select id="contentSection">
+                        <option value="">Select Section</option>
+                        <option value="hero">Hero Banner</option>
+                        <option value="about">About Us</option>
+                        <option value="amenities">Amenities</option>
+                        <option value="location">Location</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Content</label>
+                    <textarea id="contentText" placeholder="Enter your content here..."></textarea>
+                </div>
+                <button class="btn btn-primary" onclick="updateContent()">Update Content</button>
+            </div>
+
+            <div class="action-card">
+                <h2>Image Gallery</h2>
+                <div class="form-group">
+                    <label>Upload New Image</label>
+                    <input type="file" id="galleryImage" accept="image/*">
+                </div>
+                <div class="form-group">
+                    <label>Image Caption</label>
+                    <input type="text" id="imageCaption" placeholder="Enter image caption">
+                </div>
+                <button class="btn btn-primary" onclick="uploadImage()">Upload Image</button>
+            </div>
+        </div>
+
+        <!-- Reviews Tab -->
+        <div id="reviews" class="tab-content">
+            <div class="table-container">
+                <h2>Guest Reviews</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Guest</th>
+                            <th>Property</th>
+                            <th>Rating</th>
+                            <th>Review</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="reviewsList">
+                        <tr>
+                            <td colspan="7" style="text-align: center;">No reviews yet</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Settings Tab -->
+        <div id="settings" class="tab-content">
+            <div class="action-card">
+                <h2>System Settings</h2>
+                <div class="form-group">
+                    <label>Admin Email</label>
+                    <input type="email" id="adminEmail" value="info@lakesideretreat.co.nz">
+                </div>
+                <div class="form-group">
+                    <label>Notification Settings</label>
+                    <div style="margin-top: 0.5rem;">
+                        <label style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+                            <input type="checkbox" id="notifyBookings" checked style="width: auto; margin-right: 0.5rem;">
+                            Email me for new bookings
+                        </label>
+                        <label style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+                            <input type="checkbox" id="notifyReviews" checked style="width: auto; margin-right: 0.5rem;">
+                            Email me for new reviews
+                        </label>
+                        <label style="display: flex; align-items: center;">
+                            <input type="checkbox" id="notifyContact" checked style="width: auto; margin-right: 0.5rem;">
+                            Email me for contact form submissions
+                        </label>
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="saveSettings()">Save Settings</button>
+            </div>
+
+            <div class="action-card">
+                <h2>API Integrations</h2>
+                <div class="form-group">
+                    <label>Uplisting API Key</label>
+                    <input type="password" id="uplistingKey" placeholder="Enter your Uplisting API key">
+                </div>
+                <div class="form-group">
+                    <label>Stripe Status</label>
+                    <div style="margin-top: 0.5rem;">
+                        <span class="status-badge status-active">Connected</span>
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="testUplistingConnection()">Test Uplisting Connection</button>
+            </div>
+
+            <div class="action-card">
+                <h2>Blocked Dates</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Property</label>
+                        <select id="blockProperty">
+                            <option value="">Select Property</option>
+                            <option value="pinot">Dome Pinot</option>
+                            <option value="rose">Dome Rosé</option>
+                            <option value="cottage">Lakeside Cottage</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Start Date</label>
+                        <input type="date" id="blockStart">
+                    </div>
+                    <div class="form-group">
+                        <label>End Date</label>
+                        <input type="date" id="blockEnd">
+                    </div>
+                    <div class="form-group">
+                        <label>Reason</label>
+                        <input type="text" id="blockReason" placeholder="e.g., Maintenance">
+                    </div>
+                </div>
+                <button class="btn btn-danger" onclick="blockDates()">Block Dates</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="bookingModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add Manual Booking</h2>
+                <button class="close-modal" onclick="closeModal('bookingModal')">&times;</button>
+            </div>
+            <div class="form-group">
+                <label>Guest Name</label>
+                <input type="text" id="manualGuestName">
+            </div>
+            <div class="form-group">
+                <label>Guest Email</label>
+                <input type="email" id="manualGuestEmail">
+            </div>
+            <div class="form-group">
+                <label>Guest Phone</label>
+                <input type="tel" id="manualGuestPhone">
+            </div>
+            <div class="form-group">
+                <label>Property</label>
+                <select id="manualProperty">
+                    <option value="">Select Property</option>
+                    <option value="pinot">Dome Pinot</option>
+                    <option value="rose">Dome Rosé</option>
+                    <option value="cottage">Lakeside Cottage</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Check-in Date</label>
+                <input type="date" id="manualCheckin">
+            </div>
+            <div class="form-group">
+                <label>Check-out Date</label>
+                <input type="date" id="manualCheckout">
+            </div>
+            <div class="form-group">
+                <label>Number of Guests</label>
+                <input type="number" id="manualGuests" min="1" max="6">
+            </div>
+            <div class="form-group">
+                <label>Special Requests</label>
+                <textarea id="manualRequests"></textarea>
+            </div>
+            <button class="btn btn-primary" onclick="saveManualBooking()">Save Booking</button>
+        </div>
+    </div>
+
+    <script>
+        // Check authentication
+        const token = localStorage.getItem('adminToken');
+        if (!token) {
+            window.location.href = '/admin';
+        }
+
+        // Tab functionality
+        function showTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active class from all tab buttons
+            document.querySelectorAll('.tab').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+            
+            // Add active class to clicked tab button
+            event.target.classList.add('active');
+            
+            // Load tab-specific data
+            loadTabData(tabName);
+        }
+
+        // Load data for specific tab
+        function loadTabData(tabName) {
+            switch(tabName) {
+                case 'overview':
+                    loadDashboardStats();
+                    loadRecentBookings();
+                    break;
+                case 'bookings':
+                    loadAllBookings();
+                    break;
+                case 'prices':
+                    loadCurrentPrices();
+                    break;
+                case 'reviews':
+                    loadReviews();
+                    break;
+            }
+        }
+
+        // Dashboard Stats
+        function loadDashboardStats() {
+            // Simulated data - replace with API calls
+            document.getElementById('totalBookings').textContent = '127';
+            document.getElementById('monthlyRevenue').textContent = '$18,450';
+            document.getElementById('occupancyRate').textContent = '89%';
+            document.getElementById('avgRating').textContent = '4.9';
+        }
+
+        // Recent Bookings
+        function loadRecentBookings() {
+            const tbody = document.getElementById('recentBookings');
+            // Simulated data
+            tbody.innerHTML = `
+                <tr>
+                    <td>#B2025001</td>
+                    <td>John Smith</td>
+                    <td>Dome Pinot</td>
+                    <td>2025-08-28</td>
+                    <td>2025-08-30</td>
+                    <td><span class="status-badge status-active">Confirmed</span></td>
+                    <td>
+                        <div class="actions">
+                            <button class="btn btn-sm btn-primary">View</button>
+                            <button class="btn btn-sm btn-danger">Cancel</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>#B2025002</td>
+                    <td>Sarah Johnson</td>
+                    <td>Dome Rosé</td>
+                    <td>2025-09-05</td>
+                    <td>2025-09-08</td>
+                    <td><span class="status-badge status-pending">Pending</span></td>
+                    <td>
+                        <div class="actions">
+                            <button class="btn btn-sm btn-primary">View</button>
+                            <button class="btn btn-sm btn-success">Confirm</button>
+                        </div>
+                    </td>
+                </tr>
+            `;
+        }
+
+        // Load all bookings
+        function loadAllBookings() {
+            // This would fetch from your API
+            console.log('Loading all bookings...');
+        }
+
+        // Load current prices
+        async function loadCurrentPrices() {
+            try {
+                const response = await fetch('/api/accommodation/prices');
+                const prices = await response.json();
+                document.getElementById('pricePinot').value = prices.pinot;
+                document.getElementById('priceRose').value = prices.rose;
+                document.getElementById('priceCottage').value = prices.cottage;
+            } catch (error) {
+                console.error('Error loading prices:', error);
+            }
+        }
+
+        // Save prices
+        async function savePrices() {
+            const prices = {
+                pinot: document.getElementById('pricePinot').value,
+                rose: document.getElementById('priceRose').value,
+                cottage: document.getElementById('priceCottage').value
+            };
+            
+            // This would send to your API
+            console.log('Saving prices:', prices);
+            alert('Prices updated successfully!');
+        }
+
+        // Block dates
+        function blockDates() {
+            const property = document.getElementById('blockProperty')?.value;
+            const startDate = document.getElementById('blockStart')?.value;
+            const endDate = document.getElementById('blockEnd')?.value;
+            const reason = document.getElementById('blockReason')?.value;
+            
+            if (!property || !startDate || !endDate) {
+                alert('Please select property and dates to block');
+                return;
+            }
+            
+            console.log('Blocking dates:', { property, startDate, endDate, reason });
+            alert('Dates blocked successfully!');
+        }
+
+        // Add manual booking
+        function addManualBooking() {
+            document.getElementById('bookingModal').classList.add('active');
+        }
+
+        // Save manual booking
+        function saveManualBooking() {
+            const booking = {
+                guestName: document.getElementById('manualGuestName').value,
+                guestEmail: document.getElementById('manualGuestEmail').value,
+                guestPhone: document.getElementById('manualGuestPhone').value,
+                property: document.getElementById('manualProperty').value,
+                checkin: document.getElementById('manualCheckin').value,
+                checkout: document.getElementById('manualCheckout').value,
+                guests: document.getElementById('manualGuests').value,
+                requests: document.getElementById('manualRequests').value
+            };
+            
+            console.log('Saving booking:', booking);
+            closeModal('bookingModal');
+            alert('Booking added successfully!');
+            loadRecentBookings();
+        }
+
+        // Export bookings
+        function exportBookings() {
+            console.log('Exporting bookings...');
+            alert('Bookings exported to CSV!');
+        }
+
+        // Sync with Uplisting
+        function syncUplisting() {
+            console.log('Syncing with Uplisting...');
+            alert('Uplisting sync initiated!');
+        }
+
+        // Update prices
+        function updatePrices() {
+            showTab('prices');
+        }
+
+        // Load reviews
+        function loadReviews() {
+            console.log('Loading reviews...');
+        }
+
+        // Close modal
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        // Logout
+        function logout() {
+            localStorage.removeItem('adminToken');
+            window.location.href = '/admin';
+        }
+
+        // Save settings
+        function saveSettings() {
+            const settings = {
+                adminEmail: document.getElementById('adminEmail').value,
+                notifyBookings: document.getElementById('notifyBookings').checked,
+                notifyReviews: document.getElementById('notifyReviews').checked,
+                notifyContact: document.getElementById('notifyContact').checked
+            };
+            
+            console.log('Saving settings:', settings);
+            alert('Settings saved successfully!');
+        }
+
+        // Test Uplisting connection
+        function testUplistingConnection() {
+            const apiKey = document.getElementById('uplistingKey').value;
+            if (!apiKey) {
+                alert('Please enter your Uplisting API key');
+                return;
+            }
+            
+            console.log('Testing Uplisting connection...');
+            alert('Uplisting connection test initiated!');
+        }
+
+        // Initialize dashboard
+        loadDashboardStats();
+        loadRecentBookings();
+    </script>
+</body>
+</html>

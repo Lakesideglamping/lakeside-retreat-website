@@ -93,9 +93,13 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// Serve admin page
+// Serve admin pages
 app.get('/admin', (req, res) => {
   res.sendFile(path.join(__dirname, 'admin.html'));
+});
+
+app.get('/admin-dashboard.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'admin-dashboard.html'));
 });
 
 // Serve other static files
@@ -208,6 +212,83 @@ app.get('/api/accommodation/prices', (req, res) => {
     pinot: 498,
     rose: 498,
     cottage: 245
+  });
+});
+
+// Update prices (admin only)
+app.put('/api/admin/prices', authenticateAdmin, (req, res) => {
+  const { pinot, rose, cottage } = req.body;
+  // In production, save to database
+  console.log('Updating prices:', { pinot, rose, cottage });
+  res.json({ 
+    success: true, 
+    message: 'Prices updated successfully',
+    prices: { pinot, rose, cottage }
+  });
+});
+
+// Get all bookings (admin only)
+app.get('/api/admin/bookings', authenticateAdmin, (req, res) => {
+  // In production, fetch from database
+  res.json({
+    bookings: [
+      {
+        id: 'B2025001',
+        guestName: 'John Smith',
+        guestEmail: 'john@example.com',
+        property: 'Dome Pinot',
+        checkin: '2025-08-28',
+        checkout: '2025-08-30',
+        status: 'confirmed',
+        total: 996
+      },
+      {
+        id: 'B2025002',
+        guestName: 'Sarah Johnson',
+        guestEmail: 'sarah@example.com',
+        property: 'Dome Rosé',
+        checkin: '2025-09-05',
+        checkout: '2025-09-08',
+        status: 'pending',
+        total: 1494
+      }
+    ]
+  });
+});
+
+// Add manual booking (admin only)
+app.post('/api/admin/bookings', authenticateAdmin, (req, res) => {
+  const booking = req.body;
+  console.log('Adding manual booking:', booking);
+  // In production, save to database
+  res.json({
+    success: true,
+    message: 'Booking added successfully',
+    bookingId: 'B' + Date.now()
+  });
+});
+
+// Block dates (admin only)
+app.post('/api/admin/block-dates', authenticateAdmin, (req, res) => {
+  const { property, startDate, endDate, reason } = req.body;
+  console.log('Blocking dates:', { property, startDate, endDate, reason });
+  // In production, save to database
+  res.json({
+    success: true,
+    message: 'Dates blocked successfully'
+  });
+});
+
+// Get dashboard stats (admin only)
+app.get('/api/admin/stats', authenticateAdmin, (req, res) => {
+  // In production, calculate from database
+  res.json({
+    totalBookings: 127,
+    monthlyRevenue: 18450,
+    occupancyRate: 89,
+    avgRating: 4.9,
+    todayCheckIns: 2,
+    todayCheckOuts: 1
   });
 });
 

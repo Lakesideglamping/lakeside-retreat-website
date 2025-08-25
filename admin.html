@@ -311,12 +311,8 @@
         }
         
         function showDashboard() {
-            document.getElementById('loginForm').style.display = 'none';
-            document.getElementById('adminDashboard').style.display = 'block';
-            document.getElementById('lastUpdated').textContent = new Date().toLocaleString();
-            
-            // Load dashboard data
-            loadDashboardData();
+            // Redirect to full admin dashboard
+            window.location.href = '/admin-dashboard.html';
         }
         
         function logout() {
