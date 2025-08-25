@@ -221,65 +221,91 @@ app.get('/api/admin/dashboard', authenticateAdmin, (req, res) => {
   });
 });
 
+// In-memory storage (replace with database in production)
+let currentPrices = {
+  pinot: 498,
+  rose: 498,
+  cottage: 245
+};
+
+let bookings = [
+  {
+    id: 'B2025001',
+    guestName: 'John Smith',
+    guestEmail: 'john@example.com',
+    property: 'Dome Pinot',
+    checkin: '2025-08-28',
+    checkout: '2025-08-30',
+    status: 'confirmed'
+  },
+  {
+    id: 'B2025002',
+    guestName: 'Sarah Johnson',
+    guestEmail: 'sarah@example.com',
+    property: 'Dome Rosé',
+    checkin: '2025-09-05',
+    checkout: '2025-09-08',
+    status: 'pending'
+  }
+];
+
 // Accommodation prices endpoint
 app.get('/api/accommodation/prices', (req, res) => {
-  res.json({
-    pinot: 498,
-    rose: 498,
-    cottage: 245
-  });
+  res.json(currentPrices);
 });
 
 // Update prices (admin only)
 app.put('/api/admin/prices', authenticateAdmin, (req, res) => {
   const { pinot, rose, cottage } = req.body;
-  // In production, save to database
-  console.log('Updating prices:', { pinot, rose, cottage });
+  
+  // Validate prices
+  if (pinot && pinot > 0) currentPrices.pinot = pinot;
+  if (rose && rose > 0) currentPrices.rose = rose;
+  if (cottage && cottage > 0) currentPrices.cottage = cottage;
+  
+  console.log('Updating prices:', currentPrices);
+  
   res.json({ 
     success: true, 
     message: 'Prices updated successfully',
-    prices: { pinot, rose, cottage }
+    prices: currentPrices
   });
 });
 
 // Get all bookings (admin only)
 app.get('/api/admin/bookings', authenticateAdmin, (req, res) => {
-  // In production, fetch from database
   res.json({
-    bookings: [
-      {
-        id: 'B2025001',
-        guestName: 'John Smith',
-        guestEmail: 'john@example.com',
-        property: 'Dome Pinot',
-        checkin: '2025-08-28',
-        checkout: '2025-08-30',
-        status: 'confirmed',
-        total: 996
-      },
-      {
-        id: 'B2025002',
-        guestName: 'Sarah Johnson',
-        guestEmail: 'sarah@example.com',
-        property: 'Dome Rosé',
-        checkin: '2025-09-05',
-        checkout: '2025-09-08',
-        status: 'pending',
-        total: 1494
-      }
-    ]
+    bookings: bookings
   });
 });
 
 // Add manual booking (admin only)
 app.post('/api/admin/bookings', authenticateAdmin, (req, res) => {
   const booking = req.body;
-  console.log('Adding manual booking:', booking);
-  // In production, save to database
+  const newBookingId = 'B' + Date.now();
+  
+  // Add to in-memory bookings array
+  const newBooking = {
+    id: newBookingId,
+    guestName: booking.guestName,
+    guestEmail: booking.guestEmail,
+    guestPhone: booking.guestPhone,
+    property: booking.property,
+    checkin: booking.checkin,
+    checkout: booking.checkout,
+    guests: booking.guests,
+    requests: booking.requests,
+    status: 'confirmed'
+  };
+  
+  bookings.push(newBooking);
+  console.log('Adding manual booking:', newBooking);
+  
   res.json({
     success: true,
     message: 'Booking added successfully',
-    bookingId: 'B' + Date.now()
+    bookingId: newBookingId,
+    booking: newBooking
   });
 });
 
@@ -310,13 +336,26 @@ app.get('/api/admin/stats', authenticateAdmin, (req, res) => {
 // Cancel/Delete booking (admin only)
 app.delete('/api/admin/bookings/:id', authenticateAdmin, (req, res) => {
   const bookingId = req.params.id;
-  console.log('Cancelling booking:', bookingId);
-  // In production, delete from database
-  res.json({
-    success: true,
-    message: 'Booking cancelled successfully',
-    bookingId: bookingId
-  });
+  
+  // Remove from in-memory bookings array
+  const bookingIndex = bookings.findIndex(booking => booking.id === bookingId);
+  
+  if (bookingIndex !== -1) {
+    const removedBooking = bookings.splice(bookingIndex, 1)[0];
+    console.log('Cancelled booking:', removedBooking);
+    
+    res.json({
+      success: true,
+      message: 'Booking cancelled successfully',
+      bookingId: bookingId
+    });
+  } else {
+    res.status(404).json({
+      success: false,
+      message: 'Booking not found',
+      bookingId: bookingId
+    });
+  }
 });
 
 // Basic booking endpoint (you can expand this)

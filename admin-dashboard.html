@@ -801,7 +801,7 @@
                     
                     if (bookings.length > 0) {
                         tbody.innerHTML = bookings.map(booking => `
-                            <tr>
+                            <tr data-booking-id="${booking.id}">
                                 <td>${booking.id}</td>
                                 <td>${booking.guestName}</td>
                                 <td>${booking.property}</td>
@@ -1001,9 +1001,43 @@
         }
 
         // Export bookings
-        function exportBookings() {
-            console.log('Exporting bookings...');
-            alert('Bookings exported to CSV!');
+        async function exportBookings() {
+            try {
+                const response = await fetch('/api/admin/bookings', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    const bookings = data.bookings || [];
+                    
+                    // Create CSV content
+                    const csvHeader = 'Booking ID,Guest Name,Guest Email,Property,Check-in,Check-out,Status\n';
+                    const csvData = bookings.map(booking => 
+                        `${booking.id},${booking.guestName},${booking.guestEmail},${booking.property},${booking.checkin},${booking.checkout},${booking.status}`
+                    ).join('\n');
+                    
+                    // Create and download CSV file
+                    const blob = new Blob([csvHeader + csvData], { type: 'text/csv' });
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `lakeside-bookings-${new Date().toISOString().split('T')[0]}.csv`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    window.URL.revokeObjectURL(url);
+                    
+                    alert('Bookings exported successfully!');
+                } else {
+                    throw new Error('Failed to export bookings');
+                }
+            } catch (error) {
+                console.error('Error exporting bookings:', error);
+                alert('Error exporting bookings. Please try again.');
+            }
         }
 
         // Sync with Uplisting
@@ -1047,8 +1081,16 @@
                 });
                 
                 if (response.ok) {
+                    // Remove the row from the table immediately
+                    const row = document.querySelector(`tr[data-booking-id="${bookingId}"]`);
+                    if (row) {
+                        row.style.transition = 'opacity 0.3s';
+                        row.style.opacity = '0';
+                        setTimeout(() => row.remove(), 300);
+                    }
                     alert('Booking cancelled successfully');
-                    loadRecentBookings();
+                    // Also reload the bookings to be sure
+                    setTimeout(loadRecentBookings, 500);
                 } else {
                     throw new Error('Failed to cancel booking');
                 }
@@ -1078,16 +1120,28 @@
         }
 
         // Save settings
-        function saveSettings() {
+        async function saveSettings() {
             const settings = {
-                adminEmail: document.getElementById('adminEmail').value,
-                notifyBookings: document.getElementById('notifyBookings').checked,
-                notifyReviews: document.getElementById('notifyReviews').checked,
-                notifyContact: document.getElementById('notifyContact').checked
+                adminEmail: document.getElementById('adminEmail')?.value || '',
+                notifyBookings: document.getElementById('notifyBookings')?.checked || false,
+                notifyReviews: document.getElementById('notifyReviews')?.checked || false,
+                notifyContact: document.getElementById('notifyContact')?.checked || false
             };
             
-            console.log('Saving settings:', settings);
-            alert('Settings saved successfully!');
+            if (!settings.adminEmail) {
+                alert('Please enter an admin email address');
+                return;
+            }
+            
+            try {
+                // Store in localStorage for now (in production, send to API)
+                localStorage.setItem('adminSettings', JSON.stringify(settings));
+                console.log('Saving settings:', settings);
+                alert('Settings saved successfully!');
+            } catch (error) {
+                console.error('Error saving settings:', error);
+                alert('Error saving settings. Please try again.');
+            }
         }
 
         // Test Uplisting connection
