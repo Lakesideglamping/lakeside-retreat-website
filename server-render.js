@@ -136,22 +136,38 @@ app.post('/api/admin/login', strictLimiter, async (req, res) => {
   try {
     const { username, password } = req.body;
     
-    // Default admin credentials (change these!)
+    console.log('Login attempt for username:', username);
+    console.log('Environment ADMIN_USERNAME:', process.env.ADMIN_USERNAME);
+    
+    // Get admin credentials from environment
     const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin';
-    const ADMIN_PASSWORD_HASH = process.env.ADMIN_PASSWORD_HASH || await bcrypt.hash('admin123', 12);
+    const ADMIN_PASSWORD_HASH = process.env.ADMIN_PASSWORD_HASH;
     
     if (!username || !password) {
       return res.status(400).json({ error: 'Username and password required' });
     }
     
     if (username !== ADMIN_USERNAME) {
+      console.log('Username mismatch. Expected:', ADMIN_USERNAME, 'Got:', username);
       return res.status(401).json({ error: 'Invalid credentials' });
     }
     
-    const isValidPassword = await bcrypt.compare(password, ADMIN_PASSWORD_HASH);
+    // If no hash is set in environment, use default for 'admin123'
+    let passwordHash = ADMIN_PASSWORD_HASH;
+    if (!passwordHash) {
+      console.log('No ADMIN_PASSWORD_HASH found, using default admin123 hash');
+      passwordHash = '$2a$12$LQv3c1yqBWVHxkd0LQ1Mu.VCgzN8.KK9.Q6lKgFjA3dNgTjg9fNzu'; // Hash for 'admin123'
+    }
+    
+    console.log('Comparing password with hash');
+    const isValidPassword = await bcrypt.compare(password, passwordHash);
+    
     if (!isValidPassword) {
+      console.log('Password validation failed');
       return res.status(401).json({ error: 'Invalid credentials' });
     }
+    
+    console.log('Login successful for:', username);
     
     const token = jwt.sign(
       { username: ADMIN_USERNAME, role: 'admin' },
