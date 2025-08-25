@@ -257,6 +257,8 @@
             errorMessage.style.display = 'none';
             
             try {
+                console.log('Sending login request with:', { username, password });
+                
                 const response = await fetch('/api/admin/login', {
                     method: 'POST',
                     headers: {
@@ -265,12 +267,18 @@
                     body: JSON.stringify({ username, password })
                 });
                 
+                console.log('Response status:', response.status);
+                console.log('Response ok:', response.ok);
+                
                 const data = await response.json();
+                console.log('Response data:', data);
                 
                 if (response.ok) {
+                    console.log('Login successful, storing token and showing dashboard');
                     localStorage.setItem('adminToken', data.token);
                     showDashboard();
                 } else {
+                    console.error('Login failed with status:', response.status);
                     throw new Error(data.error || 'Login failed');
                 }
             } catch (error) {
