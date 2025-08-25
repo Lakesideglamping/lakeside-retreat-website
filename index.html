@@ -8032,6 +8032,7 @@ Thank you for choosing Lakeside Retreat!`);
         document.addEventListener('DOMContentLoaded', function() {
             if (typeof Stripe !== 'undefined') {
                 stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
+                console.log('Stripe initialized successfully');
             } else {
                 console.warn('Stripe.js not loaded. Loading now...');
                 loadStripeScript();
@@ -8422,19 +8423,37 @@ Thank you for choosing Lakeside Retreat!`);
                     }
                 })
             })
-            .then(response => response.json())
+            .then(response => {
+                console.log('Response status:', response.status);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
             .then(session => {
+                console.log('Stripe session:', session);
+                if (session.error) {
+                    throw new Error(session.error);
+                }
+                if (!session.id) {
+                    throw new Error('No session ID received from server');
+                }
+                if (!stripe) {
+                    throw new Error('Stripe not initialized. Please reload the page.');
+                }
+                console.log('Redirecting to Stripe checkout...');
                 return stripe.redirectToCheckout({ sessionId: session.id });
             })
             .then(result => {
-                if (result.error) {
+                if (result && result.error) {
+                    console.error('Stripe redirect error:', result.error);
                     alert(result.error.message);
                     resetPaymentButton();
                 }
             })
             .catch(error => {
-                console.error('Error:', error);
-                alert('There was an error processing your payment. Please try again.');
+                console.error('Booking error:', error);
+                alert(`Payment processing failed: ${error.message}. Please try again.`);
                 resetPaymentButton();
             });
         }
