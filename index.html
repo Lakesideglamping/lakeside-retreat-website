@@ -2359,6 +2359,55 @@ document.addEventListener('DOMContentLoaded', () => {
 
                         <!-- Guest Information Form (hidden until availability confirmed) -->
                         <div id="integratedGuestForm" style="display: none;">
+                            <!-- Damage Protection Section -->
+                            <div style="background: rgba(45, 90, 90, 0.05); padding: 1.5rem; border-radius: 10px; margin-bottom: 2rem; border: 1px solid rgba(45, 90, 90, 0.1);">
+                                <h4 style="color: var(--brand-teal); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                                    <span>🛡️</span> Damage Protection (Required)
+                                </h4>
+                                <p style="color: #666; font-size: 0.9rem; margin-bottom: 1.5rem;">Please choose your preferred damage protection option:</p>
+                                
+                                <div id="damageProtectionOptions">
+                                    <div class="damage-option" onclick="selectDamageProtection('waiver')" style="border: 2px solid #e5e7eb; border-radius: 10px; padding: 1rem; margin-bottom: 1rem; cursor: pointer; transition: all 0.3s ease;">
+                                        <div style="display: flex; align-items: flex-start; gap: 1rem;">
+                                            <input type="radio" name="damageProtection" value="waiver" id="damageWaiver" style="margin-top: 0.25rem;">
+                                            <div style="flex: 1;">
+                                                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                                                    <label for="damageWaiver" style="font-weight: 600; color: var(--brand-teal); cursor: pointer;">Damage Waiver - $45 NZD</label>
+                                                    <span style="background: #059669; color: white; font-size: 0.7rem; padding: 0.2rem 0.5rem; border-radius: 12px; font-weight: 600;">RECOMMENDED</span>
+                                                </div>
+                                                <p style="font-size: 0.9rem; color: #666; margin: 0; line-height: 1.4;">
+                                                    Non-refundable fee covers accidental damages up to $2,000. No holds on your credit card - just peace of mind for both of us.
+                                                </p>
+                                                <div style="font-size: 0.8rem; color: #059669; margin-top: 0.5rem;">
+                                                    ✓ No card holds &nbsp;&nbsp; ✓ Pay now with booking &nbsp;&nbsp; ✓ Simple & convenient
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="damage-option" onclick="selectDamageProtection('deposit')" style="border: 2px solid #e5e7eb; border-radius: 10px; padding: 1rem; cursor: pointer; transition: all 0.3s ease;">
+                                        <div style="display: flex; align-items: flex-start; gap: 1rem;">
+                                            <input type="radio" name="damageProtection" value="deposit" id="damageDeposit" style="margin-top: 0.25rem;">
+                                            <div style="flex: 1;">
+                                                <div style="margin-bottom: 0.5rem;">
+                                                    <label for="damageDeposit" style="font-weight: 600; color: var(--text); cursor: pointer;">Security Deposit - $500 NZD</label>
+                                                </div>
+                                                <p style="font-size: 0.9rem; color: #666; margin: 0; line-height: 1.4;">
+                                                    Refundable hold on your credit card at check-in, released within 7 days after checkout if no damages found.
+                                                </p>
+                                                <div style="font-size: 0.8rem; color: #f59e0b; margin-top: 0.5rem;">
+                                                    ⚠️ Card hold required &nbsp;&nbsp; ⚠️ Processed at check-in &nbsp;&nbsp; ⚠️ 7-day release
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div id="damageProtectionError" style="color: #dc2626; font-size: 0.9rem; margin-top: 1rem; display: none;">
+                                    Please select a damage protection option to continue
+                                </div>
+                            </div>
+                            
                             <h4 style="color: var(--brand-teal); margin-bottom: 1rem;">Guest Details</h4>
                             
                             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
@@ -7973,6 +8022,7 @@ Thank you for choosing Lakeside Retreat!`);
         // ========================================
         let selectedProperty = null;
         let currentBookingData = {};
+        let selectedDamageProtection = null;
         
         // Stripe configuration
         const STRIPE_PUBLISHABLE_KEY = 'pk_live_51ObA6xDwsGZX1xFlwBMuduT8zhQ8IiDe7uY1v2PMLhu6g9K2YC387Cxn5Dj2r6LtMpqQ9XjrCF4oGfVmfK5PIqY700UMtUH8WS';
@@ -8049,6 +8099,77 @@ Thank you for choosing Lakeside Retreat!`);
             document.getElementById('integratedEmail').value = '';
             document.getElementById('integratedPhone').value = '';
             document.getElementById('integratedSpecialRequests').value = '';
+            
+            // Reset damage protection selection
+            selectedDamageProtection = null;
+            document.querySelectorAll('.damage-option').forEach(option => {
+                option.style.borderColor = '#e5e7eb';
+                option.style.backgroundColor = 'white';
+            });
+            document.querySelectorAll('input[name="damageProtection"]').forEach(input => {
+                input.checked = false;
+            });
+        }
+
+        // Handle damage protection selection
+        function selectDamageProtection(type) {
+            selectedDamageProtection = type;
+            
+            // Update visual selection
+            document.querySelectorAll('.damage-option').forEach(option => {
+                option.style.borderColor = '#e5e7eb';
+                option.style.backgroundColor = 'white';
+            });
+            
+            // Highlight selected option
+            const selectedOption = document.querySelector(`input[value="${type}"]`).closest('.damage-option');
+            selectedOption.style.borderColor = 'var(--brand-teal)';
+            selectedOption.style.backgroundColor = 'rgba(45, 90, 90, 0.02)';
+            
+            // Check the radio button
+            document.querySelector(`input[value="${type}"]`).checked = true;
+            
+            // Hide error message
+            document.getElementById('damageProtectionError').style.display = 'none';
+            
+            // Recalculate pricing if availability already checked
+            if (currentBookingData.finalTotal) {
+                updatePricingWithDamageProtection();
+            }
+        }
+
+        // Update pricing to include damage protection
+        function updatePricingWithDamageProtection() {
+            if (!currentBookingData.basePrice || !selectedDamageProtection) return;
+            
+            let accommodationTotal = currentBookingData.basePrice * currentBookingData.nights;
+            let damageProtectionFee = selectedDamageProtection === 'waiver' ? 45 : 0; // Security deposit is not added to payment
+            let subtotal = accommodationTotal + damageProtectionFee;
+            let gst = Math.round(subtotal * 0.15);
+            let finalTotal = subtotal + gst;
+            
+            // Update the booking data
+            currentBookingData.damageProtection = selectedDamageProtection;
+            currentBookingData.damageProtectionFee = damageProtectionFee;
+            currentBookingData.subtotal = subtotal;
+            currentBookingData.gst = gst;
+            currentBookingData.finalTotal = finalTotal;
+            
+            // Update the availability status display
+            document.getElementById('integratedAvailabilityStatus').innerHTML = `
+                <div style="color: #059669; padding: 1rem; background: #ecfdf5; border-radius: 8px; border: 1px solid #059669;">
+                    <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+                        <span style="font-size: 1.2rem; margin-right: 0.5rem;">✅</span>
+                        <strong>Available for your dates!</strong>
+                    </div>
+                    <div style="font-size: 0.9rem;">
+                        <div>Accommodation: ${currentBookingData.nights} night${currentBookingData.nights > 1 ? 's' : ''} × $${currentBookingData.basePrice} = $${accommodationTotal}</div>
+                        ${damageProtectionFee > 0 ? `<div>Damage Waiver: $${damageProtectionFee}</div>` : '<div style="color: #666; font-style: italic;">Security Deposit: $500 (processed at check-in)</div>'}
+                        <div>GST (15%): $${gst}</div>
+                        <div style="font-weight: 600; margin-top: 0.5rem; font-size: 1rem;">Total: $${finalTotal} NZD</div>
+                    </div>
+                </div>
+            `;
         }
 
         // Select property in step 1
@@ -8165,13 +8286,12 @@ Thank you for choosing Lakeside Retreat!`);
             
             if (isAvailable) {
                 const basePrices = { 'pinot': 450, 'rose': 380, 'cottage': 580 };
-                const totalPrice = basePrices[property] * nights;
-                const gst = Math.round(totalPrice * 0.15);
-                const finalTotal = totalPrice + gst;
+                const accommodationTotal = basePrices[property] * nights;
                 
+                // Store base booking data (will be updated when damage protection is selected)
                 currentBookingData = {
                     property, checkin, checkout, adults, children, nights,
-                    basePrice: basePrices[property], totalPrice, gst, finalTotal
+                    basePrice: basePrices[property], accommodationTotal
                 };
                 
                 document.getElementById('integratedAvailabilityStatus').innerHTML = `
@@ -8181,9 +8301,8 @@ Thank you for choosing Lakeside Retreat!`);
                             <strong>Available for your dates!</strong>
                         </div>
                         <div style="font-size: 0.9rem;">
-                            <div>${nights} night${nights > 1 ? 's' : ''} × $${basePrices[property]} = $${totalPrice}</div>
-                            <div>GST (15%): $${gst}</div>
-                            <div style="font-weight: 600; margin-top: 0.5rem; font-size: 1rem;">Total: $${finalTotal} NZD</div>
+                            <div>Accommodation: ${nights} night${nights > 1 ? 's' : ''} × $${basePrices[property]} = $${accommodationTotal}</div>
+                            <div style="color: #666; font-style: italic; margin-top: 0.5rem;">Select damage protection below to see final total</div>
                         </div>
                     </div>
                 `;
@@ -8206,6 +8325,13 @@ Thank you for choosing Lakeside Retreat!`);
 
         // Proceed to Stripe payment
         function proceedToStripePayment() {
+            // Validate damage protection selection first
+            if (!selectedDamageProtection) {
+                document.getElementById('damageProtectionError').style.display = 'block';
+                document.getElementById('damageProtectionError').scrollIntoView({ behavior: 'smooth' });
+                return;
+            }
+            
             const firstName = document.getElementById('integratedFirstName').value;
             const lastName = document.getElementById('integratedLastName').value;
             const email = document.getElementById('integratedEmail').value;
